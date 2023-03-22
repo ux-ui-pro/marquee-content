@@ -7,13 +7,9 @@
 [![GitHub package version](https://img.shields.io/github/package-json/v/ux-ui-pro/marquee-content.svg)](https://github.com/ux-ui-pro/marquee-content)
 [![NPM Downloads](https://img.shields.io/npm/dm/marquee-content.svg?style=flat)](https://www.npmjs.org/package/marquee-content)
 
-<p>Marquee content with GSAP</p>
+<sup><a href="https://bundlephobia.com/package/marquee-content@0.0.2">1Kb gzipped</a></sup>
 
-<p>
-  <a href="https://ux-ui-pro.github.io/marquee-content/dist/">Demo</a>
-  <br>
-  <a href="https://github.com/ux-ui-pro/marquee-content/releases/latest">Download</a>
-</p>
+<h3><a href="https://ux-ui-pro.github.io/marquee-content/dist/">Demo</a></h3>
 
 </div>
 <br>
@@ -26,12 +22,42 @@ $ yarn add marquee-content
 ```javascript
 $ npm i marquee-content
 ```
+
 <br>
 
 ### Import
 ```javascript
 import { MarqueeContent } from 'marquee-content'
 ```
+<br>
+
+### Usage
+```HTML
+<marquee-content
+	data-mc-clone="3"
+	data-mc-speed="60"
+	role="marquee">
+	<ul>
+		<li>Primary</li>
+		<li>Secondary</li>
+		<li>Tertiary</li>
+		<li>Quaternary</li>
+	</ul>
+</marquee-content>
+```
+<br>
+
+### Settings
+
+| data-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Default | Description |
+| --- | --- | --- |
+| `data-mc-clone` | ... | Clones the content of the component the specified number of times. |
+| `data-mc-speed` | `20` | Sets the duration of content scrolling in seconds. It is acceptable to use decimals. |
+| `data-mc-direction` | `rtl` | `ltr` changes the scroll direction from left to right<br>`auto` automatically changes the scrolling direction of the component when scrolling the page. |
+| `data-mc-skew` | ... | Transforms the component by tilting it along the Y axis (it is acceptable to use a positive or negative value). |
+| `data-mc-min` | ... | Sets the minimum width at which the animation will be played (when the breakpoint intersects, the cloned elements will be removed and the component styles will be cleared). |
+| `data-mc-max` | ... | data-mc-max="1200" — sets the maximum width at which the animation will be played (when the breakpoint intersects, the cloned elements will be removed and the component styles will be cleared). |
+
 <br>
 
 ### License
