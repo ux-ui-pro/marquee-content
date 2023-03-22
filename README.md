@@ -49,14 +49,14 @@ import { MarqueeContent } from 'marquee-content'
 
 ### Settings
 
-| data-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Default | Description |
+| data-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Default | Description |
 | --- | --- | --- |
-| `data-mc-clone` | ... | Clones the content of the component the specified number of times. |
+| `data-mc-clone` | `0` | Clones the content of the component the specified number of times. |
 | `data-mc-speed` | `20` | Sets the duration of content scrolling in seconds. It is acceptable to use decimals. |
-| `data-mc-direction` | `rtl` | `ltr` changes the scroll direction from left to right<br>`auto` automatically changes the scrolling direction of the component when scrolling the page. |
-| `data-mc-skew` | ... | Transforms the component by tilting it along the Y axis (it is acceptable to use a positive or negative value). |
-| `data-mc-min` | ... | Sets the minimum width at which the animation will be played (when the breakpoint intersects, the cloned elements will be removed and the component styles will be cleared). |
-| `data-mc-max` | ... | data-mc-max="1200" — sets the maximum width at which the animation will be played (when the breakpoint intersects, the cloned elements will be removed and the component styles will be cleared). |
+| `data-mc-direction` | `rtl` | `ltr` &mdash; changes the scroll direction from left to right.<br>`auto` &mdash; automatically changes the scrolling direction of the component when scrolling the page. |
+| `data-mc-skew` | `0` | Transforms the component by tilting it along the Y axis (it is acceptable to use a positive or negative value). |
+| `data-mc-min` | `null` | Sets the minimum width at which the animation will be played (when the breakpoint intersects, the cloned elements will be removed and the component styles will be cleared). |
+| `data-mc-max` | `null` | Sets the maximum width at which the animation will be played (when the breakpoint intersects, the cloned elements will be removed and the component styles will be cleared). |
 
 <br>
 
