@@ -2,18 +2,21 @@ export class MarqueeContent extends HTMLElement {
     constructor() {
         super()
 
+        this.mm = gsap.matchMedia()
+        this.tl = gsap.timeline()
         this.speed = this.dataset.mcSpeed || 20
         this.clone = this.dataset.mcClone
         this.skew = this.dataset.mcSkew
         this.abs = (this.skew < 0) ? this.skew * -1 : this.skew
         this.max = this.dataset.mcMax
         this.min = this.dataset.mcMin
-        this.mm = gsap.matchMedia()
+        this.dir = this.dataset.mcDirection
 
         this.breakpoints()
         this.cloning()
         this.skewed()
-        this.animate()
+        this.marquee()
+        this.reverse()
     }
 
     breakpoints() {
@@ -52,39 +55,70 @@ export class MarqueeContent extends HTMLElement {
         if(!this.skew) { return }
 
         this.mm.add(this.breakpoint, () => {
-            gsap.set(this, {
-                skewY: this.skew,
-                'transform-origin': 'center center',
-                'min-height': `calc(${this.abs * 1.25}vh + ${this.abs * 1.25}vw)`
-            })
+            this.style.minHeight = `calc(${this.abs * 1.25}vh + ${this.abs * 1.25}vw)`
+            this.style.transformOrigin = `center center`
+            this.style.transform = `skew(0deg, ${this.skew}deg)`
+
+            return () => {
+                this.style.removeProperty('min-height')
+                this.style.removeProperty('transform-origin')
+                this.style.removeProperty('transform')
+            }
         })
     }
 
-    animate() {
+    marquee() {
         this.mm.add(this.breakpoint, () => {
-            gsap.defaults({
-                overwrite: true
+            gsap.config({
+                nullTargetWarn: false
             })
+
+            this.tl.paused(true)
 
             gsap.set(this.children, {
                 'will-change': 'transform'
             })
 
-            let animate = gsap.to(this.children, {
+            this.tl.to(this.children, {
                 duration: this.speed,
                 x: '-100%',
                 ease: 'none',
-                repeat: -1,
-                scrollTrigger: {
-                    trigger: this,
-                    toggleActions: 'play pause play pause',
-                    start: '-=50% bottom',
-                    end: 'bottom top',
-                    onUpdate: ({ direction }) => {
-                        ( direction === 1 ) ? animate.timeScale(1) : animate.timeScale(-1)
-                    }
+                repeat: -1
+            }).timeScale(this.dir === 'ltr' ? -1 : 1).totalProgress(.5)
+
+            ScrollTrigger.create({
+                trigger: this,
+                start: 'top bottom',
+                end: 'bottom top',
+                onEnter: () => this.tl.resume(),
+                onLeave: () => this.tl.pause(),
+                onEnterBack: () => this.tl.resume(),
+                onLeaveBack: () => this.tl.pause()
+            })
+        })
+    }
+
+    reverse() {
+        if(this.dir !== 'auto') { return }
+
+        this.mm.add(this.breakpoint, () => {
+            let currentScroll = 0,
+                scrollDirection = 1
+
+            window.addEventListener('scroll', () => {
+                let orientation = (window.pageYOffset > currentScroll) ? 1 : -1
+
+                if (orientation !== scrollDirection) {
+                    gsap.to(this.tl, {
+                        timeScale: orientation,
+                        overwrite: true
+                    })
+
+                    scrollDirection = orientation
                 }
-            }).timeScale(1).totalProgress(.5)
+
+                currentScroll = window.pageYOffset
+            })
         })
     }
 }
