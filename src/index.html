@@ -7,6 +7,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Alkatra:wght@700&family=Anton&family=Lobster&family=PT+Sans+Narrow:wght@700&family=Prompt:wght@500&display=swap" rel="stylesheet">
 	<style type="text/css">
         html {
             font-family: system-ui, -apple-system, "Open Sans", "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -14,11 +17,12 @@
         }
 
         body {
-            margin: 0;
+            margin: 150px 0 500px;
             font-feature-settings: "kern" 1,"liga" 0;
             font-size: 1.6rem;
             font-weight: 400;
             line-height: 1.5;
+            color: #444;
         }
 
         html,
@@ -27,27 +31,6 @@
         textarea,
         button {
             -webkit-font-smoothing: subpixel-antialiased;
-        }
-
-        .layout {
-            max-width: 120rem;
-            margin: 0 auto;
-            border: 1px solid red;
-            border-top: none;
-            border-bottom: none;
-        }
-
-        ul {
-            display: flex;
-            list-style: none;
-            margin: 0; padding: 0;
-        }
-
-        li {
-            width: 200px;
-            margin: 0 20px;
-            background: lightgray;
-            text-align: center;
         }
 
         marquee-content {
@@ -59,41 +42,262 @@
             position: relative;
             overflow: hidden;
         }
+
+        .font {
+            white-space: nowrap;
+        }
+
+        .alkatra {
+            font-family: 'Alkatra', cursive;
+            font-weight: 700;
+            font-size: 48px;
+        }
+
+        .anton {
+            font-family: 'Anton', sans-serif;
+            font-weight: 700;
+            font-size: 40px;
+        }
+
+        .pt {
+            font-family: 'PT Sans Narrow', sans-serif;
+            font-weight: 400;
+            font-size: 52px;
+        }
+
+        .lobster {
+            font-family: 'Lobster', cursive;
+            font-weight: 400;
+            font-size: 50px;
+        }
+
+        .prompt {
+            font-family: 'Prompt', sans-serif;
+            font-weight: 500;
+            font-size: 48px;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0; padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        li {
+            padding: 0 10px;
+            text-align: center;
+        }
+
+        .example-1 {
+
+        }
+
+        .example-1 li {
+            padding: 0 0 0 66px;
+            background:
+                    url("data:image/svg+xml,%3Csvg width='26' height='26' viewBox='0 0 26 26' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15.0527 10.9474L13 0L10.9473 10.9474L0 13L10.9473 15.0526L13 26L15.0527 15.0526L26 13L15.0527 10.9474Z' fill='%23444444'/%3E%3C/svg%3E")
+                    center left 20px / 26px 26px
+                    no-repeat;
+        }
+
+        .example-2 {
+
+        }
+
+        .example-2 li {
+            padding: 0 15px;
+        }
+
+        .example-3 {
+
+        }
+
+        .example-3 li {
+            position: relative;
+            padding: 0 0 0 56px;
+        }
+
+        .example-3 li::before {
+            content: '';
+            position: absolute;
+            top: 0; right: -33px; bottom: 0; left: auto;
+            margin: auto;
+            width: 7px; height: 7px;
+            transform: translateY(5px);
+            background: #444;
+            border-radius: 100%;
+        }
+
+        .example-4 {
+            text-transform: uppercase;
+        }
+
+        .example-5 {
+
+        }
+
+        .example-6 {
+
+        }
+
+        .data-code {
+            margin: 80px auto 30px;
+            padding: 0 20px;
+            max-width: 1400px;
+        }
+
+        .data-code strong {
+            display: inline-flex;
+            padding: 5px 12px;
+            border: 1px dotted #ccc;
+        }
 	</style>
 </head>
 <body>
-<div class="layout">
+<section class="data-code">
+	<strong>data-mc-clone=&quot;3&quot; data-mc-speed=&quot;50&quot;</strong>
+	<p>The basic version, with scrolling content from right to left (in this example, 3 clones of scrollable content are added, scrolling lasts 50 seconds)</p>
+</section>
+<section class="example-1">
 	<marquee-content
-		data-mc-min="1600"
-		data-mc-clone="2"
-		data-mc-speed="30"
-		data-mc-skew="-2.4"
+		data-mc-clone="3"
+		data-mc-speed="50"
 		role="marquee">
-		<ul class="logo-set">
-			<li class="logo-set__item">
-				1
-			</li>
-			<li class="logo-set__item">
-				2
-			</li>
-			<li class="logo-set__item">
-				3
-			</li>
-			<li class="logo-set__item">
-				4
-			</li>
-			<li class="logo-set__item">
-				5
-			</li>
-			<li class="logo-set__item">
-				6
-			</li>
-			<li class="logo-set__item">
-				7
-			</li>
+		<ul class="font alkatra">
+			<li>Monarch</li>
+			<li>Benassi</li>
+			<li>Air Max</li>
+			<li>Cortez</li>
+			<li>Jordan</li>
+			<li>Presto</li>
+			<li>Roshe</li>
+			<li>Tempo</li>
+			<li>Vomero</li>
+			<li>Pegasus</li>
 		</ul>
 	</marquee-content>
-</div>
+</section>
+<section class="data-code">
+	<strong>data-mc-clone=&quot;3&quot; data-mc-speed=&quot;70&quot; data-mc-direction=&quot;ltr&quot;</strong>
+	<p><code>data-mc-direction="ltr"</code> &mdash; changes the scroll direction from left to right</p>
+</section>
+<section class="example-2">
+	<marquee-content
+		data-mc-clone="3"
+		data-mc-speed="70"
+		data-mc-direction="ltr"
+		role="marquee">
+		<ul>
+			<li><span class="font anton">Monarch</span></li>
+			<li><span class="font pt">Benassi</span></li>
+			<li><span class="font lobster">Air Max</span></li>
+			<li><span class="font prompt">Cortez</span></li>
+			<li><span class="font anton">Jordan</span></li>
+			<li><span class="font pt">Presto</span></li>
+			<li><span class="font lobster">Roshe</span></li>
+			<li><span class="font prompt">Tempo</span></li>
+			<li><span class="font anton">Vomero</span></li>
+			<li><span class="font pt">Pegasus</span></li>
+		</ul>
+	</marquee-content>
+</section>
+<section class="data-code">
+	<strong>data-mc-clone=&quot;3&quot; data-mc-speed=&quot;60&quot; data-mc-direction=&quot;auto&quot;</strong>
+	<p><code>data-mc-direction="auto"</code> &mdash; automatically changes the scrolling direction of the component when scrolling the page</p>
+</section>
+<section class="example-3">
+	<marquee-content
+		data-mc-clone="3"
+		data-mc-speed="60"
+		data-mc-direction="auto"
+		role="marquee">
+		<ul class="font lobster">
+			<li>Monarch</li>
+			<li>Benassi</li>
+			<li>Air Max</li>
+			<li>Cortez</li>
+			<li>Jordan</li>
+			<li>Presto</li>
+			<li>Roshe</li>
+			<li>Tempo</li>
+			<li>Vomero</li>
+			<li>Pegasus</li>
+		</ul>
+	</marquee-content>
+</section>
+<section class="data-code">
+	<strong>data-mc-clone=&quot;3&quot; data-mc-speed=&quot;60&quot; data-mc-skew=&quot;-3&quot;</strong>
+	<p><code>data-mc-skew="-3"</code> &mdash; transforms the component by tilting it along the Y axis (it is acceptable to use a positive or negative value)</p>
+</section>
+<section class="example-4">
+	<marquee-content
+		data-mc-clone="3"
+		data-mc-speed="60"
+		data-mc-skew="-3"
+		role="marquee">
+		<ul class="font pt">
+			<li>Monarch</li>
+			<li>Benassi</li>
+			<li>Air Max</li>
+			<li>Cortez</li>
+			<li>Jordan</li>
+			<li>Presto</li>
+			<li>Roshe</li>
+			<li>Tempo</li>
+			<li>Vomero</li>
+			<li>Pegasus</li>
+		</ul>
+	</marquee-content>
+</section>
+<section class="data-code">
+	<strong>data-mc-clone=&quot;3&quot; data-mc-speed=&quot;60&quot; data-mc-min=&quot;1200&quot;</strong>
+	<p><code>data-mc-min="1200"</code> &mdash; sets the minimum screen width at which the animation will be played (when the breakpoint intersects, the cloned elements will be removed and the component styles will be cleared)</p>
+</section>
+<section class="example-5">
+	<marquee-content
+		data-mc-clone="3"
+		data-mc-speed="60"
+		data-mc-min="1200"
+		role="marquee">
+		<ul class="font pt">
+			<li>Monarch</li>
+			<li>Benassi</li>
+			<li>Air Max</li>
+			<li>Cortez</li>
+			<li>Jordan</li>
+			<li>Presto</li>
+			<li>Roshe</li>
+			<li>Tempo</li>
+			<li>Vomero</li>
+			<li>Pegasus</li>
+		</ul>
+	</marquee-content>
+</section>
+<section class="data-code">
+	<strong>data-mc-clone=&quot;3&quot; data-mc-speed=&quot;60&quot; data-mc-max=&quot;1200&quot;</strong>
+	<p><code>data-mc-max="1200"</code> &mdash; sets the maximum screen width at which the animation will be played (when the breakpoint intersects, the cloned elements will be removed and the component styles will be cleared)</p>
+</section>
+<section class="example-6">
+	<marquee-content
+		data-mc-clone="3"
+		data-mc-speed="60"
+		data-mc-max="1200"
+		role="marquee">
+		<ul class="font pt">
+			<li>Monarch</li>
+			<li>Benassi</li>
+			<li>Air Max</li>
+			<li>Cortez</li>
+			<li>Jordan</li>
+			<li>Presto</li>
+			<li>Roshe</li>
+			<li>Tempo</li>
+			<li>Vomero</li>
+			<li>Pegasus</li>
+		</ul>
+	</marquee-content>
+</section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
 <script src="js/marquee-content.min.js"></script>
