@@ -91,7 +91,6 @@ export class MarqueeContent extends HTMLElement {
             }).timeScale(this.dir === 'ltr' ? -1 : 1).totalProgress(.5)
 
             ScrollTrigger.create({
-                invalidateOnRefresh: true,
                 trigger: this,
                 start: 'top bottom',
                 end: 'bottom top',
