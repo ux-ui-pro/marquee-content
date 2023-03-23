@@ -5,9 +5,7 @@ export class MarqueeContent extends HTMLElement {
         this.mm = gsap.matchMedia()
         this.tl = gsap.timeline()
         this.speed = this.dataset.mcSpeed || 20
-        this.clone = this.dataset.mcClone
         this.skew = this.dataset.mcSkew
-        this.abs = (this.skew < 0) ? this.skew * -1 : this.skew
         this.max = this.dataset.mcMax
         this.min = this.dataset.mcMin
         this.dir = this.dataset.mcDirection
@@ -16,7 +14,9 @@ export class MarqueeContent extends HTMLElement {
         this.cloning()
         this.skewed()
         this.marquee()
-        this.reverse()
+        this.scrollReverse()
+        this.debounce()
+        this.resizing()
     }
 
     breakpoints() {
@@ -34,18 +34,18 @@ export class MarqueeContent extends HTMLElement {
     }
 
     cloning() {
-        if(!this.clone) { return }
+        while (this.children.length > 1) {
+            this.removeChild(this.lastChild)
+        }
 
         this.mm.add(this.breakpoint, () => {
-            for (let i = 0; i < this.clone; i++) {
-                let item = this.firstElementChild
-                let clone = item.cloneNode(true)
-                item.after(clone)
-            }
+            if (this.hasChildNodes()) {
+                let requiredQuantity = (this.clientWidth / this.firstElementChild.clientWidth + 1).toFixed(0)
 
-            return () => {
-                while (this.children.length > 1) {
-                    this.removeChild(this.lastChild)
+                for (let i = 0; i < requiredQuantity; i++) {
+                    let item = this.firstElementChild
+                    let clone = item.cloneNode(true)
+                    item.after(clone)
                 }
             }
         })
@@ -55,20 +55,24 @@ export class MarqueeContent extends HTMLElement {
         if(!this.skew) { return }
 
         this.mm.add(this.breakpoint, () => {
-            this.style.minHeight = `calc(${this.abs * 1.25}vh + ${this.abs * 1.25}vw)`
+            let abs = (this.skew < 0) ? this.skew * -1 : this.skew
+
             this.style.transformOrigin = `center center`
             this.style.transform = `skew(0deg, ${this.skew}deg)`
+            this.style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`
 
             return () => {
-                this.style.removeProperty('min-height')
                 this.style.removeProperty('transform-origin')
                 this.style.removeProperty('transform')
+                this.style.removeProperty('min-height')
             }
         })
     }
 
     marquee() {
         this.mm.add(this.breakpoint, () => {
+            this.tl = gsap.timeline()
+
             gsap.config({
                 nullTargetWarn: false
             })
@@ -98,7 +102,7 @@ export class MarqueeContent extends HTMLElement {
         })
     }
 
-    reverse() {
+    scrollReverse() {
         if(this.dir !== 'auto') { return }
 
         this.mm.add(this.breakpoint, () => {
@@ -120,6 +124,25 @@ export class MarqueeContent extends HTMLElement {
                 currentScroll = window.pageYOffset
             })
         })
+    }
+
+    debounce(fn, delay) {
+        let timer
+
+        return (...args) => {
+            if (timer) clearTimeout(timer)
+            timer = setTimeout(() => fn(...args), delay)
+        }
+    }
+
+    resizing() {
+        window.addEventListener('resize', this.debounce(() => {
+            this.tl.pause()
+            gsap.set(this.children, { clearProps: true })
+
+            this.cloning()
+            this.marquee()
+        }, 250))
     }
 }
 
