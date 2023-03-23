@@ -164,7 +164,7 @@ export class MarqueeContent extends HTMLElement {
                     this.cloning()
                     this.marquee()
                 }
-            }, 500))
+            }, 100))
         } else {
             window.addEventListener('resize', this.debounce(() => {
                 this.tl.pause()
@@ -172,7 +172,7 @@ export class MarqueeContent extends HTMLElement {
 
                 this.cloning()
                 this.marquee()
-            }, 500))
+            }, 250))
         }
     }
 }
