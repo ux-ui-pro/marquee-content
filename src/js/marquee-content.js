@@ -156,11 +156,11 @@ export class MarqueeContent extends HTMLElement {
         if (userAgents) {
             let portrait = window.matchMedia('(orientation: portrait)')
 
-            portrait.addEventListener('change', function(e) {
+            portrait.addEventListener('change', this.debounce((e) => {
                 if(!e.matches) {
                     restartAnimations()
                 }
-            })
+            }, 250))
         } else {
             window.addEventListener('resize', this.debounce(() => {
                 restartAnimations()
