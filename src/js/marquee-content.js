@@ -29,7 +29,7 @@ export class MarqueeContent extends HTMLElement {
                 this.breakpoint = `(min-width: ${this.min}px)`
             }
         } else {
-            this.breakpoint = `(max-width: none)`
+            this.breakpoint = ``
         }
     }
 
