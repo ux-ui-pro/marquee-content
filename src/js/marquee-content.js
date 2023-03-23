@@ -136,45 +136,44 @@ export class MarqueeContent extends HTMLElement {
     }
 
     resizing() {
-        ScrollTrigger.addEventListener('refreshInit', () => {
+        const restartAnimations = () => {
             this.tl.pause()
             gsap.set(this.children, { clearProps: true })
 
             this.cloning()
             this.marquee()
-        })
+        }
 
+        const userAgents =
+            navigator.userAgent.match(/Android/i) ||
+            navigator.userAgent.match(/webOS/i) ||
+            navigator.userAgent.match(/iPhone/i) ||
+            navigator.userAgent.match(/iPad/i) ||
+            navigator.userAgent.match(/iPod/i) ||
+            navigator.userAgent.match(/BlackBerry/i) ||
+            navigator.userAgent.match(/Windows Phone/i)
 
-        // const restartAnimations = () => {
-        //     this.tl.pause()
-        //     gsap.set(this.children, { clearProps: true })
-        //
-        //     this.cloning()
-        //     this.marquee()
-        // }
-        //
-        // const userAgents =
-        //     navigator.userAgent.match(/Android/i) ||
-        //     navigator.userAgent.match(/webOS/i) ||
-        //     navigator.userAgent.match(/iPhone/i) ||
-        //     navigator.userAgent.match(/iPad/i) ||
-        //     navigator.userAgent.match(/iPod/i) ||
-        //     navigator.userAgent.match(/BlackBerry/i) ||
-        //     navigator.userAgent.match(/Windows Phone/i)
-        //
-        // if (userAgents) {
-        //     let portrait = window.matchMedia('(orientation: portrait)')
-        //
-        //     portrait.addEventListener('change', this.debounce((e) => {
-        //         if(!e.matches) {
-        //             restartAnimations()
-        //         }
-        //     }, 250))
-        // } else {
-        //     window.addEventListener('resize', this.debounce(() => {
-        //         restartAnimations()
-        //     }, 250))
-        // }
+        if (userAgents) {
+            let portrait = window.matchMedia('(orientation: portrait)')
+
+            portrait.addEventListener('change', this.debounce((e) => {
+                if(!e.matches) {
+                    this.tl.pause()
+                    gsap.set(this.children, { clearProps: true })
+
+                    this.cloning()
+                    this.marquee()
+                }
+            }, 500))
+        } else {
+            window.addEventListener('resize', this.debounce(() => {
+                this.tl.pause()
+                gsap.set(this.children, { clearProps: true })
+
+                this.cloning()
+                this.marquee()
+            }, 500))
+        }
     }
 }
 
