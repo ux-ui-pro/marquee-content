@@ -103,27 +103,27 @@ export class MarqueeContent extends HTMLElement {
     }
 
     scrollReverse() {
-        if(this.dir !== 'auto') { return }
-
-        this.mm.add(this.breakpoint, () => {
-            let currentScroll = 0,
-                scrollDirection = 1
-
-            window.addEventListener('scroll', () => {
-                let orientation = (window.pageYOffset > currentScroll) ? 1 : -1
-
-                if (orientation !== scrollDirection) {
-                    gsap.to(this.tl, {
-                        timeScale: orientation,
-                        overwrite: true
-                    })
-
-                    scrollDirection = orientation
-                }
-
-                currentScroll = window.pageYOffset
-            })
-        })
+        // if(this.dir !== 'auto') { return }
+        //
+        // this.mm.add(this.breakpoint, () => {
+        //     let currentScroll = 0,
+        //         scrollDirection = 1
+        //
+        //     window.addEventListener('scroll', () => {
+        //         let orientation = (window.pageYOffset > currentScroll) ? 1 : -1
+        //
+        //         if (orientation !== scrollDirection) {
+        //             gsap.to(this.tl, {
+        //                 timeScale: orientation,
+        //                 overwrite: true
+        //             })
+        //
+        //             scrollDirection = orientation
+        //         }
+        //
+        //         currentScroll = window.pageYOffset
+        //     })
+        // })
     }
 
     debounce(fn, delay) {
