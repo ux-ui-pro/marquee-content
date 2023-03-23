@@ -29,7 +29,7 @@ export class MarqueeContent extends HTMLElement {
                 this.breakpoint = `(min-width: ${this.min}px)`
             }
         } else {
-            this.breakpoint = `(min-width: 100vw)`
+            this.breakpoint = `(min-width: 100%)`
         }
     }
 
@@ -136,46 +136,6 @@ export class MarqueeContent extends HTMLElement {
     }
 
     resizing() {
-        // let windowWidth = window.innerWidth
-        //
-        // window.addEventListener('resize', this.debounce(() => {
-        //     if (window.innerWidth !== windowWidth) {
-        //         windowWidth = window.innerWidth
-        //
-        //         this.tl.pause()
-        //         gsap.set(this.children, { clearProps: true })
-        //
-        //         this.cloning()
-        //         this.marquee()
-        //     }
-        // }, 250))
-        //
-        // // window.addEventListener('resize', this.debounce(() => {
-        // //     this.tl.pause()
-        // //     gsap.set(this.children, { clearProps: true })
-        // //
-        // //     this.cloning()
-        // //     this.marquee()
-        // // }, 250))
-
-
-
-        // let UA = navigator.userAgent
-        //
-        // if (/iPad|iPhone|iPod/.test(UA) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
-        //     console.log('iOS')
-        // }
-        //
-        //
-        // let portrait = window.matchMedia('(orientation: portrait)')
-        //
-        // portrait.addEventListener('change', function(e) {
-        //     if(!e.matches) {
-        //         console.log('orientation')
-        //     }
-        // })
-
-
         const restartAnimations = () => {
             this.tl.pause()
             gsap.set(this.children, { clearProps: true })
@@ -206,9 +166,6 @@ export class MarqueeContent extends HTMLElement {
                 restartAnimations()
             }, 250))
         }
-
-
-
     }
 }
 
