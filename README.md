@@ -34,7 +34,6 @@ import { MarqueeContent } from 'marquee-content'
 ### Usage
 ```HTML
 <marquee-content
-	data-mc-clone="3"
 	data-mc-speed="60"
 	role="marquee">
 	<ul>
@@ -49,9 +48,8 @@ import { MarqueeContent } from 'marquee-content'
 
 ### Settings
 
-| data-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Default | Description |
+| data-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Default | Description |
 | --- | --- | --- |
-| `data-mc-clone` | `null` | Clones the content of the component the specified number of times. |
 | `data-mc-speed` | `20` | Sets the duration of content scrolling in seconds. It is acceptable to use decimals. |
 | `data-mc-direction` | `rtl` | `ltr` &mdash; changes the scroll direction from left to right.<br>`auto` &mdash; automatically changes the scrolling direction of the component when scrolling the page. |
 | `data-mc-skew` | `null` | Transforms the component by tilting it along the Y axis (it is acceptable to use a positive or negative value). |
