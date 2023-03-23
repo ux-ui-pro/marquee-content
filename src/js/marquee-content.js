@@ -103,27 +103,27 @@ export class MarqueeContent extends HTMLElement {
     }
 
     scrollReverse() {
-        // if(this.dir !== 'auto') { return }
-        //
-        // this.mm.add(this.breakpoint, () => {
-        //     let currentScroll = 0,
-        //         scrollDirection = 1
-        //
-        //     window.addEventListener('scroll', () => {
-        //         let orientation = (window.pageYOffset > currentScroll) ? 1 : -1
-        //
-        //         if (orientation !== scrollDirection) {
-        //             gsap.to(this.tl, {
-        //                 timeScale: orientation,
-        //                 overwrite: true
-        //             })
-        //
-        //             scrollDirection = orientation
-        //         }
-        //
-        //         currentScroll = window.pageYOffset
-        //     })
-        // })
+        if(this.dir !== 'auto') { return }
+
+        this.mm.add(this.breakpoint, () => {
+            let currentScroll = 0,
+                scrollDirection = 1
+
+            window.addEventListener('scroll', () => {
+                let orientation = (window.pageYOffset > currentScroll) ? 1 : -1
+
+                if (orientation !== scrollDirection) {
+                    gsap.to(this.tl, {
+                        timeScale: orientation,
+                        overwrite: true
+                    })
+
+                    scrollDirection = orientation
+                }
+
+                currentScroll = window.pageYOffset
+            })
+        })
     }
 
     debounce(fn, delay) {
@@ -136,13 +136,26 @@ export class MarqueeContent extends HTMLElement {
     }
 
     resizing() {
-        window.addEventListener('resize', this.debounce(() => {
-            this.tl.pause()
-            gsap.set(this.children, { clearProps: true })
+        let windowWidth = window.innerWidth
 
-            this.cloning()
-            this.marquee()
+        window.addEventListener('resize', this.debounce(() => {
+            if (window.innerWidth !== windowWidth) {
+                windowWidth = window.innerWidth
+
+                this.tl.pause()
+                gsap.set(this.children, { clearProps: true })
+
+                this.cloning()
+                this.marquee()
+            }
         }, 250))
+        // window.addEventListener('resize', this.debounce(() => {
+        //     this.tl.pause()
+        //     gsap.set(this.children, { clearProps: true })
+        //
+        //     this.cloning()
+        //     this.marquee()
+        // }, 250))
     }
 }
 
