@@ -40,7 +40,7 @@ export class MarqueeContent extends HTMLElement {
 
         this.mm.add(this.breakpoint, () => {
             if (this.hasChildNodes()) {
-                let requiredQuantity = (this.clientWidth / this.firstElementChild.clientWidth + 1).toFixed(0)
+                let requiredQuantity = (this.clientWidth / this.firstElementChild.clientWidth + 2).toFixed(0)
 
                 for (let i = 0; i < requiredQuantity; i++) {
                     let item = this.firstElementChild
