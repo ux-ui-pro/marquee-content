@@ -4,7 +4,7 @@ export class MarqueeContent extends HTMLElement {
 
         this.mm = gsap.matchMedia()
         this.tl = gsap.timeline()
-        this.duration = this.dataset.mcDuration || 20
+        this.dur = this.dataset.mcDuration || 20
         this.skew = this.dataset.mcSkew
         this.max = this.dataset.mcMax
         this.min = this.dataset.mcMin
@@ -53,7 +53,9 @@ export class MarqueeContent extends HTMLElement {
                 }
             }
 
-            return () => { removingClones() }
+            return () => {
+                removingClones()
+            }
         })
     }
 
@@ -90,7 +92,7 @@ export class MarqueeContent extends HTMLElement {
             })
 
             this.tl.to(this.children, {
-                duration: this.duration,
+                duration: this.dur,
                 x: '-100%',
                 ease: 'none',
                 repeat: -1
@@ -142,12 +144,11 @@ export class MarqueeContent extends HTMLElement {
     }
 
     resizing() {
-        const resetAmin = () => {
+        const resetAnimation = () => {
             this.mm.add(this.breakpoint, () => {
                 this.tl.kill()
                 this.tl = null
                 gsap.set(this.children, { clearProps: true })
-
                 this.cloning()
                 this.marquee()
             })
@@ -158,14 +159,14 @@ export class MarqueeContent extends HTMLElement {
 
             portrait.addEventListener('change', (e) => {
                 if(!e.matches) {
-                    resetAmin()
+                    resetAnimation()
                 }
             })
         })
 
         this.mm.add('(any-pointer: fine)', () => {
             window.addEventListener('resize', this.debounce(() => {
-                resetAmin()
+                resetAnimation()
             }, 250))
         })
     }
