@@ -34,9 +34,13 @@ export class MarqueeContent extends HTMLElement {
     }
 
     cloning() {
-        while (this.children.length > 1) {
-            this.removeChild(this.lastChild)
+        const removingClones = () => {
+            while (this.children.length > 1) {
+                this.removeChild(this.lastChild)
+            }
         }
+
+        removingClones()
 
         this.mm.add(this.breakpoint, () => {
             if (this.hasChildNodes()) {
@@ -48,6 +52,8 @@ export class MarqueeContent extends HTMLElement {
                     item.parentNode.append(clone)
                 }
             }
+
+            return () => { removingClones() }
         })
     }
 
