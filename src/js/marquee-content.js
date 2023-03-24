@@ -4,7 +4,7 @@ export class MarqueeContent extends HTMLElement {
 
         this.mm = gsap.matchMedia()
         this.tl = gsap.timeline()
-        this.speed = this.dataset.mcSpeed || 20
+        this.duration = this.dataset.mcDuration || 20
         this.skew = this.dataset.mcSkew
         this.max = this.dataset.mcMax
         this.min = this.dataset.mcMin
@@ -84,7 +84,7 @@ export class MarqueeContent extends HTMLElement {
             })
 
             this.tl.to(this.children, {
-                duration: this.speed,
+                duration: this.duration,
                 x: '-100%',
                 ease: 'none',
                 repeat: -1
