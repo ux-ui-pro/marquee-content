@@ -147,16 +147,7 @@ export class MarqueeContent extends HTMLElement {
             })
         }
 
-        const userAgents =
-            navigator.userAgent.match(/Android/i) ||
-            navigator.userAgent.match(/webOS/i) ||
-            navigator.userAgent.match(/iPhone/i) ||
-            navigator.userAgent.match(/iPad/i) ||
-            navigator.userAgent.match(/iPod/i) ||
-            navigator.userAgent.match(/BlackBerry/i) ||
-            navigator.userAgent.match(/Windows Phone/i)
-
-        if (userAgents) {
+        this.mm.add('(any-pointer: coarse)', () => {
             let portrait = window.matchMedia('(orientation: portrait)')
 
             portrait.addEventListener('change', (e) => {
@@ -164,11 +155,13 @@ export class MarqueeContent extends HTMLElement {
                     resetAmin()
                 }
             })
-        } else {
+        })
+
+        this.mm.add('(any-pointer: fine)', () => {
             window.addEventListener('resize', this.debounce(() => {
                 resetAmin()
             }, 250))
-        }
+        })
     }
 }
 
