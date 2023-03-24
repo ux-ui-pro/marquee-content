@@ -40,17 +40,7 @@ export class MarqueeContent extends HTMLElement {
 
         this.mm.add(this.breakpoint, () => {
             if (this.hasChildNodes()) {
-                let requiredQuantity = (this.clientWidth / this.firstElementChild.clientWidth + 2).toFixed(0)
-
-
-                // let i = 1
-                //
-                // while(i < requiredQuantity) {
-                //     let item = this.firstElementChild
-                //     let clone = item.cloneNode(true)
-                //     item.after(clone)
-                //     i = i + 1
-                // }
+                let requiredQuantity = (this.clientWidth / this.firstElementChild.clientWidth + 3).toFixed(0)
 
                 for (let i = 1; i < requiredQuantity; i++) {
                     let item = this.firstElementChild
@@ -146,25 +136,6 @@ export class MarqueeContent extends HTMLElement {
     }
 
     resizing() {
-        // window.addEventListener('resize', () => {
-        //     // this.tl.pause()
-        //     this.tl.kill()
-        //     this.tl = null
-        //     // this.tl.progress(0)
-        //     gsap.set(this.children, { clearProps: true })
-        //
-        //     this.cloning()
-        //     this.marquee()
-        // })
-        //
-        // // window.addEventListener('resize', this.debounce(() => {
-        // //     this.tl.pause()
-        // //     gsap.set(this.children, { clearProps: true })
-        // //
-        // //     this.cloning()
-        // //     this.marquee()
-        // // }, 250))
-
         const resetAmin = () => {
             this.mm.add(this.breakpoint, () => {
                 this.tl.kill()
