@@ -29,7 +29,7 @@ export class MarqueeContent extends HTMLElement {
                 this.breakpoint = `(min-width: ${this.min}px)`
             }
         } else {
-            this.breakpoint = ``
+            this.breakpoint = `(min-width: 100vw)`
         }
     }
 
@@ -42,10 +42,20 @@ export class MarqueeContent extends HTMLElement {
             if (this.hasChildNodes()) {
                 let requiredQuantity = (this.clientWidth / this.firstElementChild.clientWidth + 2).toFixed(0)
 
-                for (let i = 0; i < requiredQuantity; i++) {
+
+                // let i = 1
+                //
+                // while(i < requiredQuantity) {
+                //     let item = this.firstElementChild
+                //     let clone = item.cloneNode(true)
+                //     item.after(clone)
+                //     i = i + 1
+                // }
+
+                for (let i = 1; i < requiredQuantity; i++) {
                     let item = this.firstElementChild
                     let clone = item.cloneNode(true)
-                    item.after(clone)
+                    item.parentNode.append(clone)
                 }
             }
         })
@@ -136,12 +146,34 @@ export class MarqueeContent extends HTMLElement {
     }
 
     resizing() {
-        const restartAnimations = () => {
-            this.tl.pause()
-            gsap.set(this.children, { clearProps: true })
+        // window.addEventListener('resize', () => {
+        //     // this.tl.pause()
+        //     this.tl.kill()
+        //     this.tl = null
+        //     // this.tl.progress(0)
+        //     gsap.set(this.children, { clearProps: true })
+        //
+        //     this.cloning()
+        //     this.marquee()
+        // })
+        //
+        // // window.addEventListener('resize', this.debounce(() => {
+        // //     this.tl.pause()
+        // //     gsap.set(this.children, { clearProps: true })
+        // //
+        // //     this.cloning()
+        // //     this.marquee()
+        // // }, 250))
 
-            this.cloning()
-            this.marquee()
+        const resetAmin = () => {
+            this.mm.add(this.breakpoint, () => {
+                this.tl.kill()
+                this.tl = null
+                gsap.set(this.children, { clearProps: true })
+
+                this.cloning()
+                this.marquee()
+            })
         }
 
         const userAgents =
@@ -156,22 +188,14 @@ export class MarqueeContent extends HTMLElement {
         if (userAgents) {
             let portrait = window.matchMedia('(orientation: portrait)')
 
-            portrait.addEventListener('change', this.debounce((e) => {
+            portrait.addEventListener('change', (e) => {
                 if(!e.matches) {
-                    this.tl.pause()
-                    gsap.set(this.children, { clearProps: true })
-
-                    this.cloning()
-                    this.marquee()
+                    resetAmin()
                 }
-            }, 100))
+            })
         } else {
             window.addEventListener('resize', this.debounce(() => {
-                this.tl.pause()
-                gsap.set(this.children, { clearProps: true })
-
-                this.cloning()
-                this.marquee()
+                resetAmin()
             }, 250))
         }
     }
