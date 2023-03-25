@@ -43,14 +43,12 @@ export class MarqueeContent extends HTMLElement {
         removingClones()
 
         this.mm.add(this.breakpoint, () => {
-            if (this.hasChildNodes()) {
-                let requiredQuantity = (this.clientWidth / this.firstElementChild.clientWidth + 3).toFixed(0)
+            let requiredQuantity = (this.clientWidth / this.firstElementChild.clientWidth + 3).toFixed(0)
 
-                for (let i = 1; i < requiredQuantity; i++) {
-                    let item = this.firstElementChild
-                    let clone = item.cloneNode(true)
-                    item.parentNode.append(clone)
-                }
+            for (let i = 1; i < requiredQuantity; i++) {
+                let item = this.firstElementChild
+                let clone = item.cloneNode(true)
+                item.parentNode.append(clone)
             }
 
             return () => {
@@ -148,7 +146,9 @@ export class MarqueeContent extends HTMLElement {
             this.mm.add(this.breakpoint, () => {
                 this.tl.kill()
                 this.tl = null
+
                 gsap.set(this.children, { clearProps: true })
+
                 this.cloning()
                 this.marquee()
             })
@@ -157,11 +157,11 @@ export class MarqueeContent extends HTMLElement {
         this.mm.add('(any-pointer: coarse)', () => {
             let portrait = window.matchMedia('(orientation: portrait)')
 
-            portrait.addEventListener('change', (e) => {
+            portrait.addEventListener('change', this.debounce((e) => {
                 if(!e.matches) {
                     resetAnimation()
                 }
-            })
+            }, 250))
         })
 
         this.mm.add('(any-pointer: fine)', () => {
