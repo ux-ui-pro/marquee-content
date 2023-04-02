@@ -43,12 +43,14 @@ export class MarqueeContent extends HTMLElement {
         removingClones()
 
         this.mm.add(this.breakpoint, () => {
-            let requiredQuantity = (this.clientWidth / this.firstElementChild.clientWidth + 3).toFixed(0)
+            if (this.children.length > 0) {
+                let requiredQuantity = Math.ceil(this.clientWidth / this.children[0].scrollWidth)
 
-            for (let i = 1; i < requiredQuantity; i++) {
-                let item = this.firstElementChild
-                let clone = item.cloneNode(true)
-                item.parentNode.append(clone)
+                for (let i = 1; i < (requiredQuantity) + 2; i++) {
+                    let item = this.firstElementChild
+                    let clone = item.cloneNode(true)
+                    item.parentNode.append(clone)
+                }
             }
 
             return () => {
