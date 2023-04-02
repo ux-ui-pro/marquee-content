@@ -39,7 +39,7 @@ gsap.registerPlugin(ScrollTrigger)
 ### Usage
 ```HTML
 <marquee-content
-	data-mc-speed="60"
+	data-mc-duration="60"
 	role="marquee">
 	<ul>
 		<li>Primary</li>
