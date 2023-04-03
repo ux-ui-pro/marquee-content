@@ -1,7 +1,7 @@
 {
   "name": "marquee-content",
-  "version": "1.2.0",
-  "description": "Marquee content with GSAP",
+  "version": "1.3.0",
+  "description": "Infinite marquee animation with GSAP",
   "author": "ux-ui.pro",
   "license": "MIT",
   "repository": {
@@ -37,6 +37,6 @@
     "webpack-stream": "^7.0.0"
   },
   "keywords": [
-    "marquee"
+    "marquee animation"
   ]
 }
