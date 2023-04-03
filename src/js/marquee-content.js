@@ -1,182 +1,184 @@
-import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger.js'
+const MarqueeContent = () => {
+    const items = document.querySelectorAll('.marquee-content')
 
-gsap.registerPlugin(ScrollTrigger)
+    for (const item of items) {
+        let matchMedia = gsap.matchMedia(),
+            duration = item.dataset.mcDuration || 20,
+            skew = item.dataset.mcSkew,
+            maxWidth = item.dataset.mcMax,
+            minWidth = item.dataset.mcMin,
+            direction = item.dataset.mcDirection,
+            breakpoint
 
-export class MarqueeContent extends HTMLElement {
-    constructor() {
-        super()
+        const
 
-        this.mm = gsap.matchMedia()
-        this.tl = gsap.timeline()
-        this.dur = this.dataset.mcDuration || 20
-        this.skew = this.dataset.mcSkew
-        this.max = this.dataset.mcMax
-        this.min = this.dataset.mcMin
-        this.dir = this.dataset.mcDirection
+        debounce = (fn, delay) => {
+            let timer
 
-        this.breakpoints()
-        this.cloning()
-        this.skewed()
-        this.marquee()
-        this.scrollReverse()
-        this.debounce()
-        this.resizing()
-    }
-
-    breakpoints() {
-        if(this.max || this.min) {
-            if(this.max) {
-                this.breakpoint = `(max-width: ${this.max - 0.02}px)`
+            return (...args) => {
+                if (timer) clearTimeout(timer)
+                timer = setTimeout(() => fn(...args), delay)
             }
+        },
 
-            if(this.min) {
-                this.breakpoint = `(min-width: ${this.min}px)`
+        breakpoints = () => {
+            if(maxWidth || minWidth) {
+                if(maxWidth) {
+                    breakpoint = `(max-width: ${maxWidth - 0.02}px)`
+                }
+
+                if(minWidth) {
+                    breakpoint = `(min-width: ${minWidth}px)`
+                }
+            } else {
+                breakpoint = ``
             }
-        } else {
-            this.breakpoint = ``
-        }
-    }
+        },
 
-    cloning() {
-        const removingClones = () => {
-            while (this.children.length > 1) {
-                this.removeChild(this.lastChild)
-            }
-        }
-
-        removingClones()
-
-        this.mm.add(this.breakpoint, () => {
-            if (this.children.length > 0) {
-                let requiredQuantity = Math.ceil(this.clientWidth / this.children[0].scrollWidth)
-
-                for (let i = 1; i < (requiredQuantity) + 2; i++) {
-                    let item = this.firstElementChild
-                    let clone = item.cloneNode(true)
-                    item.parentNode.append(clone)
+        cloning = () => {
+            const removingClones = () => {
+                while (item.children.length > 1) {
+                    item.removeChild(item.lastChild)
                 }
             }
 
-            return () => {
-                removingClones()
-            }
-        })
-    }
+            removingClones()
 
-    skewed() {
-        if(!this.skew) { return }
+            matchMedia.add(breakpoint, () => {
+                if (item.children.length > 0) {
+                    let requiredQuantity = Math.ceil(item.clientWidth / item.children[0].scrollWidth)
 
-        this.mm.add(this.breakpoint, () => {
-            let abs = (this.skew < 0) ? this.skew * -1 : this.skew
+                    for (let i = 1; i < (requiredQuantity) + 2; i++) {
+                        let cloned = item.firstElementChild
+                        let clone = cloned.cloneNode(true)
+                        cloned.parentNode.append(clone)
+                    }
+                }
 
-            this.style.transformOrigin = `center center`
-            this.style.transform = `skew(0deg, ${this.skew}deg)`
-            this.style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`
-
-            return () => {
-                this.style.removeProperty('transform-origin')
-                this.style.removeProperty('transform')
-                this.style.removeProperty('min-height')
-            }
-        })
-    }
-
-    marquee() {
-        this.mm.add(this.breakpoint, () => {
-            this.tl = gsap.timeline()
-
-            gsap.config({
-                nullTargetWarn: false
+                return () => {
+                    removingClones()
+                }
             })
+        },
 
-            this.tl.paused(true)
+        skewed = () => {
+            if(!skew) { return }
 
-            gsap.set(this.children, {
-                'will-change': 'transform'
+            matchMedia.add(breakpoint, () => {
+                let abs = (skew < 0) ? skew * -1 : skew
+
+                item.style.transformOrigin = `center center`
+                item.style.transform = `skew(0deg, ${skew}deg)`
+                item.style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`
+
+                return () => {
+                    item.style.removeProperty('transform-origin')
+                    item.style.removeProperty('transform')
+                    item.style.removeProperty('min-height')
+                }
             })
+        },
 
-            this.tl.to(this.children, {
-                duration: this.dur,
-                x: '-100%',
-                ease: 'none',
-                repeat: -1
-            }).timeScale(this.dir === 'ltr' ? -1 : 1).totalProgress(.5)
+        marquee = () => {
+            matchMedia.add(breakpoint, () => {
+                gsap.config({
+                    nullTargetWarn: false
+                })
 
-            ScrollTrigger.create({
-                trigger: this,
-                start: 'top bottom',
-                end: 'bottom top',
-                onEnter: () => this.tl.resume(),
-                onLeave: () => this.tl.pause(),
-                onEnterBack: () => this.tl.resume(),
-                onLeaveBack: () => this.tl.pause()
-            })
-        })
-    }
+                gsap.set(item.children, {
+                    'will-change': 'transform'
+                })
 
-    scrollReverse() {
-        if(this.dir !== 'auto') { return }
+                let tween = gsap.to(item.children, {
+                    duration: duration,
+                    x: '-100%',
+                    ease: 'none',
+                    repeat: -1,
+                    scrollTrigger: {
+                        trigger: item,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        toggleActions: 'resume pause resume pause'
+                    },
+                }).totalProgress(.5)
 
-        this.mm.add(this.breakpoint, () => {
-            let currentScroll = 0,
-                scrollDirection = 1
+                // TODO refactoring of the content scrolling direction
+                let previousScrollPosition = 0
 
-            window.addEventListener('scroll', () => {
-                let orientation = (window.pageYOffset > currentScroll) ? 1 : -1
+                const isScrollingDown = () => {
+                    let someCondition = false
 
-                if (orientation !== scrollDirection) {
-                    gsap.to(this.tl, {
-                        timeScale: orientation,
+                    let scrollPosition = window.pageYOffset
+
+                    if (scrollPosition > previousScrollPosition) {
+                        someCondition = true
+                    }
+
+                    previousScrollPosition = scrollPosition
+
+                    gsap.to(tween, {
+                        timeScale: someCondition ? -1 : 1,
                         overwrite: true
                     })
-
-                    scrollDirection = orientation
                 }
 
-                currentScroll = window.pageYOffset
+                let someCondition
+
+                if(direction === 'ltr') {
+                    someCondition = true
+                } else if(direction === 'auto') {
+                    window.addEventListener('scroll', isScrollingDown, { capture: true, passive: true })
+                }
+
+                gsap.to(tween, {
+                    timeScale: someCondition ? -1 : 1,
+                    overwrite: true
+                })
             })
-        })
-    }
+        },
 
-    debounce(fn, delay) {
-        let timer
+        resizing = () => {
+            const resetAnimation = () => {
+                let tl = gsap.timeline()
 
-        return (...args) => {
-            if (timer) clearTimeout(timer)
-            timer = setTimeout(() => fn(...args), delay)
-        }
-    }
+                tl.kill()
+                tl = null
 
-    resizing() {
-        const resetAnimation = () => {
-            this.mm.add(this.breakpoint, () => {
-                this.tl.kill()
-                this.tl = null
+                gsap.set(item.children, { clearProps: true })
 
-                gsap.set(this.children, { clearProps: true })
+                cloning()
+                marquee()
+            }
 
-                this.cloning()
-                this.marquee()
+            matchMedia.add('(any-pointer: coarse)', () => {
+                let portrait = window.matchMedia('(orientation: portrait)')
+
+                portrait.addEventListener('change', debounce((e) => {
+                    if(!e.matches) {
+                        resetAnimation()
+                    }
+                }, 250))
             })
-        }
 
-        this.mm.add('(any-pointer: coarse)', () => {
-            let portrait = window.matchMedia('(orientation: portrait)')
-
-            portrait.addEventListener('change', this.debounce((e) => {
-                if(!e.matches) {
+            matchMedia.add('(any-pointer: fine)', () => {
+                window.addEventListener('resize', debounce(() => {
                     resetAnimation()
-                }
-            }, 250))
-        })
+                }, 250))
+            })
+        },
 
-        this.mm.add('(any-pointer: fine)', () => {
-            window.addEventListener('resize', this.debounce(() => {
-                resetAnimation()
-            }, 250))
-        })
+        init = () => {
+            breakpoints()
+            cloning()
+            skewed()
+            marquee()
+            resizing()
+        }
+
+        init()
     }
 }
 
-customElements.get('marquee-content') || customElements.define('marquee-content', MarqueeContent)
+export {
+    MarqueeContent
+}
