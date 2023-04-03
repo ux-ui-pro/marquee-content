@@ -2,12 +2,14 @@
 <br>
 
 <h1>marquee-content</h1>
+<p><sup>Infinite marquee animation with <a href="https://www.npmjs.com/package/gsap">GSAP</a></sup></p>
+
 
 [![npm](https://img.shields.io/npm/v/marquee-content.svg?colorB=brightgreen)](https://www.npmjs.com/package/marquee-content)
 [![GitHub package version](https://img.shields.io/github/package-json/v/ux-ui-pro/marquee-content.svg)](https://github.com/ux-ui-pro/marquee-content)
 [![NPM Downloads](https://img.shields.io/npm/dm/marquee-content.svg?style=flat)](https://www.npmjs.org/package/marquee-content)
 
-<sup><a href="https://bundlephobia.com/package/marquee-content">1Kb gzipped</a></sup>
+<p><sup><a href="https://bundlephobia.com/package/marquee-content">1Kb gzipped</a></sup></p>
 
 <h3><a href="https://ux-ui-pro.github.io/marquee-content/dist/">Demo</a></h3>
 
@@ -27,19 +29,14 @@ $ npm i marquee-content
 
 ### Import
 ```javascript
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
 import { MarqueeContent } from 'marquee-content'
-
-gsap.registerPlugin(ScrollTrigger)
 ```
 <br>
 
 ### Usage
 ```HTML
-<marquee-content
-	data-mc-duration="60"
+<div class="marquee-content"
+	data-mc-duration="20"
 	role="marquee">
 	<ul>
 		<li>Primary</li>
@@ -47,7 +44,7 @@ gsap.registerPlugin(ScrollTrigger)
 		<li>Tertiary</li>
 		<li>Quaternary</li>
 	</ul>
-</marquee-content>
+</div>
 ```
 <br>
 
