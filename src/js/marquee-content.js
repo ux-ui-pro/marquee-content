@@ -1,3 +1,8 @@
+import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger.js'
+
+gsap.registerPlugin(ScrollTrigger)
+
 const MarqueeContent = () => {
     const items = document.querySelectorAll('.marquee-content')
 
