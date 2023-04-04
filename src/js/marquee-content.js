@@ -108,30 +108,54 @@ const MarqueeContent = () => {
                 }).totalProgress(.5)
 
                 // TODO refactoring of the content scrolling direction
-                let previousScrollPosition = 0
+//                 let previousScrollPosition = 0
+//
+//                 const isScrollingDown = () => {
+//                     let someCondition = false
+//
+//                     let scrollPosition = window.pageYOffset
+//
+//                     if (scrollPosition > previousScrollPosition) {
+//                         someCondition = true
+//                     }
+//
+//                     previousScrollPosition = Math.max(scrollPosition, 0)
+//                     // previousScrollPosition = scrollPosition <= 0 ? 0 : scrollPosition
+//
+//
+// let alk = document.querySelector('.alk')
+// alk.innerHTML = `${scrollPosition} --- ${previousScrollPosition}`
+//
+//
+//                     gsap.to(tween, {
+//                         timeScale: someCondition ? -1 : 1,
+//                         overwrite: true
+//                     })
+//                 }
+
+                let lastScrollTop = 0
 
                 const isScrollingDown = () => {
+                    let st = window.pageYOffset || document.documentElement.scrollTop
                     let someCondition = false
-
-                    let scrollPosition = window.pageYOffset
-
-                    if (scrollPosition > previousScrollPosition) {
+                    if (st > lastScrollTop) {
+                        // downscroll code
                         someCondition = true
+                        console.log('down')
+                    } else if (st < lastScrollTop) {
+                        // upscroll code
+                        console.log('up')
                     }
-
-                    // previousScrollPosition = Math.max(scrollPosition, 0)
-                    previousScrollPosition = scrollPosition <= 0 ? 0 : scrollPosition
-
-
-let alk = document.querySelector('.alk')
-alk.innerHTML = `${previousScrollPosition} --- ${previousScrollPosition}`
-
+                    lastScrollTop = st <= 0 ? 0 : st
 
                     gsap.to(tween, {
                         timeScale: someCondition ? -1 : 1,
                         overwrite: true
                     })
                 }
+
+
+
 
                 let someCondition
 
