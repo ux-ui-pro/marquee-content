@@ -119,7 +119,8 @@ const MarqueeContent = () => {
                         someCondition = true
                     }
 
-                    previousScrollPosition = Math.max(scrollPosition, 0)
+                    // previousScrollPosition = Math.max(scrollPosition, 0)
+                    previousScrollPosition = scrollPosition <= 0 ? 0 : scrollPosition
 
 
 let alk = document.querySelector('.alk')
