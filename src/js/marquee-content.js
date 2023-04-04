@@ -119,7 +119,12 @@ const MarqueeContent = () => {
                         someCondition = true
                     }
 
-                    previousScrollPosition = scrollPosition
+                    previousScrollPosition = Math.max(scrollPosition, 0)
+
+
+let alk = document.querySelector('.alk')
+alk.innerHTML = `${previousScrollPosition} --- ${previousScrollPosition}`
+
 
                     gsap.to(tween, {
                         timeScale: someCondition ? -1 : 1,
@@ -132,7 +137,10 @@ const MarqueeContent = () => {
                 if(direction === 'ltr') {
                     someCondition = true
                 } else if(direction === 'auto') {
-                    window.addEventListener('scroll', isScrollingDown, { capture: true, passive: true })
+                    window.addEventListener('scroll', isScrollingDown, {
+                        capture: true,
+                        passive: true
+                    })
                 }
 
                 gsap.to(tween, {
