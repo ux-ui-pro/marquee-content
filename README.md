@@ -27,22 +27,15 @@ $ npm i marquee-content
 
 ### Import
 ```javascript
-import { MarqueeContent } from 'marquee-content'
+import MarqueeContent from 'marquee-content'
 ```
 <br>
 
 ### Usage
 ```HTML
-<div class="marquee-content"
-	data-mc-duration="20"
-	role="marquee">
-	<ul>
-		<li>Primary</li>
-		<li>Secondary</li>
-		<li>Tertiary</li>
-		<li>Quaternary</li>
-	</ul>
-</div>
+<marquee-content data-mc-duration="60" role="marquee">
+	some content
+</marquee-content>
 ```
 <br>
 
