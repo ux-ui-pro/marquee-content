@@ -1,3 +1,3 @@
-import { MarqueeContent } from './marquee-content.js'
+import MarqueeContent from './marquee-content.js'
 
-MarqueeContent()
+new MarqueeContent()
