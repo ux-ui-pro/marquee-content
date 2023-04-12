@@ -180,25 +180,25 @@ const MarqueeContent = () => {
             //     !e.matches && update()
             // }, 150))
             //
-            // window.addEventListener('resize', debounce(() => {
-            //     update()
-            // }, 150))
-
-            matchMedia.add('(any-pointer: coarse)', () => {
-                let portrait = window.matchMedia('(orientation: portrait)')
-
-                portrait.addEventListener('change', (e) => {
-                    if(!e.matches) {
-                        update()
-                    }
-                })
+            window.addEventListener('resize', () => {
+                update()
             })
 
-            matchMedia.add('(any-pointer: fine)', () => {
-                window.addEventListener('resize', debounce(() => {
-                    update()
-                }, 250))
-            })
+// matchMedia.add('(any-pointer: coarse)', () => {
+//     let portrait = window.matchMedia('(orientation: portrait)')
+//
+//     portrait.addEventListener('change', (e) => {
+//         if(!e.matches) {
+//             update()
+//         }
+//     })
+// })
+//
+// matchMedia.add('(any-pointer: fine)', () => {
+//     window.addEventListener('resize', debounce(() => {
+//         update()
+//     }, 250))
+// })
 
             // const listenerOrientation = () => {
             //     console.log('mob')
