@@ -172,17 +172,17 @@ const MarqueeContent = () => {
             //     update()
             // }, 150))
 
-            const eventListener = window.matchMedia && window.matchMedia('(pointer: coarse)').matches
-                ? window.matchMedia('(orientation: portrait)')
-                : window
-
-            eventListener.addEventListener('change', debounce((e) => {
-                !e.matches && update()
-            }, 150))
-
-            window.addEventListener('resize', debounce(() => {
-                update()
-            }, 150))
+            // const eventListener = window.matchMedia && window.matchMedia('(pointer: coarse)').matches
+            //     ? window.matchMedia('(orientation: portrait)')
+            //     : window
+            //
+            // eventListener.addEventListener('change', debounce((e) => {
+            //     !e.matches && update()
+            // }, 150))
+            //
+            // window.addEventListener('resize', debounce(() => {
+            //     update()
+            // }, 150))
 
             // if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
             //     let portrait = window.matchMedia('(orientation: portrait)')
@@ -193,10 +193,32 @@ const MarqueeContent = () => {
             //         }
             //     }, 150))
             // } else {
-            //     addEventListener('resize', debounce(() => {
+            //     window.addEventListener('resize', debounce(() => {
             //         update()
             //     }, 150))
             // }
+
+            const listenerOrientation = () => {
+                let portrait = window.matchMedia('(orientation: portrait)')
+
+                portrait.addEventListener('change', debounce((e) => {
+                    if(!e.matches) {
+                        update()
+                    }
+                }, 150))
+            }
+
+            const listenerResize = () => {
+                window.addEventListener('resize', debounce(() => {
+                    update()
+                }, 150))
+            }
+
+            window.matchMedia &&
+            window.matchMedia('(pointer: coarse)').matches &&
+            window.matchMedia('(hover: hover)').matches ?
+                listenerOrientation() :
+                listenerResize()
 
             document.fonts.ready.then(() => {
                 update()
