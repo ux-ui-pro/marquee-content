@@ -160,9 +160,9 @@ const MarqueeContent = () => {
             templates()
 
             matchMedia.add('(any-pointer: coarse)', () => {
-                addEventListener('orientationchange', debounce(() => { update() }, 250))
+                addEventListener('orientationchange', debounce(() => update(), 250))
             }).add('(any-pointer: fine)', () => {
-                addEventListener('resize', debounce(() => { update() }, 250))
+                addEventListener('resize', debounce(() => update(), 250))
             })
 
             document.fonts.ready.then(() => {
