@@ -27,15 +27,19 @@ const MarqueeContent = () => {
         },
 
         breakpoints = () => {
-            if(dataMaxWidth || dataMinWidth) {
-                if(dataMaxWidth) {
-                    breakpoint = `(max-width: ${dataMaxWidth}px)`
-                } else if(dataMinWidth) {
-                    breakpoint = `(min-width: ${dataMinWidth}px)`
-                }
-            } else {
-                breakpoint = ``
-            }
+            breakpoint = dataMaxWidth ?
+                `(max-width: ${dataMaxWidth}px)` : dataMinWidth ?
+                `(min-width: ${dataMinWidth}px)` : ``
+
+            // if(dataMaxWidth || dataMinWidth) {
+            //     if(dataMaxWidth) {
+            //         breakpoint = `(max-width: ${dataMaxWidth}px)`
+            //     } else if(dataMinWidth) {
+            //         breakpoint = `(min-width: ${dataMinWidth}px)`
+            //     }
+            // } else {
+            //     breakpoint = ``
+            // }
         },
 
         templates = () => {
@@ -91,6 +95,13 @@ const MarqueeContent = () => {
         },
 
         animation = () => {
+            let timeLine = gsap.timeline()
+
+            timeLine.kill()
+            timeLine = null
+
+            gsap.set(marquee.children, { clearProps: true })
+
             matchMedia.add(breakpoint, () => {
                 gsap.set(marquee.children, { 'will-change': 'transform'	})
 
@@ -148,19 +159,14 @@ const MarqueeContent = () => {
             })
         },
 
-        killAnimation = () => {
-            let timeLine = gsap.timeline()
-
-            timeLine.kill()
-            timeLine = null
-
-            gsap.set(marquee.children, { clearProps: true })
-        },
+        // killAnimation = () => {
+        //
+        // },
 
         update = () => {
             skewed()
             cloning()
-            killAnimation()
+            // killAnimation()
             animation()
         },
 
@@ -180,25 +186,12 @@ const MarqueeContent = () => {
             //     !e.matches && update()
             // }, 150))
             //
-            window.addEventListener('resize', () => {
-                update()
-            })
 
-// matchMedia.add('(any-pointer: coarse)', () => {
-//     let portrait = window.matchMedia('(orientation: portrait)')
-//
-//     portrait.addEventListener('change', (e) => {
-//         if(!e.matches) {
-//             update()
-//         }
-//     })
-// })
-//
-// matchMedia.add('(any-pointer: fine)', () => {
-//     window.addEventListener('resize', debounce(() => {
-//         update()
-//     }, 250))
-// })
+            matchMedia.add('(any-pointer: coarse)', () => {
+                addEventListener('orientationchange', () => update())
+            }).add('(any-pointer: fine)', () => {
+                addEventListener('resize', debounce(() => { update() }, 250))
+            })
 
             // const listenerOrientation = () => {
             //     console.log('mob')
