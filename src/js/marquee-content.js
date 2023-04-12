@@ -69,9 +69,9 @@ const MarqueeContent = () => {
         skewed = () => {
             if(!dataSkew) return
 
-            matchMedia.add(breakpoint, () => {
-                let abs = (dataSkew < 0) ? dataSkew * -1 : dataSkew
+            let abs = dataSkew < 0 ? dataSkew * -1 : dataSkew
 
+            matchMedia.add(breakpoint, () => {
                 marquee.style.transformOrigin = 'center center'
                 marquee.style.transform = `skew(0deg, ${dataSkew}deg)`
                 marquee.style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`
