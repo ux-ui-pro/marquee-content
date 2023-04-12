@@ -169,55 +169,11 @@ const MarqueeContent = () => {
             breakpoints()
             templates()
 
-            // addEventListener('resize', debounce(() => {
-            //     update()
-            // }, 150))
-
-            // const eventListener = window.matchMedia && window.matchMedia('(pointer: coarse)').matches
-            //     ? window.matchMedia('(orientation: portrait)')
-            //     : window
-            //
-            // eventListener.addEventListener('change', debounce((e) => {
-            //     !e.matches && update()
-            // }, 150))
-            //
-
             matchMedia.add('(any-pointer: coarse)', () => {
                 addEventListener('orientationchange', debounce(() => { update() }, 250))
-            })
-
-            matchMedia.add('(any-pointer: fine)', () => {
+            }).add('(any-pointer: fine)', () => {
                 addEventListener('resize', debounce(() => { update() }, 250))
             })
-
-// matchMedia.add('(any-pointer: coarse)', () => {
-//     addEventListener('orientationchange', () => update())
-// }).add('(any-pointer: fine)', () => {
-//     addEventListener('resize', debounce(() => { update() }, 250))
-// })
-
-            // const listenerOrientation = () => {
-            //     console.log('mob')
-            //     let portrait = window.matchMedia('(orientation: portrait)')
-            //
-            //     portrait.addEventListener('change', debounce((e) => {
-            //         if(!e.matches) {
-            //             update()
-            //         }
-            //     }, 250))
-            // }
-            //
-            // const listenerResize = () => {
-            //     console.log('desk')
-            //     window.addEventListener('resize', debounce(() => {
-            //         update()
-            //     }, 250))
-            // }
-            //
-            // window.matchMedia &&
-            // window.matchMedia('(pointer: coarse)').matches ?
-            //     listenerOrientation() :
-            //     listenerResize()
 
             document.fonts.ready.then(() => {
                 update()
