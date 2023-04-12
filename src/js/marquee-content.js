@@ -28,18 +28,8 @@ const MarqueeContent = () => {
 
         breakpoints = () => {
             breakpoint = dataMaxWidth ?
-                `(max-width: ${dataMaxWidth}px)` : dataMinWidth ?
+                `(max-width: ${dataMaxWidth - 0.02}px)` : dataMinWidth ?
                 `(min-width: ${dataMinWidth}px)` : ``
-
-            // if(dataMaxWidth || dataMinWidth) {
-            //     if(dataMaxWidth) {
-            //         breakpoint = `(max-width: ${dataMaxWidth}px)`
-            //     } else if(dataMinWidth) {
-            //         breakpoint = `(min-width: ${dataMinWidth}px)`
-            //     }
-            // } else {
-            //     breakpoint = ``
-            // }
         },
 
         templates = () => {
