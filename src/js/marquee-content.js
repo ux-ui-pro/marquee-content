@@ -184,19 +184,21 @@ const MarqueeContent = () => {
             //     update()
             // }, 150))
 
-            if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+            matchMedia.add('(any-pointer: coarse)', () => {
                 let portrait = window.matchMedia('(orientation: portrait)')
 
                 portrait.addEventListener('change', debounce((e) => {
                     if(!e.matches) {
                         update()
                     }
-                }, 200))
-            } else {
+                }, 250))
+            })
+
+            matchMedia.add('(any-pointer: fine)', () => {
                 window.addEventListener('resize', debounce(() => {
                     update()
-                }, 200))
-            }
+                }, 250))
+            })
 
             // const listenerOrientation = () => {
             //     console.log('mob')
