@@ -199,6 +199,7 @@ const MarqueeContent = () => {
             // }
 
             const listenerOrientation = () => {
+                console.log('mob')
                 let portrait = window.matchMedia('(orientation: portrait)')
 
                 portrait.addEventListener('change', debounce((e) => {
@@ -209,14 +210,14 @@ const MarqueeContent = () => {
             }
 
             const listenerResize = () => {
+                console.log('desk')
                 window.addEventListener('resize', debounce(() => {
                     update()
                 }, 150))
             }
 
             window.matchMedia &&
-            window.matchMedia('(pointer: coarse)').matches &&
-            window.matchMedia('(hover: hover)').matches ?
+            window.matchMedia('(pointer: coarse)').matches ?
                 listenerOrientation() :
                 listenerResize()
 
