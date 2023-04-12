@@ -159,14 +159,9 @@ const MarqueeContent = () => {
             })
         },
 
-        // killAnimation = () => {
-        //
-        // },
-
         update = () => {
             skewed()
             cloning()
-            // killAnimation()
             animation()
         },
 
@@ -188,10 +183,18 @@ const MarqueeContent = () => {
             //
 
             matchMedia.add('(any-pointer: coarse)', () => {
-                addEventListener('orientationchange', () => update())
-            }).add('(any-pointer: fine)', () => {
+                addEventListener('orientationchange', debounce(() => { update() }, 250))
+            })
+
+            matchMedia.add('(any-pointer: fine)', () => {
                 addEventListener('resize', debounce(() => { update() }, 250))
             })
+
+// matchMedia.add('(any-pointer: coarse)', () => {
+//     addEventListener('orientationchange', () => update())
+// }).add('(any-pointer: fine)', () => {
+//     addEventListener('resize', debounce(() => { update() }, 250))
+// })
 
             // const listenerOrientation = () => {
             //     console.log('mob')
