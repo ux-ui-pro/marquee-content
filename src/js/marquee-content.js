@@ -202,18 +202,18 @@ const MarqueeContent = () => {
                 console.log('mob')
                 let portrait = window.matchMedia('(orientation: portrait)')
 
-                portrait.addEventListener('change', (e) => {
+                portrait.addEventListener('change', debounce((e) => {
                     if(!e.matches) {
                         update()
                     }
-                })
+                }, 250))
             }
 
             const listenerResize = () => {
                 console.log('desk')
                 window.addEventListener('resize', debounce(() => {
                     update()
-                }, 200))
+                }, 250))
             }
 
             window.matchMedia &&
