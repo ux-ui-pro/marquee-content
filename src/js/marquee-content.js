@@ -29,7 +29,7 @@ const MarqueeContent = () => {
         breakpoints = () => {
             if(dataMaxWidth || dataMinWidth) {
                 if(dataMaxWidth) {
-                    breakpoint = `(max-width: ${dataMaxWidth - 0.02}px)`
+                    breakpoint = `(max-width: ${dataMaxWidth}px)`
                 } else if(dataMinWidth) {
                     breakpoint = `(min-width: ${dataMinWidth}px)`
                 }
@@ -187,11 +187,11 @@ const MarqueeContent = () => {
             matchMedia.add('(any-pointer: coarse)', () => {
                 let portrait = window.matchMedia('(orientation: portrait)')
 
-                portrait.addEventListener('change', debounce((e) => {
+                portrait.addEventListener('change', (e) => {
                     if(!e.matches) {
                         update()
                     }
-                }, 250))
+                })
             })
 
             matchMedia.add('(any-pointer: fine)', () => {
