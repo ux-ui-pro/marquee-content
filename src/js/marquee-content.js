@@ -184,42 +184,42 @@ const MarqueeContent = () => {
             //     update()
             // }, 150))
 
-            // if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
-            //     let portrait = window.matchMedia('(orientation: portrait)')
-            //
-            //     portrait.addEventListener('change', debounce((e) => {
-            //         if(!e.matches) {
-            //             update()
-            //         }
-            //     }, 150))
-            // } else {
-            //     window.addEventListener('resize', debounce(() => {
-            //         update()
-            //     }, 150))
-            // }
-
-            const listenerOrientation = () => {
-                console.log('mob')
+            if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
                 let portrait = window.matchMedia('(orientation: portrait)')
 
                 portrait.addEventListener('change', debounce((e) => {
                     if(!e.matches) {
                         update()
                     }
-                }, 250))
-            }
-
-            const listenerResize = () => {
-                console.log('desk')
+                }, 200))
+            } else {
                 window.addEventListener('resize', debounce(() => {
                     update()
-                }, 250))
+                }, 200))
             }
 
-            window.matchMedia &&
-            window.matchMedia('(pointer: coarse)').matches ?
-                listenerOrientation() :
-                listenerResize()
+            // const listenerOrientation = () => {
+            //     console.log('mob')
+            //     let portrait = window.matchMedia('(orientation: portrait)')
+            //
+            //     portrait.addEventListener('change', debounce((e) => {
+            //         if(!e.matches) {
+            //             update()
+            //         }
+            //     }, 250))
+            // }
+            //
+            // const listenerResize = () => {
+            //     console.log('desk')
+            //     window.addEventListener('resize', debounce(() => {
+            //         update()
+            //     }, 250))
+            // }
+            //
+            // window.matchMedia &&
+            // window.matchMedia('(pointer: coarse)').matches ?
+            //     listenerOrientation() :
+            //     listenerResize()
 
             document.fonts.ready.then(() => {
                 update()
