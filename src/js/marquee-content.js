@@ -69,17 +69,16 @@ const MarqueeContent = () => {
         skewed = () => {
             if(!dataSkew) return
 
-            let abs = dataSkew < 0 ? dataSkew * -1 : dataSkew
+            let abs = Math.abs(parseInt(dataSkew)),
+                style = marquee.style
 
             matchMedia.add(breakpoint, () => {
-                marquee.style.transformOrigin = 'center center'
-                marquee.style.transform = `skew(0deg, ${dataSkew}deg)`
-                marquee.style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`
+                style.transformOrigin = 'center center'
+                style.transform = `skew(0deg, ${dataSkew}deg)`
+                style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`
 
                 return () => {
-                    marquee.style.removeProperty('transform-origin')
-                    marquee.style.removeProperty('transform')
-                    marquee.style.removeProperty('min-height')
+                    style.cssText = 'transform-origin: unset; transform: unset; min-height: unset;'
                 }
             })
         },
@@ -160,7 +159,7 @@ const MarqueeContent = () => {
             templates()
 
             matchMedia.add('(any-pointer: coarse)', () => {
-                addEventListener('orientationchange', debounce(() => update(), 250))
+                addEventListener('orientationchange', () => update())
             }).add('(any-pointer: fine)', () => {
                 addEventListener('resize', debounce(() => update(), 250))
             })
