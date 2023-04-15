@@ -34,7 +34,7 @@ import { MarqueeContent } from 'marquee-content'
 ### Usage
 ```HTML
 <div class="marquee-content" data-mc-duration="30" role="marquee">
-	some content
+	content
 </div>
 ```
 <br>
