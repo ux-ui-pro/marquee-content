@@ -9,17 +9,19 @@
 [![GitHub package version](https://img.shields.io/github/package-json/v/ux-ui-pro/marquee-content.svg)](https://github.com/ux-ui-pro/marquee-content)
 [![NPM Downloads](https://img.shields.io/npm/dm/marquee-content.svg?style=flat)](https://www.npmjs.org/package/marquee-content)
 
-<h3><a href="https://ux-ui-pro.github.io/marquee-content/dist/">Demo</a></h3>
+<h3><a href="https://codepen.io/ux-ui/pen/dygzqYm">Demo</a></h3>
 
 </div>
 <br>
 
 ### Installation
 ```javascript
+$ yarn add gsap
 $ yarn add marquee-content
 ```
 <sup>or</sup>
 ```javascript
+$ npm i gsap
 $ npm i marquee-content
 ```
 
@@ -27,15 +29,21 @@ $ npm i marquee-content
 
 ### Import
 ```javascript
-import { MarqueeContent } from 'marquee-content'
+import gsap from 'gsap'
+import MarqueeContent from 'marquee-content'
+
+gsap.registerPlugin(ScrollTrigger)
+MarqueeContent.registerGSAP(gsap)
+
+const marquee = new MarqueeContent()
 ```
 <br>
 
 ### Usage
 ```HTML
-<div class="marquee-content" data-mc-duration="30" role="marquee">
+<marquee-content data-mc-duration="30" role="marquee">
 	content
-</div>
+</marquee-content>
 ```
 <br>
 
