@@ -3,7 +3,7 @@ class MarqueeContent extends HTMLElement {
         MarqueeContent.gsap = gsap
     }
 
-    constructor() {
+    constructor(query) {
         super()
 
         this.gsap = MarqueeContent.gsap || window.gsap
@@ -51,21 +51,21 @@ class MarqueeContent extends HTMLElement {
 
         removingClones()
 
-        this.gsap.matchMedia().add(this.breakpoint, () => {
-            let requiredQuantity = Math.ceil(this.scrollWidth / this.firstElementChild.clientWidth + 2)
+        // gsap.matchMedia().add(this.breakpoint, () => {
+        let requiredQuantity = Math.ceil(this.scrollWidth / this.firstElementChild.clientWidth + 2)
 
-            if (this.childElementCount < requiredQuantity) {
-                for (let i = 1; i < requiredQuantity; i++) {
-                    let cloned = this.firstElementChild
-                    let clone = cloned.cloneNode(true)
-                    cloned.parentNode.append(clone)
-                }
+        if (this.childElementCount < requiredQuantity) {
+            for (let i = 1; i < requiredQuantity; i++) {
+                let cloned = this.firstElementChild
+                let clone = cloned.cloneNode(true)
+                cloned.parentNode.append(clone)
             }
+        }
 
-            return () => {
-                removingClones()
-            }
-        })
+        return () => {
+            removingClones()
+        }
+        // })
     }
 
     skewed() {
@@ -74,15 +74,15 @@ class MarqueeContent extends HTMLElement {
         const abs = Math.abs(parseInt(this.dataSkew))
         const style = this.style
 
-        this.gsap.matchMedia().add(this.breakpoint, () => {
-            style.transformOrigin = 'center center'
-            style.transform = `skew(0deg, ${this.dataSkew}deg)`
-            style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`
+        // gsap.matchMedia().add(this.breakpoint, () => {
+        style.transformOrigin = 'center center'
+        style.transform = `skew(0deg, ${this.dataSkew}deg)`
+        style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`
 
-            return () => {
-                style.cssText = 'transform-origin: unset; transform: unset; min-height: unset;'
-            }
-        })
+        return () => {
+            style.cssText = 'transform-origin: unset; transform: unset; min-height: unset;'
+        }
+        // })
     }
 
     animation() {
@@ -93,70 +93,70 @@ class MarqueeContent extends HTMLElement {
 
         this.gsap.set(this.children, { clearProps: true })
 
-        this.gsap.matchMedia().add(this.breakpoint, () => {
-            this.gsap.set(this.children, { 'will-change': 'transform' })
+        // gsap.matchMedia().add(this.breakpoint, () => {
+        this.gsap.set(this.children, { 'will-change': 'transform' })
 
-            const tween = this.gsap.to(this.children, {
-                duration: this.dataDuration,
-                x: '-100%',
-                ease: 'none',
-                repeat: -1,
-                scrollTrigger: {
-                    trigger: this,
-                    start: '-=50% bottom',
-                    end: 'bottom top',
-                    toggleActions: 'resume pause resume pause',
-                },
-            }).totalProgress(0.5)
+        const tween = this.gsap.to(this.children, {
+            duration: this.dataDuration,
+            x: '-100%',
+            ease: 'none',
+            repeat: -1,
+            scrollTrigger: {
+                trigger: this,
+                start: '-=50% bottom',
+                end: 'bottom top',
+                toggleActions: 'resume pause resume pause',
+            },
+        }).totalProgress(0.5)
 
-            const ltrDirection = () => {
-                this.gsap.to(tween, {
-                    timeScale: -1,
-                    overwrite: true
-                })
-            }
+        const ltrDirection = () => {
+            this.gsap.to(tween, {
+                timeScale: -1,
+                overwrite: true
+            })
+        }
 
-            const autoDirection = () => {
-                let previousScrollPosition = 0
+        const autoDirection = () => {
+            let previousScrollPosition = 0
 
-                const isScrollingDown = () => {
-                    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop
+            const isScrollingDown = () => {
+                const scrollPosition = window.pageYOffset || document.documentElement.scrollTop
 
-                    let direction = false
+                let direction = false
 
-                    if (scrollPosition > previousScrollPosition) {
-                        direction = true
-                    } else if (scrollPosition < previousScrollPosition) {
-                        direction = false
-                    }
-
-                    previousScrollPosition = scrollPosition <= 0 ? 0 : scrollPosition
-
-                    return direction
+                if (scrollPosition > previousScrollPosition) {
+                    direction = true
+                } else if (scrollPosition < previousScrollPosition) {
+                    direction = false
                 }
 
-                addEventListener('scroll', this.debounce(() => {
-                    const scrollDirection = isScrollingDown()
+                previousScrollPosition = scrollPosition <= 0 ? 0 : scrollPosition
 
-                    this.gsap.to(tween, {
-                        timeScale: scrollDirection ? 1 : -1,
-                        overwrite: true,
-                    })
-                }, 50), {
-                    capture: true, passive: true
+                return direction
+            }
+
+            addEventListener('scroll', this.debounce(() => {
+                const scrollDirection = isScrollingDown()
+
+                this.gsap.to(tween, {
+                    timeScale: scrollDirection ? 1 : -1,
+                    overwrite: true,
                 })
-            }
+            }, 50), {
+                capture: true, passive: true
+            })
+        }
 
-            if (this.dataDirection === 'ltr') {
-                ltrDirection()
-            } else if (this.dataDirection === 'auto') {
-                autoDirection()
-            }
+        if (this.dataDirection === 'ltr') {
+            ltrDirection()
+        } else if (this.dataDirection === 'auto') {
+            autoDirection()
+        }
 
-            return () => {
-                this.gsap.set(this.children, { clearProps: true })
-            }
-        })
+        return () => {
+            this.gsap.set(this.children, { clearProps: true })
+        }
+        // })
     }
 
     onResize() {
@@ -184,7 +184,7 @@ class MarqueeContent extends HTMLElement {
     }
 
     disconnectedCallback() {
-        this.gsap.matchMedia().remove()
+        // gsap.matchMedia().remove()
 
         document.fonts.removeEventListener('loadingdone', this.onUpdate)
     }
