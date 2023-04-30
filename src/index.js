@@ -3,11 +3,11 @@ class MarqueeContent extends HTMLElement {
         MarqueeContent.gsap = gsap
     }
 
-    constructor() {
+    constructor(query) {
         super()
 
         this.gsap = MarqueeContent.gsap || window.gsap
-        this.matchMedia = this.gsap.matchMedia()
+        this.MM = this.gsap.matchMedia(query)
         this.dataSkew = this.dataset.mcSkew
         this.dataDuration = this.dataset.mcDuration || 20
         this.dataDirection = this.dataset.mcDirection
@@ -31,7 +31,16 @@ class MarqueeContent extends HTMLElement {
     }
 
     templates() {
-        this.innerHTML = `<div class="marquee-wrapper"><div class="marquee-inner" style="display: inline-block; white-space: nowrap;">${this.innerHTML}</div></div>`
+        const div = document.createElement('div')
+
+        div.style.display = 'inline-block'
+        div.style.whiteSpace = 'nowrap'
+
+        while (this.firstChild) {
+            div.appendChild(this.firstChild)
+        }
+
+        this.appendChild(div)
     }
 
     cloning() {
@@ -43,7 +52,7 @@ class MarqueeContent extends HTMLElement {
 
         removingClones()
 
-        this.matchMedia.add(this.breakpoint, () => {
+        this.MM.add(this.breakpoint, () => {
             let requiredQuantity = Math.ceil(this.scrollWidth / this.firstElementChild.clientWidth + 2)
 
             if (this.childElementCount < requiredQuantity) {
@@ -63,10 +72,10 @@ class MarqueeContent extends HTMLElement {
     skewed() {
         if (!this.dataSkew) return
 
-        let abs = Math.abs(parseInt(this.dataSkew))
-        let style = this.style
+        const abs = Math.abs(parseInt(this.dataSkew))
+        const style = this.style
 
-        this.matchMedia.add(this.breakpoint, () => {
+        this.MM.add(this.breakpoint, () => {
             style.transformOrigin = 'center center'
             style.transform = `skew(0deg, ${this.dataSkew}deg)`
             style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`
@@ -85,7 +94,7 @@ class MarqueeContent extends HTMLElement {
 
         this.gsap.set(this.children, { clearProps: true })
 
-        this.matchMedia.add(this.breakpoint, () => {
+        this.MM.add(this.breakpoint, () => {
             this.gsap.set(this.children, { 'will-change': 'transform' })
 
             const tween = this.gsap.to(this.children, {
@@ -104,7 +113,7 @@ class MarqueeContent extends HTMLElement {
             const ltrDirection = () => {
                 this.gsap.to(tween, {
                     timeScale: -1,
-                    overwrite: true,
+                    overwrite: true
                 })
             }
 
@@ -112,7 +121,7 @@ class MarqueeContent extends HTMLElement {
                 let previousScrollPosition = 0
 
                 const isScrollingDown = () => {
-                    let scrollPosition = window.pageYOffset || document.documentElement.scrollTop
+                    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop
 
                     let direction = false
 
@@ -127,13 +136,11 @@ class MarqueeContent extends HTMLElement {
                     return direction
                 }
 
-                let scrollTimer
-
                 addEventListener('scroll', this.debounce(() => {
-                    let scrollDirection = isScrollingDown()
+                    const scrollDirection = isScrollingDown()
 
                     this.gsap.to(tween, {
-                        timeScale: scrollDirection ? -1 : 1,
+                        timeScale: scrollDirection ? 1 : -1,
                         overwrite: true,
                     })
                 }, 50), {
@@ -141,11 +148,11 @@ class MarqueeContent extends HTMLElement {
                 })
             }
 
-            this.dataDirection === 'ltr'
-                ? ltrDirection()
-                : this.dataDirection === 'auto'
-                ? autoDirection()
-                : null
+            if (this.dataDirection === 'ltr') {
+                ltrDirection()
+            } else if (this.dataDirection === 'auto') {
+                autoDirection()
+            }
 
             return () => {
                 this.gsap.set(this.children, { clearProps: true })
@@ -178,7 +185,7 @@ class MarqueeContent extends HTMLElement {
     }
 
     disconnectedCallback() {
-        this.matchMedia.remove()
+        this.MM.remove()
 
         document.fonts.removeEventListener('loadingdone', this.onUpdate)
     }

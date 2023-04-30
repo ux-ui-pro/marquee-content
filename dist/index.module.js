@@ -3,10 +3,10 @@ class $cf838c15c8b009ba$var$MarqueeContent extends HTMLElement {
     static registerGSAP(gsap) {
         $cf838c15c8b009ba$var$MarqueeContent.gsap = gsap;
     }
-    constructor(){
+    constructor(query){
         super();
         this.gsap = $cf838c15c8b009ba$var$MarqueeContent.gsap || window.gsap;
-        this.matchMedia = this.gsap.matchMedia();
+        this.MM = this.gsap.matchMedia(query);
         this.dataSkew = this.dataset.mcSkew;
         this.dataDuration = this.dataset.mcDuration || 20;
         this.dataDirection = this.dataset.mcDirection;
@@ -23,14 +23,18 @@ class $cf838c15c8b009ba$var$MarqueeContent extends HTMLElement {
         };
     }
     templates() {
-        this.innerHTML = `<div class="marquee-wrapper"><div class="marquee-inner" style="display: inline-block; white-space: nowrap;">${this.innerHTML}</div></div>`;
+        const div = document.createElement("div");
+        div.style.display = "inline-block";
+        div.style.whiteSpace = "nowrap";
+        while(this.firstChild)div.appendChild(this.firstChild);
+        this.appendChild(div);
     }
     cloning() {
         const removingClones = ()=>{
             while(this.childElementCount > 1)this.removeChild(this.lastChild);
         };
         removingClones();
-        this.matchMedia.add(this.breakpoint, ()=>{
+        this.MM.add(this.breakpoint, ()=>{
             let requiredQuantity = Math.ceil(this.scrollWidth / this.firstElementChild.clientWidth + 2);
             if (this.childElementCount < requiredQuantity) for(let i = 1; i < requiredQuantity; i++){
                 let cloned = this.firstElementChild;
@@ -44,9 +48,9 @@ class $cf838c15c8b009ba$var$MarqueeContent extends HTMLElement {
     }
     skewed() {
         if (!this.dataSkew) return;
-        let abs = Math.abs(parseInt(this.dataSkew));
-        let style = this.style;
-        this.matchMedia.add(this.breakpoint, ()=>{
+        const abs = Math.abs(parseInt(this.dataSkew));
+        const style = this.style;
+        this.MM.add(this.breakpoint, ()=>{
             style.transformOrigin = "center center";
             style.transform = `skew(0deg, ${this.dataSkew}deg)`;
             style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`;
@@ -62,7 +66,7 @@ class $cf838c15c8b009ba$var$MarqueeContent extends HTMLElement {
         this.gsap.set(this.children, {
             clearProps: true
         });
-        this.matchMedia.add(this.breakpoint, ()=>{
+        this.MM.add(this.breakpoint, ()=>{
             this.gsap.set(this.children, {
                 "will-change": "transform"
             });
@@ -87,18 +91,17 @@ class $cf838c15c8b009ba$var$MarqueeContent extends HTMLElement {
             const autoDirection = ()=>{
                 let previousScrollPosition = 0;
                 const isScrollingDown = ()=>{
-                    let scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
                     let direction = false;
                     if (scrollPosition > previousScrollPosition) direction = true;
                     else if (scrollPosition < previousScrollPosition) direction = false;
                     previousScrollPosition = scrollPosition <= 0 ? 0 : scrollPosition;
                     return direction;
                 };
-                let scrollTimer;
                 addEventListener("scroll", this.debounce(()=>{
-                    let scrollDirection = isScrollingDown();
+                    const scrollDirection = isScrollingDown();
                     this.gsap.to(tween, {
-                        timeScale: scrollDirection ? -1 : 1,
+                        timeScale: scrollDirection ? 1 : -1,
                         overwrite: true
                     });
                 }, 50), {
@@ -106,7 +109,8 @@ class $cf838c15c8b009ba$var$MarqueeContent extends HTMLElement {
                     passive: true
                 });
             };
-            this.dataDirection === "ltr" ? ltrDirection() : this.dataDirection === "auto" && autoDirection();
+            if (this.dataDirection === "ltr") ltrDirection();
+            else if (this.dataDirection === "auto") autoDirection();
             return ()=>{
                 this.gsap.set(this.children, {
                     clearProps: true
@@ -134,7 +138,7 @@ class $cf838c15c8b009ba$var$MarqueeContent extends HTMLElement {
         this.onUpdate();
     }
     disconnectedCallback() {
-        this.matchMedia.remove();
+        this.MM.remove();
         document.fonts.removeEventListener("loadingdone", this.onUpdate);
     }
 }
