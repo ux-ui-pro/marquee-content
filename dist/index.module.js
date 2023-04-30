@@ -1,7 +1,4 @@
 class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
-    static registerGSAP(gsap) {
-        $cf838c15c8b009ba$export$2e2bcd8739ae039.gsap = gsap;
-    }
     constructor(query){
         super();
         this.gsap = $cf838c15c8b009ba$export$2e2bcd8739ae039.gsap || window.gsap;
@@ -12,6 +9,16 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
         this.dataMaxWidth = this.dataset.mcMax;
         this.dataMinWidth = this.dataset.mcMin;
         this.breakpoint = this.dataMaxWidth ? `(max-width: ${this.dataMaxWidth - 0.02}px)` : this.dataMinWidth ? `(min-width: ${this.dataMinWidth}px)` : "";
+    }
+    static registerGSAP(gsap) {
+        $cf838c15c8b009ba$export$2e2bcd8739ae039.gsap = gsap;
+    }
+    static use(...plugins) {
+        plugins.forEach((plugin)=>{
+            const name = plugin.pluginName;
+            if (typeof name !== "string") throw new TypeError("Invalid plugin. Name is required.");
+            $cf838c15c8b009ba$export$2e2bcd8739ae039.plugins[name] = plugin;
+        });
     }
     debounce(fn, delay) {
         let timer;
@@ -124,6 +131,7 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
         });
     }
     onUpdate() {
+        this.plugin = {};
         this.templates();
         this.cloning();
         this.skewed();
@@ -140,7 +148,7 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
         document.fonts.removeEventListener("loadingdone", this.onUpdate);
     }
 }
-customElements.get("marquee-content") || customElements.define("marquee-content", $cf838c15c8b009ba$export$2e2bcd8739ae039);
+customElements.define("marquee-content", $cf838c15c8b009ba$export$2e2bcd8739ae039);
 
 
 export {$cf838c15c8b009ba$export$2e2bcd8739ae039 as default};
