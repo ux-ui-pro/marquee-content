@@ -33,9 +33,10 @@ import gsap from 'gsap'
 import MarqueeContent from 'marquee-content'
 
 gsap.registerPlugin(ScrollTrigger)
+
 MarqueeContent.registerGSAP(gsap)
 
-const marquee = new MarqueeContent()
+new MarqueeContent()
 ```
 <br>
 
