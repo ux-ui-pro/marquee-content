@@ -14,6 +14,13 @@ class $cf838c15c8b009ba$var$MarqueeContent extends HTMLElement {
         this.dataMinWidth = this.dataset.mcMin;
         this.breakpoint = this.dataMaxWidth ? `(max-width: ${this.dataMaxWidth - 0.02}px)` : this.dataMinWidth ? `(min-width: ${this.dataMinWidth}px)` : "";
         this.debounce();
+        window.matchMedia = window.matchMedia || function() {
+            return {
+                matches: false,
+                addListener: function() {},
+                removeListener: function() {}
+            };
+        };
     }
     debounce(fn, delay) {
         let timer;

@@ -19,6 +19,14 @@ class MarqueeContent extends HTMLElement {
                 ? `(min-width: ${this.dataMinWidth}px)`
                 : ''
         this.debounce()
+
+        window.matchMedia = window.matchMedia || function() {
+            return {
+                matches : false,
+                addListener : function() {},
+                removeListener: function() {}
+            }
+        }
     }
 
     debounce(fn, delay) {
