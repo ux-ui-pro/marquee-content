@@ -3,11 +3,10 @@ class MarqueeContent extends HTMLElement {
         MarqueeContent.gsap = gsap
     }
 
-    constructor(query) {
+    constructor() {
         super()
 
         this.gsap = MarqueeContent.gsap || window.gsap
-        this.MM = this.gsap.matchMedia(query)
         this.dataSkew = this.dataset.mcSkew
         this.dataDuration = this.dataset.mcDuration || 20
         this.dataDirection = this.dataset.mcDirection
@@ -19,14 +18,6 @@ class MarqueeContent extends HTMLElement {
                 ? `(min-width: ${this.dataMinWidth}px)`
                 : ''
         this.debounce()
-
-        window.matchMedia = window.matchMedia || function() {
-            return {
-                matches : false,
-                addListener : function() {},
-                removeListener: function() {}
-            }
-        }
     }
 
     debounce(fn, delay) {
@@ -60,7 +51,7 @@ class MarqueeContent extends HTMLElement {
 
         removingClones()
 
-        this.MM.add(this.breakpoint, () => {
+        this.gsap.matchMedia().add(this.breakpoint, () => {
             let requiredQuantity = Math.ceil(this.scrollWidth / this.firstElementChild.clientWidth + 2)
 
             if (this.childElementCount < requiredQuantity) {
@@ -83,7 +74,7 @@ class MarqueeContent extends HTMLElement {
         const abs = Math.abs(parseInt(this.dataSkew))
         const style = this.style
 
-        this.MM.add(this.breakpoint, () => {
+        this.gsap.matchMedia().add(this.breakpoint, () => {
             style.transformOrigin = 'center center'
             style.transform = `skew(0deg, ${this.dataSkew}deg)`
             style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`
@@ -102,7 +93,7 @@ class MarqueeContent extends HTMLElement {
 
         this.gsap.set(this.children, { clearProps: true })
 
-        this.MM.add(this.breakpoint, () => {
+        this.gsap.matchMedia().add(this.breakpoint, () => {
             this.gsap.set(this.children, { 'will-change': 'transform' })
 
             const tween = this.gsap.to(this.children, {
@@ -193,7 +184,7 @@ class MarqueeContent extends HTMLElement {
     }
 
     disconnectedCallback() {
-        this.MM.remove()
+        this.gsap.matchMedia().remove()
 
         document.fonts.removeEventListener('loadingdone', this.onUpdate)
     }

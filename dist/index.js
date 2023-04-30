@@ -2,10 +2,9 @@ class $4fa36e821943b400$var$MarqueeContent extends HTMLElement {
     static registerGSAP(gsap) {
         $4fa36e821943b400$var$MarqueeContent.gsap = gsap;
     }
-    constructor(query){
+    constructor(){
         super();
         this.gsap = $4fa36e821943b400$var$MarqueeContent.gsap || window.gsap;
-        this.MM = this.gsap.matchMedia(query);
         this.dataSkew = this.dataset.mcSkew;
         this.dataDuration = this.dataset.mcDuration || 20;
         this.dataDirection = this.dataset.mcDirection;
@@ -13,13 +12,6 @@ class $4fa36e821943b400$var$MarqueeContent extends HTMLElement {
         this.dataMinWidth = this.dataset.mcMin;
         this.breakpoint = this.dataMaxWidth ? `(max-width: ${this.dataMaxWidth - 0.02}px)` : this.dataMinWidth ? `(min-width: ${this.dataMinWidth}px)` : "";
         this.debounce();
-        window.matchMedia = window.matchMedia || function() {
-            return {
-                matches: false,
-                addListener: function() {},
-                removeListener: function() {}
-            };
-        };
     }
     debounce(fn, delay) {
         let timer;
@@ -40,7 +32,7 @@ class $4fa36e821943b400$var$MarqueeContent extends HTMLElement {
             while(this.childElementCount > 1)this.removeChild(this.lastChild);
         };
         removingClones();
-        this.MM.add(this.breakpoint, ()=>{
+        this.gsap.matchMedia().add(this.breakpoint, ()=>{
             let requiredQuantity = Math.ceil(this.scrollWidth / this.firstElementChild.clientWidth + 2);
             if (this.childElementCount < requiredQuantity) for(let i = 1; i < requiredQuantity; i++){
                 let cloned = this.firstElementChild;
@@ -56,7 +48,7 @@ class $4fa36e821943b400$var$MarqueeContent extends HTMLElement {
         if (!this.dataSkew) return;
         const abs = Math.abs(parseInt(this.dataSkew));
         const style = this.style;
-        this.MM.add(this.breakpoint, ()=>{
+        this.gsap.matchMedia().add(this.breakpoint, ()=>{
             style.transformOrigin = "center center";
             style.transform = `skew(0deg, ${this.dataSkew}deg)`;
             style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`;
@@ -72,7 +64,7 @@ class $4fa36e821943b400$var$MarqueeContent extends HTMLElement {
         this.gsap.set(this.children, {
             clearProps: true
         });
-        this.MM.add(this.breakpoint, ()=>{
+        this.gsap.matchMedia().add(this.breakpoint, ()=>{
             this.gsap.set(this.children, {
                 "will-change": "transform"
             });
@@ -144,7 +136,7 @@ class $4fa36e821943b400$var$MarqueeContent extends HTMLElement {
         this.onUpdate();
     }
     disconnectedCallback() {
-        this.MM.remove();
+        this.gsap.matchMedia().remove();
         document.fonts.removeEventListener("loadingdone", this.onUpdate);
     }
 }
