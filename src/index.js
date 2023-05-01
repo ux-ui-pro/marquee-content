@@ -20,14 +20,6 @@ export default class MarqueeContent extends HTMLElement {
         MarqueeContent.gsap = gsap
     }
 
-    static use(...plugins) {
-        plugins.forEach((plugin) => {
-            const name = plugin.pluginName
-            if (typeof name !== 'string') throw new TypeError('Invalid plugin. Name is required.')
-            MarqueeContent.plugins[name] = plugin
-        })
-    }
-
     debounce(fn, delay) {
         let timer
 
@@ -177,8 +169,6 @@ export default class MarqueeContent extends HTMLElement {
     }
 
     onUpdate() {
-        this.plugin = {}
-
         this.templates()
         this.cloning()
         this.skewed()

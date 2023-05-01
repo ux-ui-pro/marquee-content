@@ -23,13 +23,6 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
     static registerGSAP(gsap) {
         $4fa36e821943b400$export$2e2bcd8739ae039.gsap = gsap;
     }
-    static use(...plugins) {
-        plugins.forEach((plugin)=>{
-            const name = plugin.pluginName;
-            if (typeof name !== "string") throw new TypeError("Invalid plugin. Name is required.");
-            $4fa36e821943b400$export$2e2bcd8739ae039.plugins[name] = plugin;
-        });
-    }
     debounce(fn, delay) {
         let timer;
         return (...args)=>{
@@ -141,7 +134,6 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
         });
     }
     onUpdate() {
-        this.plugin = {};
         this.templates();
         this.cloning();
         this.skewed();
