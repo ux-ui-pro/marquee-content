@@ -146,7 +146,6 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
         this.onUpdate();
     }
     disconnectedCallback() {
-        this.MM.remove();
         document.fonts.removeEventListener("loadingdone", this.onUpdate);
     }
 }

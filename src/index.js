@@ -184,8 +184,6 @@ export default class MarqueeContent extends HTMLElement {
     }
 
     disconnectedCallback() {
-        this.MM.remove()
-
         document.fonts.removeEventListener('loadingdone', this.onUpdate)
     }
 }
