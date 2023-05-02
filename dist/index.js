@@ -9,16 +9,14 @@ $parcel$defineInteropFlag(module.exports);
 
 $parcel$export(module.exports, "default", () => $4fa36e821943b400$export$2e2bcd8739ae039);
 class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
-    constructor(query){
+    constructor(){
         super();
         this.gsap = $4fa36e821943b400$export$2e2bcd8739ae039.gsap || window.gsap;
-        this.MM = this.gsap.matchMedia(query);
-        this.dataSkew = this.dataset.mcSkew;
-        this.dataDuration = this.dataset.mcDuration || 20;
-        this.dataDirection = this.dataset.mcDirection;
-        this.dataMaxWidth = this.dataset.mcMax;
-        this.dataMinWidth = this.dataset.mcMin;
-        this.breakpoint = this.dataMaxWidth ? `(max-width: ${this.dataMaxWidth - 0.02}px)` : this.dataMinWidth ? `(min-width: ${this.dataMinWidth}px)` : "";
+        this.MM = this.gsap.matchMedia();
+        this.breakpoint = this.dataset.mcMax ? `(max-width: ${this.dataset.mcMax - 0.02}px)` : this.dataset.mcMin ? `(min-width: ${this.dataset.mcMin}px)` : "";
+        this.onResize = this.onResize.bind(this);
+        this.resizeObserver = new ResizeObserver(this.debounce(this.onResize.bind(this), 150));
+        this.resizeObserver.observe(this);
     }
     static registerGSAP(gsap) {
         $4fa36e821943b400$export$2e2bcd8739ae039.gsap = gsap;
@@ -31,11 +29,15 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
         };
     }
     templates() {
-        const div = document.createElement("div");
-        div.style.display = "inline-block";
-        div.style.whiteSpace = "nowrap";
-        while(this.firstChild)div.appendChild(this.firstChild);
-        this.appendChild(div);
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("marquee-wrapper");
+        const inner = document.createElement("div");
+        inner.classList.add("marquee-inner");
+        inner.style.display = "inline-block";
+        inner.style.whiteSpace = "nowrap";
+        while(this.firstChild)inner.appendChild(this.firstChild);
+        wrapper.appendChild(inner);
+        this.appendChild(wrapper);
     }
     cloning() {
         const removingClones = ()=>{
@@ -55,12 +57,12 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
         });
     }
     skewed() {
-        if (!this.dataSkew) return;
-        const abs = Math.abs(parseInt(this.dataSkew));
+        if (!this.dataset.mcSkew) return;
+        const abs = Math.abs(parseInt(this.dataset.mcSkew));
         const style = this.style;
         this.MM.add(this.breakpoint, ()=>{
             style.transformOrigin = "center center";
-            style.transform = `skew(0deg, ${this.dataSkew}deg)`;
+            style.transform = `skew(0deg, ${this.dataset.mcSkew}deg)`;
             style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`;
             return ()=>{
                 style.cssText = "transform-origin: unset; transform: unset; min-height: unset;";
@@ -79,7 +81,7 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
                 "will-change": "transform"
             });
             const tween = this.gsap.to(this.children, {
-                duration: this.dataDuration,
+                duration: this.dataset.mcDuration || 20,
                 x: "-100%",
                 ease: "none",
                 repeat: -1,
@@ -97,28 +99,27 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
                 });
             };
             const autoDirection = ()=>{
-                let previousScrollPosition = 0;
-                const isScrollingDown = ()=>{
-                    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-                    let direction = false;
-                    if (scrollPosition > previousScrollPosition) direction = true;
-                    else if (scrollPosition < previousScrollPosition) direction = false;
-                    previousScrollPosition = scrollPosition <= 0 ? 0 : scrollPosition;
-                    return direction;
+                let currentScroll = 0, scrollDirection = 1;
+                const handleScroll = ()=>{
+                    let orientation = window.pageYOffset > currentScroll ? 1 : -1;
+                    if (orientation !== scrollDirection) {
+                        this.gsap.to(tween, {
+                            timeScale: orientation,
+                            overwrite: true
+                        });
+                        scrollDirection = orientation;
+                    }
+                    currentScroll = window.pageYOffset;
                 };
-                addEventListener("scroll", this.debounce(()=>{
-                    const scrollDirection = isScrollingDown();
-                    this.gsap.to(tween, {
-                        timeScale: scrollDirection ? 1 : -1,
-                        overwrite: true
-                    });
-                }, 50), {
+                addEventListener("scroll", ()=>{
+                    handleScroll();
+                }, {
                     capture: true,
                     passive: true
                 });
             };
-            if (this.dataDirection === "ltr") ltrDirection();
-            else if (this.dataDirection === "auto") autoDirection();
+            if (this.dataset.mcDirection === "ltr") ltrDirection();
+            else if (this.dataset.mcDirection === "auto") autoDirection();
             return ()=>{
                 this.gsap.set(this.children, {
                     clearProps: true
@@ -128,28 +129,22 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
     }
     onResize() {
         cancelAnimationFrame(this.af);
-        this.af = requestAnimationFrame(()=>{
+        if (this.firstElementChild) this.af = requestAnimationFrame(()=>{
             this.cloning();
             this.animation();
         });
     }
-    onUpdate() {
+    connectedCallback() {
         this.templates();
         this.cloning();
         this.skewed();
         this.animation();
-        this.onResize = this.onResize.bind(this);
-        this.resizeObserver = new ResizeObserver(this.debounce(this.onResize.bind(this), 150));
-        this.resizeObserver.observe(this);
-    }
-    connectedCallback() {
-        this.onUpdate();
     }
     disconnectedCallback() {
-        document.fonts.removeEventListener("loadingdone", this.onUpdate);
+        cancelAnimationFrame(this.af);
     }
 }
-customElements.define("marquee-content", $4fa36e821943b400$export$2e2bcd8739ae039);
+customElements.get("marquee-content") || customElements.define("marquee-content", $4fa36e821943b400$export$2e2bcd8739ae039);
 
 
 //# sourceMappingURL=index.js.map

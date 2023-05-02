@@ -1,19 +1,18 @@
 export default class MarqueeContent extends HTMLElement {
-    constructor(query) {
+    constructor() {
         super()
 
         this.gsap = MarqueeContent.gsap || window.gsap
-        this.MM = this.gsap.matchMedia(query)
-        this.dataSkew = this.dataset.mcSkew
-        this.dataDuration = this.dataset.mcDuration || 20
-        this.dataDirection = this.dataset.mcDirection
-        this.dataMaxWidth = this.dataset.mcMax
-        this.dataMinWidth = this.dataset.mcMin
-        this.breakpoint = this.dataMaxWidth
-            ? `(max-width: ${this.dataMaxWidth - 0.02}px)`
-            : this.dataMinWidth
-                ? `(min-width: ${this.dataMinWidth}px)`
-                : ''
+        this.MM = this.gsap.matchMedia()
+        this.breakpoint = this.dataset.mcMax
+            ? `(max-width: ${this.dataset.mcMax - 0.02}px)`
+            : this.dataset.mcMin
+            ? `(min-width: ${this.dataset.mcMin}px)`
+            : ''
+
+        this.onResize = this.onResize.bind(this)
+        this.resizeObserver = new ResizeObserver(this.debounce(this.onResize.bind(this), 150))
+        this.resizeObserver.observe(this)
     }
 
     static registerGSAP(gsap) {
@@ -30,16 +29,20 @@ export default class MarqueeContent extends HTMLElement {
     }
 
     templates() {
-        const div = document.createElement('div')
+        const wrapper = document.createElement('div')
+        wrapper.classList.add('marquee-wrapper')
 
-        div.style.display = 'inline-block'
-        div.style.whiteSpace = 'nowrap'
+        const inner = document.createElement('div')
+        inner.classList.add('marquee-inner')
+        inner.style.display = 'inline-block'
+        inner.style.whiteSpace = 'nowrap'
 
         while (this.firstChild) {
-            div.appendChild(this.firstChild)
+            inner.appendChild(this.firstChild)
         }
 
-        this.appendChild(div)
+        wrapper.appendChild(inner)
+        this.appendChild(wrapper)
     }
 
     cloning() {
@@ -69,14 +72,14 @@ export default class MarqueeContent extends HTMLElement {
     }
 
     skewed() {
-        if (!this.dataSkew) return
+        if (!this.dataset.mcSkew) return
 
-        const abs = Math.abs(parseInt(this.dataSkew))
+        const abs = Math.abs(parseInt(this.dataset.mcSkew))
         const style = this.style
 
         this.MM.add(this.breakpoint, () => {
             style.transformOrigin = 'center center'
-            style.transform = `skew(0deg, ${this.dataSkew}deg)`
+            style.transform = `skew(0deg, ${this.dataset.mcSkew}deg)`
             style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`
 
             return () => {
@@ -97,7 +100,7 @@ export default class MarqueeContent extends HTMLElement {
             this.gsap.set(this.children, { 'will-change': 'transform' })
 
             const tween = this.gsap.to(this.children, {
-                duration: this.dataDuration,
+                duration: this.dataset.mcDuration || 20,
                 x: '-100%',
                 ease: 'none',
                 repeat: -1,
@@ -105,7 +108,7 @@ export default class MarqueeContent extends HTMLElement {
                     trigger: this,
                     start: '-=50% bottom',
                     end: 'bottom top',
-                    toggleActions: 'resume pause resume pause',
+                    toggleActions: 'resume pause resume pause'
                 },
             }).totalProgress(0.5)
 
@@ -117,39 +120,32 @@ export default class MarqueeContent extends HTMLElement {
             }
 
             const autoDirection = () => {
-                let previousScrollPosition = 0
+                let currentScroll = 0,
+                    scrollDirection = 1
 
-                const isScrollingDown = () => {
-                    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop
+                const handleScroll = () => {
+                    let orientation = (window.pageYOffset > currentScroll) ? 1 : -1
 
-                    let direction = false
+                    if (orientation !== scrollDirection) {
+                        this.gsap.to(tween, {
+                            timeScale: orientation,
+                            overwrite: true
+                        })
 
-                    if (scrollPosition > previousScrollPosition) {
-                        direction = true
-                    } else if (scrollPosition < previousScrollPosition) {
-                        direction = false
+                        scrollDirection = orientation
                     }
 
-                    previousScrollPosition = scrollPosition <= 0 ? 0 : scrollPosition
-
-                    return direction
+                    currentScroll = window.pageYOffset
                 }
 
-                addEventListener('scroll', this.debounce(() => {
-                    const scrollDirection = isScrollingDown()
-
-                    this.gsap.to(tween, {
-                        timeScale: scrollDirection ? 1 : -1,
-                        overwrite: true,
-                    })
-                }, 50), {
-                    capture: true, passive: true
-                })
+                addEventListener('scroll', () => {
+                    handleScroll()
+                }, { capture: true, passive: true })
             }
 
-            if (this.dataDirection === 'ltr') {
+            if (this.dataset.mcDirection === 'ltr') {
                 ltrDirection()
-            } else if (this.dataDirection === 'auto') {
+            } else if (this.dataset.mcDirection === 'auto') {
                 autoDirection()
             }
 
@@ -162,30 +158,24 @@ export default class MarqueeContent extends HTMLElement {
     onResize() {
         cancelAnimationFrame(this.af)
 
-        this.af = requestAnimationFrame(() => {
-            this.cloning()
-            this.animation()
-        })
+        if (this.firstElementChild) {
+            this.af = requestAnimationFrame(() => {
+                this.cloning()
+                this.animation()
+            })
+        }
     }
 
-    onUpdate() {
+    connectedCallback() {
         this.templates()
         this.cloning()
         this.skewed()
         this.animation()
-
-        this.onResize = this.onResize.bind(this)
-        this.resizeObserver = new ResizeObserver(this.debounce(this.onResize.bind(this), 150))
-        this.resizeObserver.observe(this)
-    }
-
-    connectedCallback() {
-        this.onUpdate()
     }
 
     disconnectedCallback() {
-        document.fonts.removeEventListener('loadingdone', this.onUpdate)
+        cancelAnimationFrame(this.af)
     }
 }
 
-customElements.define('marquee-content', MarqueeContent)
+customElements.get('marquee-content') || customElements.define('marquee-content', MarqueeContent)

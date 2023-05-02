@@ -1,6 +1,6 @@
 {
   "name": "marquee-content",
-  "version": "1.9.10",
+  "version": "2.0.0",
   "description": "Infinite marquee animation with GSAP",
   "author": "ux-ui.pro",
   "license": "MIT",
