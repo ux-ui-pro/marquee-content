@@ -4,8 +4,8 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
         this.gsap = $cf838c15c8b009ba$export$2e2bcd8739ae039.gsap || window.gsap;
         this.MM = this.gsap.matchMedia();
         this.breakpoint = this.dataset.mcMax ? `(max-width: ${this.dataset.mcMax - 0.02}px)` : this.dataset.mcMin ? `(min-width: ${this.dataset.mcMin}px)` : "";
-        this.onResize = this.onResize.bind(this);
-        this.resizeObserver = new ResizeObserver(this.debounce(this.onResize.bind(this), 150));
+        this.update = this.update.bind(this);
+        this.resizeObserver = new ResizeObserver(this.debounce(this.update.bind(this), 150));
         this.resizeObserver.observe(this);
     }
     static registerGSAP(gsap) {
@@ -117,7 +117,7 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
             };
         });
     }
-    onResize() {
+    update() {
         cancelAnimationFrame(this.af);
         if (this.firstElementChild) this.af = requestAnimationFrame(()=>{
             this.cloning();
@@ -126,8 +126,8 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
     }
     connectedCallback() {
         this.templates();
-        this.cloning();
         this.skewed();
+        this.cloning();
         this.animation();
     }
     disconnectedCallback() {

@@ -10,8 +10,8 @@ export default class MarqueeContent extends HTMLElement {
             ? `(min-width: ${this.dataset.mcMin}px)`
             : ''
 
-        this.onResize = this.onResize.bind(this)
-        this.resizeObserver = new ResizeObserver(this.debounce(this.onResize.bind(this), 150))
+        this.update = this.update.bind(this)
+        this.resizeObserver = new ResizeObserver(this.debounce(this.update.bind(this), 150))
         this.resizeObserver.observe(this)
     }
 
@@ -155,7 +155,7 @@ export default class MarqueeContent extends HTMLElement {
         })
     }
 
-    onResize() {
+    update() {
         cancelAnimationFrame(this.af)
 
         if (this.firstElementChild) {
@@ -168,8 +168,8 @@ export default class MarqueeContent extends HTMLElement {
 
     connectedCallback() {
         this.templates()
-        this.cloning()
         this.skewed()
+        this.cloning()
         this.animation()
     }
 
