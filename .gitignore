@@ -1,6 +1,7 @@
 /.idea
 /node_modules
 /.parcel-cache
+/**/*.txt
 Thumbs.db
 memo.md
-/**/*.txt
+yarn.lock
