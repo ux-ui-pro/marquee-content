@@ -62,4 +62,4 @@ new MarqueeContent()
 <br>
 
 ### License
-marquee-content is released under MIT license
+Marquee-content is released under MIT license.
