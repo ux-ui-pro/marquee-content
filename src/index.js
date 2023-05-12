@@ -143,11 +143,9 @@ export default class MarqueeContent extends HTMLElement {
                 }, { capture: true, passive: true })
             }
 
-            if (this.dataset.mcDirection === 'ltr') {
-                ltrDirection()
-            } else if (this.dataset.mcDirection === 'auto') {
-                autoDirection()
-            }
+            this.dataset.mcDirection === 'ltr' ? ltrDirection() :
+                this.dataset.mcDirection === 'auto' ? autoDirection() :
+                    null
 
             return () => {
                 this.gsap.set(this.children, { clearProps: true })

@@ -118,8 +118,7 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
                     passive: true
                 });
             };
-            if (this.dataset.mcDirection === "ltr") ltrDirection();
-            else if (this.dataset.mcDirection === "auto") autoDirection();
+            this.dataset.mcDirection === "ltr" ? ltrDirection() : this.dataset.mcDirection === "auto" && autoDirection();
             return ()=>{
                 this.gsap.set(this.children, {
                     clearProps: true
