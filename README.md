@@ -9,7 +9,7 @@
 [![GitHub package version](https://img.shields.io/github/package-json/v/ux-ui-pro/marquee-content.svg)](https://github.com/ux-ui-pro/marquee-content)
 [![NPM Downloads](https://img.shields.io/npm/dm/marquee-content.svg?style=flat)](https://www.npmjs.org/package/marquee-content)
 
-<sup><a href="https://bundlephobia.com/package/marquee-content">1.3kB gzipped</a></sup>
+<sup><a href="https://bundlephobia.com/package/marquee-content">1.2kB gzipped</a></sup>
 <h3><a href="https://codepen.io/ux-ui/full/dygzqYm">Demo</a></h3>
 
 </div>
