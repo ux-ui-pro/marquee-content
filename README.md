@@ -2,14 +2,13 @@
 <br>
 
 <h1>marquee-content</h1>
-<p><sup>Infinite marquee animation with <a href="https://www.npmjs.com/package/gsap">GSAP</a></sup></p>
-
 
 [![npm](https://img.shields.io/npm/v/marquee-content.svg?colorB=brightgreen)](https://www.npmjs.com/package/marquee-content)
 [![GitHub package version](https://img.shields.io/github/package-json/v/ux-ui-pro/marquee-content.svg)](https://github.com/ux-ui-pro/marquee-content)
 [![NPM Downloads](https://img.shields.io/npm/dm/marquee-content.svg?style=flat)](https://www.npmjs.org/package/marquee-content)
 
-<sup>1.2kB gzipped</sup>
+<p>A simple library for creating the running content effect, also known as marquee or ticker.<br>The library uses GSAP and Resize Observer to achieve the best performance results.</p>
+<p><sup>1.2kB gzipped</sup></p>
 <h3><a href="https://codepen.io/ux-ui/full/dygzqYm">Demo</a></h3>
 
 </div>
