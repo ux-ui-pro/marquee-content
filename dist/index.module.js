@@ -3,6 +3,7 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
         super();
         this.gsap = $cf838c15c8b009ba$export$2e2bcd8739ae039.gsap || window.gsap;
         this.MM = this.gsap.matchMedia();
+        this.timeline = null;
         this.update = this.update.bind(this);
         this.resizeObserver = new ResizeObserver(this.debounce(this.update.bind(this), 150));
         this.resizeObserver.observe(this);
@@ -64,11 +65,15 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
         });
     }
     animation() {
+        if (this.timeline) {
+            this.timeline.kill();
+            this.timeline = null;
+        }
         this.gsap.set(this.children, {
             clearProps: true
         });
         this.MM.add(this.breakpoint, ()=>{
-            const tween = this.gsap.to(this.children, {
+            this.timeline = this.gsap.to(this.children, {
                 duration: this.dataset.mcDuration || 20,
                 x: "-100%",
                 ease: "none",
@@ -81,7 +86,7 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
                 }
             }).totalProgress(0.5);
             const ltrDirection = ()=>{
-                this.gsap.to(tween, {
+                this.gsap.to(this.timeline, {
                     timeScale: -1,
                     overwrite: true
                 });
@@ -92,7 +97,7 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
                 const handleScroll = ()=>{
                     const orientation = window.scrollY > currentScroll ? 1 : -1;
                     if (orientation !== scrollDirection) {
-                        this.gsap.to(tween, {
+                        this.gsap.to(this.timeline, {
                             timeScale: orientation,
                             overwrite: true
                         });
@@ -108,6 +113,10 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
             if (this.dataset.mcDirection === "ltr") ltrDirection();
             else if (this.dataset.mcDirection === "auto") autoDirection();
             return ()=>{
+                if (this.timeline) {
+                    this.timeline.kill();
+                    this.timeline = null;
+                }
                 this.gsap.set(this.children, {
                     clearProps: true
                 });
@@ -133,6 +142,10 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
     }
     disconnectedCallback() {
         cancelAnimationFrame(this.af);
+        if (this.timeline) {
+            this.timeline.kill();
+            this.timeline = null;
+        }
     }
 }
 if (!customElements.get("marquee-content")) customElements.define("marquee-content", $cf838c15c8b009ba$export$2e2bcd8739ae039);

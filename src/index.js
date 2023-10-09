@@ -4,6 +4,7 @@ export default class MarqueeContent extends HTMLElement {
 
         this.gsap = MarqueeContent.gsap || window.gsap;
         this.MM = this.gsap.matchMedia();
+        this.timeline = null;
         this.update = this.update.bind(this);
         this.resizeObserver = new ResizeObserver(this.debounce(this.update.bind(this), 150));
         this.resizeObserver.observe(this);
@@ -93,10 +94,15 @@ export default class MarqueeContent extends HTMLElement {
     }
 
     animation() {
+        if (this.timeline) {
+            this.timeline.kill();
+            this.timeline = null;
+        }
+
         this.gsap.set(this.children, { clearProps: true });
 
         this.MM.add(this.breakpoint, () => {
-            const tween = this.gsap.to(this.children, {
+            this.timeline = this.gsap.to(this.children, {
                 duration: this.dataset.mcDuration || 20,
                 x: '-100%',
                 ease: 'none',
@@ -110,7 +116,7 @@ export default class MarqueeContent extends HTMLElement {
             }).totalProgress(0.5);
 
             const ltrDirection = () => {
-                this.gsap.to(tween, {
+                this.gsap.to(this.timeline, {
                     timeScale: -1,
                     overwrite: true,
                 });
@@ -124,7 +130,7 @@ export default class MarqueeContent extends HTMLElement {
                     const orientation = (window.scrollY > currentScroll) ? 1 : -1;
 
                     if (orientation !== scrollDirection) {
-                        this.gsap.to(tween, {
+                        this.gsap.to(this.timeline, {
                             timeScale: orientation,
                             overwrite: true,
                         });
@@ -145,9 +151,12 @@ export default class MarqueeContent extends HTMLElement {
             }
 
             return () => {
-                this.gsap.set(this.children, {
-                    clearProps: true,
-                });
+                if (this.timeline) {
+                    this.timeline.kill();
+                    this.timeline = null;
+                }
+
+                this.gsap.set(this.children, { clearProps: true });
             };
         });
     }
@@ -177,6 +186,11 @@ export default class MarqueeContent extends HTMLElement {
 
     disconnectedCallback() {
         cancelAnimationFrame(this.af);
+
+        if (this.timeline) {
+            this.timeline.kill();
+            this.timeline = null;
+        }
     }
 }
 
