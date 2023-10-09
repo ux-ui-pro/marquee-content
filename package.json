@@ -1,7 +1,7 @@
 {
   "name": "marquee-content",
   "version": "2.2.0",
-  "description": "Infinite marquee animation with GSAP",
+  "description": "Class for creating the running content effect, also known as a marquee or ticker.",
   "author": "ux-ui.pro",
   "license": "MIT",
   "repository": {
