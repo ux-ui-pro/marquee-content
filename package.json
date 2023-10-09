@@ -1,6 +1,6 @@
 {
   "name": "marquee-content",
-  "version": "2.1.2",
+  "version": "2.2.0",
   "description": "Infinite marquee animation with GSAP",
   "author": "ux-ui.pro",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "clean": "rm -rf dist .parcel-cache"
   },
   "devDependencies": {
-    "parcel": "~2.9.2"
+    "parcel": "~2.9.3"
   },
   "keywords": [
     "marquee",
