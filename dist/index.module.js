@@ -3,7 +3,9 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
         super();
         this.gsap = $cf838c15c8b009ba$export$2e2bcd8739ae039.gsap || window.gsap;
         this.MM = this.gsap.matchMedia();
-        this.breakpoint = this.dataset.mcMax ? `(max-width: ${this.dataset.mcMax - 0.02}px)` : this.dataset.mcMin ? `(min-width: ${this.dataset.mcMin}px)` : "";
+        this.breakpoint = "";
+        if (this.dataset.mcMax) this.breakpoint = `(max-width: ${this.dataset.mcMax - 0.02}px)`;
+        else if (this.dataset.mcMin) this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
         this.update = this.update.bind(this);
         this.resizeObserver = new ResizeObserver(this.debounce(this.update.bind(this), 150));
         this.resizeObserver.observe(this);
@@ -12,10 +14,10 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
         $cf838c15c8b009ba$export$2e2bcd8739ae039.gsap = gsap;
     }
     debounce(fn, delay) {
-        let timer;
+        this.timer = null;
         return (...args)=>{
-            if (timer) clearTimeout(timer);
-            timer = setTimeout(()=>fn(...args), delay);
+            if (this.timer) clearTimeout(this.timer);
+            this.timer = setTimeout(()=>fn(...args), delay);
         };
     }
     templates() {
@@ -35,10 +37,10 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
         };
         removingClones();
         this.MM.add(this.breakpoint, ()=>{
-            let requiredQuantity = Math.ceil(this.scrollWidth / this.firstElementChild.clientWidth + 2);
-            if (this.childElementCount < requiredQuantity) for(let i = 1; i < requiredQuantity; i++){
-                let cloned = this.firstElementChild;
-                let clone = cloned.cloneNode(true);
+            const requiredQuantity = Math.ceil(this.scrollWidth / this.firstElementChild.clientWidth + 2);
+            if (this.childElementCount < requiredQuantity) for(let i = 1; i < requiredQuantity; i += 1){
+                const cloned = this.firstElementChild;
+                const clone = cloned.cloneNode(true);
                 cloned.parentNode.append(clone);
             }
             return ()=>{
@@ -48,8 +50,8 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
     }
     skewed() {
         if (!this.dataset.mcSkew) return;
-        const abs = Math.abs(parseInt(this.dataset.mcSkew));
-        const style = this.style;
+        const abs = Math.abs(parseInt(this.dataset.mcSkew, 10));
+        const { style: style } = this;
         this.MM.add(this.breakpoint, ()=>{
             style.transformOrigin = "center center";
             style.transform = `skew(0deg, ${this.dataset.mcSkew}deg)`;
@@ -60,16 +62,10 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
         });
     }
     animation() {
-        let timeLine = this.gsap.timeline();
-        timeLine.kill();
-        timeLine = null;
         this.gsap.set(this.children, {
             clearProps: true
         });
         this.MM.add(this.breakpoint, ()=>{
-            this.gsap.set(this.children, {
-                "will-change": "transform"
-            });
             const tween = this.gsap.to(this.children, {
                 duration: this.dataset.mcDuration || 20,
                 x: "-100%",
@@ -89,9 +85,10 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
                 });
             };
             const autoDirection = ()=>{
-                let currentScroll = 0, scrollDirection = 1;
+                let currentScroll = 0;
+                let scrollDirection = 1;
                 const handleScroll = ()=>{
-                    let orientation = window.pageYOffset > currentScroll ? 1 : -1;
+                    const orientation = window.scrollY > currentScroll ? 1 : -1;
                     if (orientation !== scrollDirection) {
                         this.gsap.to(tween, {
                             timeScale: orientation,
@@ -99,16 +96,15 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
                         });
                         scrollDirection = orientation;
                     }
-                    currentScroll = window.pageYOffset;
+                    currentScroll = window.scrollY;
                 };
-                addEventListener("scroll", ()=>{
-                    handleScroll();
-                }, {
+                window.addEventListener("scroll", handleScroll, {
                     capture: true,
                     passive: true
                 });
             };
-            this.dataset.mcDirection === "ltr" ? ltrDirection() : this.dataset.mcDirection === "auto" && autoDirection();
+            if (this.dataset.mcDirection === "ltr") ltrDirection();
+            else if (this.dataset.mcDirection === "auto") autoDirection();
             return ()=>{
                 this.gsap.set(this.children, {
                     clearProps: true
@@ -123,17 +119,20 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
             this.animation();
         });
     }
-    connectedCallback() {
+    init() {
         this.templates();
         this.skewed();
         this.cloning();
         this.animation();
     }
+    connectedCallback() {
+        this.init();
+    }
     disconnectedCallback() {
         cancelAnimationFrame(this.af);
     }
 }
-customElements.get("marquee-content") || customElements.define("marquee-content", $cf838c15c8b009ba$export$2e2bcd8739ae039);
+if (!customElements.get("marquee-content")) customElements.define("marquee-content", $cf838c15c8b009ba$export$2e2bcd8739ae039);
 
 
 export {$cf838c15c8b009ba$export$2e2bcd8739ae039 as default};
