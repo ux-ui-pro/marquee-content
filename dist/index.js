@@ -13,15 +13,17 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
         super();
         this.gsap = $4fa36e821943b400$export$2e2bcd8739ae039.gsap || window.gsap;
         this.MM = this.gsap.matchMedia();
-        this.breakpoint = "";
-        if (this.dataset.mcMax) this.breakpoint = `(max-width: ${this.dataset.mcMax - 0.02}px)`;
-        else if (this.dataset.mcMin) this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
         this.update = this.update.bind(this);
         this.resizeObserver = new ResizeObserver(this.debounce(this.update.bind(this), 150));
         this.resizeObserver.observe(this);
     }
     static registerGSAP(gsap) {
         $4fa36e821943b400$export$2e2bcd8739ae039.gsap = gsap;
+    }
+    breakpoints() {
+        this.breakpoint = "";
+        if (this.dataset.mcMax) this.breakpoint = `(max-width: ${this.dataset.mcMax - 0.02}px)`;
+        else if (this.dataset.mcMin) this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
     }
     debounce(fn, delay) {
         this.timer = null;
@@ -130,6 +132,7 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
         });
     }
     init() {
+        this.breakpoints();
         this.templates();
         this.skewed();
         this.cloning();

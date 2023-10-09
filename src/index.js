@@ -4,14 +4,6 @@ export default class MarqueeContent extends HTMLElement {
 
         this.gsap = MarqueeContent.gsap || window.gsap;
         this.MM = this.gsap.matchMedia();
-        this.breakpoint = '';
-
-        if (this.dataset.mcMax) {
-            this.breakpoint = `(max-width: ${this.dataset.mcMax - 0.02}px)`;
-        } else if (this.dataset.mcMin) {
-            this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
-        }
-
         this.update = this.update.bind(this);
         this.resizeObserver = new ResizeObserver(this.debounce(this.update.bind(this), 150));
         this.resizeObserver.observe(this);
@@ -19,6 +11,16 @@ export default class MarqueeContent extends HTMLElement {
 
     static registerGSAP(gsap) {
         MarqueeContent.gsap = gsap;
+    }
+
+    breakpoints() {
+        this.breakpoint = '';
+
+        if (this.dataset.mcMax) {
+            this.breakpoint = `(max-width: ${this.dataset.mcMax - 0.02}px)`;
+        } else if (this.dataset.mcMin) {
+            this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
+        }
     }
 
     debounce(fn, delay) {
@@ -162,6 +164,7 @@ export default class MarqueeContent extends HTMLElement {
     }
 
     init() {
+        this.breakpoints();
         this.templates();
         this.skewed();
         this.cloning();
