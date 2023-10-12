@@ -32,10 +32,6 @@ import MarqueeContent from 'marquee-content';
 
 gsap.registerPlugin(ScrollTrigger);
 MarqueeContent.registerGSAP(gsap);
-
-const marqueeContent = new MarqueeContent();
-
-marqueeContent.init();
 ```
 <br>
 
