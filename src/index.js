@@ -14,6 +14,15 @@ export default class MarqueeContent extends HTMLElement {
         MarqueeContent.gsap = gsap;
     }
 
+    debounce(fn, delay) {
+        this.timer = null;
+
+        return (...args) => {
+            if (this.timer) clearTimeout(this.timer);
+            this.timer = setTimeout(() => fn(...args), delay);
+        };
+    }
+
     breakpoints() {
         this.breakpoint = '';
 
@@ -22,15 +31,6 @@ export default class MarqueeContent extends HTMLElement {
         } else if (this.dataset.mcMin) {
             this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
         }
-    }
-
-    debounce(fn, delay) {
-        this.timer = null;
-
-        return (...args) => {
-            if (this.timer) clearTimeout(this.timer);
-            this.timer = setTimeout(() => fn(...args), delay);
-        };
     }
 
     templates() {

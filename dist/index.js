@@ -21,17 +21,17 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
     static registerGSAP(gsap) {
         $4fa36e821943b400$export$2e2bcd8739ae039.gsap = gsap;
     }
-    breakpoints() {
-        this.breakpoint = "";
-        if (this.dataset.mcMax) this.breakpoint = `(max-width: ${this.dataset.mcMax - 0.02}px)`;
-        else if (this.dataset.mcMin) this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
-    }
     debounce(fn, delay) {
         this.timer = null;
         return (...args)=>{
             if (this.timer) clearTimeout(this.timer);
             this.timer = setTimeout(()=>fn(...args), delay);
         };
+    }
+    breakpoints() {
+        this.breakpoint = "";
+        if (this.dataset.mcMax) this.breakpoint = `(max-width: ${this.dataset.mcMax - 0.02}px)`;
+        else if (this.dataset.mcMin) this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
     }
     templates() {
         const wrapper = document.createElement("div");

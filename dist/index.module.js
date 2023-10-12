@@ -11,17 +11,17 @@ class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
     static registerGSAP(gsap) {
         $cf838c15c8b009ba$export$2e2bcd8739ae039.gsap = gsap;
     }
-    breakpoints() {
-        this.breakpoint = "";
-        if (this.dataset.mcMax) this.breakpoint = `(max-width: ${this.dataset.mcMax - 0.02}px)`;
-        else if (this.dataset.mcMin) this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
-    }
     debounce(fn, delay) {
         this.timer = null;
         return (...args)=>{
             if (this.timer) clearTimeout(this.timer);
             this.timer = setTimeout(()=>fn(...args), delay);
         };
+    }
+    breakpoints() {
+        this.breakpoint = "";
+        if (this.dataset.mcMax) this.breakpoint = `(max-width: ${this.dataset.mcMax - 0.02}px)`;
+        else if (this.dataset.mcMin) this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
     }
     templates() {
         const wrapper = document.createElement("div");
