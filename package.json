@@ -1,6 +1,6 @@
 {
   "name": "marquee-content",
-  "version": "2.4.1",
+  "version": "3.0.0",
   "description": "Class for creating the running content effect, also known as a marquee or ticker.",
   "author": "ux-ui.pro",
   "license": "MIT",
@@ -11,16 +11,30 @@
   "bugs": {
     "url": "https://github.com/ux-ui-pro/marquee-content/issues"
   },
-  "source": "src/index.js",
   "main": "dist/index.js",
+  "source": "dist/index.html",
   "module": "dist/index.module.js",
+  "targets": {
+    "main": {
+      "source": "src/index.js"
+    },
+    "module": {
+      "source": "src/index.js"
+    }
+  },
   "scripts": {
-    "serve": "parcel watch",
+    "serve": "parcel src/index.html --dist-dir dist --cache-dir .parcel --no-source-maps --open",
     "build": "parcel build",
-    "clean": "rm -rf dist .parcel-cache"
+    "clean": "rm -rf dist .parcel-cache",
+    "lint:js": "eslint --ext .js,.vue .",
+    "lintfix": "yarn lint:js --fix"
   },
   "devDependencies": {
-    "parcel": "~2.9.3"
+    "eslint": "^7.32.0 || ^8.52.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.0",
+    "parcel": "^2.10.1",
+    "postcss-html": "^1.5.0"
   },
   "keywords": [
     "marquee",

@@ -1,6 +1,8 @@
+
 function $parcel$defineInteropFlag(a) {
   Object.defineProperty(a, '__esModule', {value: true, configurable: true});
 }
+
 function $parcel$export(e, n, v, s) {
   Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
 }
@@ -15,19 +17,19 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
         this.MM = this.gsap.matchMedia();
         this.timeline = null;
         this.update = this.update.bind(this);
-        this.resizeObserver = new ResizeObserver(this.debounce(this.update.bind(this), 150));
+        this.resizeObserver = new ResizeObserver(this.debounce(this.update.bind(this)));
         this.resizeObserver.observe(this);
     }
     static registerGSAP(gsap) {
         $4fa36e821943b400$export$2e2bcd8739ae039.gsap = gsap;
     }
-    debounce(fn, delay) {
-        this.timer = null;
-        return (...args)=>{
-            if (this.timer) clearTimeout(this.timer);
-            this.timer = setTimeout(()=>fn(...args), delay);
+    debounce = ()=>{
+        let timer;
+        return ()=>{
+            cancelAnimationFrame(timer);
+            timer = requestAnimationFrame(this.update);
         };
-    }
+    };
     breakpoints() {
         this.breakpoint = "";
         if (this.dataset.mcMax) this.breakpoint = `(max-width: ${this.dataset.mcMax - 0.02}px)`;
@@ -51,14 +53,13 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
         removingClones();
         this.MM.add(this.breakpoint, ()=>{
             const requiredQuantity = Math.ceil(this.scrollWidth / this.firstElementChild.clientWidth + 2);
-            if (this.childElementCount < requiredQuantity) for(let i = 1; i < requiredQuantity; i += 1){
-                const cloned = this.firstElementChild;
-                const clone = cloned.cloneNode(true);
-                cloned.parentNode.append(clone);
+            if (this.childElementCount < requiredQuantity) {
+                const clones = Array.from({
+                    length: requiredQuantity - 1
+                }, ()=>this.firstElementChild.cloneNode(true));
+                this.append(...clones);
             }
-            return ()=>{
-                removingClones();
-            };
+            return removingClones;
         });
     }
     skewed() {
@@ -74,7 +75,7 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
             };
         });
     }
-    animation() {
+    clearTimeline() {
         if (this.timeline) {
             this.timeline.kill();
             this.timeline = null;
@@ -82,6 +83,9 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
         this.gsap.set(this.children, {
             clearProps: true
         });
+    }
+    animation() {
+        if (this.timeline) this.clearTimeline.call(this);
         this.MM.add(this.breakpoint, ()=>{
             this.timeline = this.gsap.to(this.children, {
                 duration: this.dataset.mcDuration || 20,
@@ -92,44 +96,16 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
                     trigger: this,
                     start: "-=50% bottom",
                     end: "bottom top",
-                    toggleActions: "resume pause resume pause"
-                }
-            }).totalProgress(0.5);
-            const ltrDirection = ()=>{
-                this.gsap.to(this.timeline, {
-                    timeScale: -1,
-                    overwrite: true
-                });
-            };
-            const autoDirection = ()=>{
-                let currentScroll = 0;
-                let scrollDirection = 1;
-                const handleScroll = ()=>{
-                    const orientation = window.scrollY > currentScroll ? 1 : -1;
-                    if (orientation !== scrollDirection) {
-                        this.gsap.to(this.timeline, {
-                            timeScale: orientation,
-                            overwrite: true
-                        });
-                        scrollDirection = orientation;
+                    toggleActions: "resume pause resume pause",
+                    onUpdate: (self)=>{
+                        if (this.dataset.mcDirection === "ltr") this.timeline.timeScale(-1);
+                        else if (this.dataset.mcDirection === "auto") this.timeline.timeScale(self.direction);
                     }
-                    currentScroll = window.scrollY;
-                };
-                window.addEventListener("scroll", handleScroll, {
-                    capture: true,
-                    passive: true
-                });
-            };
-            if (this.dataset.mcDirection === "ltr") ltrDirection();
-            else if (this.dataset.mcDirection === "auto") autoDirection();
-            return ()=>{
-                if (this.timeline) {
-                    this.timeline.kill();
-                    this.timeline = null;
                 }
-                this.gsap.set(this.children, {
-                    clearProps: true
-                });
+            });
+            this.timeline.totalProgress(0.5);
+            return ()=>{
+                if (this.timeline) this.clearTimeline.call(this);
             };
         });
     }
@@ -152,10 +128,8 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 extends HTMLElement {
     }
     disconnectedCallback() {
         cancelAnimationFrame(this.af);
-        if (this.timeline) {
-            this.timeline.kill();
-            this.timeline = null;
-        }
+        this.clearTimeline();
+        if (this.resizeObserver) this.resizeObserver.disconnect();
     }
 }
 if (!customElements.get("marquee-content")) customElements.define("marquee-content", $4fa36e821943b400$export$2e2bcd8739ae039);
