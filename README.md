@@ -46,13 +46,13 @@ MarqueeContent.registerGSAP(gsap);
 
 &#10148; **Settings**
 
-| data-               | Default | Description                                                                                                                                                                                                        |
-|:--------------------|:-------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `data-mc-duration`  |  `20`   | Sets the duration of content scrolling in seconds. It is acceptable to use decimals.                                                                                                                               |
-| `data-mc-direction` |  `rtl`  | `rtl` &mdash; default value, no need to specify.<br>`ltr` &mdash; changes the scroll direction from left to right.<br>`auto` &mdash; automatically changes the direction of the animation when scrolling the page. |
-| `data-mc-skew`      | `null`  | Transforms the component by tilting it along the Y axis (it is acceptable to use a positive or negative value).                                                                                                    |
-| `data-mc-min`       | `null`  | Sets the minimum width at which the animation will be played (when the breakpoint intersects, the cloned elements will be removed and the component styles will be cleared).                                       |
-| `data-mc-max`       | `null`  | Sets the maximum width at which the animation will be played (when the breakpoint intersects, the cloned elements will be removed and the component styles will be cleared).                                       |
+| Option              | Default | Description                                                                                                                                                                                                       |
+|:--------------------|:-------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `data-mc-duration`  |  `20`   | Sets the duration of content scrolling in seconds. It is acceptable to use decimals.                                                                                                                              |
+| `data-mc-direction` |  `rtl`  | `rtl` &mdash; default value, no need to specify.<br>`ltr` &mdash; changes the scroll direction from left to right.<br>`auto` &mdash; auto changes the direction of the animation as the page is scrolled.         |
+| `data-mc-skew`      | `null`  | Transforms the component by tilting it along the Y axis (a positive or negative value is acceptable).                                                                                                             |
+| `data-mc-min`       | `null`  | Sets the **minimum** width at which the animation will play (when the breakpoint intersects, the cloned elements are removed and the component styles are cleared).                                               |
+| `data-mc-max`       | `null`  | Sets the **maximum** width.                                                                                                                                                                                       |
 
 <br>
 
