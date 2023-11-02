@@ -1,6 +1,6 @@
 {
   "name": "marquee-content",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Class for creating the running content effect, also known as a marquee or ticker.",
   "author": "ux-ui.pro",
   "license": "MIT",
