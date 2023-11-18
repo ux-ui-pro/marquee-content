@@ -9,7 +9,7 @@
 
 </div>
 
-<p align="center">A class for creating the running content effect, also known as a marquee or ticker.<br>Uses GSAP and Resize Observer for best performance.</p>
+<p align="center">A simple, lightweight library for creating the effect of running horizontal blocks of content, also known as a marquee or ticker. Uses GSAP and Resize Observer for better performance.</p>
 <p align="center"><sup>1kB gzipped</sup></p>
 <p align="center"><a href="https://codepen.io/ux-ui/full/dygzqYm">Demo</a></p>
 <br>

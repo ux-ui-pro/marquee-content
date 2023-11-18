@@ -1,3 +1,6 @@
+import cloning from './cloning';
+import animation from './animation';
+
 function update() {
   cancelAnimationFrame(this.af);
 

@@ -6,6 +6,6 @@ function breakpoints() {
   } else if (this.dataset.mcMin) {
     this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
   }
-};
+}
 
 export default breakpoints;
