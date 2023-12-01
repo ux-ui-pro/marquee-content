@@ -10,3 +10,4 @@ package-lock.json
 yarn.lock
 .eslintignore
 .eslintrc.json
+/**/*.html
