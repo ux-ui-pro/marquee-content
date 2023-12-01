@@ -75,7 +75,7 @@ function $7206b27cbeabecb6$var$animation() {
             ease: "none",
             scrollTrigger: {
                 trigger: this,
-                start: "-=50% bottom",
+                start: "top bottom",
                 end: "bottom top",
                 toggleActions: "resume pause resume pause",
                 onUpdate: (self)=>{
