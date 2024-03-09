@@ -1,71 +1,63 @@
-import breakpoints from './utils/breakpoints';
-import cloning from './utils/cloning';
-import skewed from './utils/skewed';
-import animation from './utils/animation';
-import clearTimeline from './utils/clearTimeline';
+import {
+  debounce,
+  breakpoints,
+  cloning,
+  skewed,
+  animation,
+  clearTimeline,
+} from './utils.js';
 
-export default class MarqueeContent extends HTMLElement {
-  constructor() {
-    super();
+export default class MarqueeContent {
+  #gsap;
 
-    this.gsap = MarqueeContent.gsap || window.gsap;
-    this.MM = this.gsap.matchMedia();
-    this.timeline = null;
-    this.update = this.update.bind(this);
-    this.resizeObserver = new ResizeObserver(this.debounce(this.update.bind(this)));
-    this.resizeObserver.observe(this);
+  #MM;
+
+  #timeline;
+
+  #element;
+
+  #resizeObserver;
+
+  #animationFrame;
+
+  constructor(el) {
+    this.#gsap = MarqueeContent.gsap ?? window.gsap;
+    this.#MM = this.#gsap.matchMedia();
+    this.#timeline = null;
+    this.#element = el instanceof HTMLElement ? el : document.querySelector(el ?? '.marquee');
+    if (!this.#element) throw new Error('Element not found');
+
+    this.#resizeObserver = new ResizeObserver(debounce(() => this.#update()));
+    this.#resizeObserver.observe(this.#element);
   }
 
   static registerGSAP(gsap) {
     MarqueeContent.gsap = gsap;
   }
 
-  debounce = () => {
-    let timer;
-
-    return () => {
-      cancelAnimationFrame(timer);
-      timer = requestAnimationFrame(this.update);
-    };
+  #commonInit = () => {
+    clearTimeline(this.#timeline, this.#element, this.#gsap);
+    cloning(this.#element, this.#gsap, this.#MM);
+    breakpoints(this.#element);
+    skewed(this.#element);
+    this.#timeline = animation(this.#element, this.#gsap, this.#MM, this.#timeline, this);
   };
 
-  update() {
-    cancelAnimationFrame(this.af);
+  #update = () => {
+    cancelAnimationFrame(this.#animationFrame);
+    this.#animationFrame = requestAnimationFrame(() => {
+      this.#commonInit();
+      ScrollTrigger.refresh();
+    });
+  };
 
-    if (this.firstElementChild) {
-      this.af = requestAnimationFrame(() => {
-        cloning.call(this);
-        animation.call(this);
-      });
-    }
+  init = () => {
+    this.#commonInit();
   }
 
-  init() {
-    breakpoints.call(this);
-    skewed.call(this);
-    cloning.call(this);
-    animation.call(this);
+  destroy = () => {
+    cancelAnimationFrame(this.#animationFrame);
+    clearTimeline(this.#timeline, this.#element, this.#gsap);
+    this.#resizeObserver?.disconnect();
   }
-
-  destroy() {
-    cancelAnimationFrame(this.af);
-
-    clearTimeline.call(this);
-
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect();
-    }
-  }
-
-  connectedCallback() {
-    this.init();
-  }
-
-  disconnectedCallback() {
-    this.destroy();
-  }
-}
-
-if (!customElements.get('marquee-content')) {
-  customElements.define('marquee-content', MarqueeContent);
 }

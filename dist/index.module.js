@@ -1,133 +1,117 @@
-function $0247ba718e967cec$var$breakpoints() {
-    this.breakpoint = "";
-    if (this.dataset.mcMax) this.breakpoint = `(max-width: ${this.dataset.mcMax - 0.02}px)`;
-    else if (this.dataset.mcMin) this.breakpoint = `(min-width: ${this.dataset.mcMin}px)`;
-}
-var $0247ba718e967cec$export$2e2bcd8739ae039 = $0247ba718e967cec$var$breakpoints;
-
-
-function $2b68722c48061d80$var$cloning() {
+const $f3ad94c9f84f4d57$export$61fc7d43ac8f84b0 = function(func) {
+    let timer;
+    return (...args)=>{
+        cancelAnimationFrame(timer);
+        timer = requestAnimationFrame(()=>func(...args));
+    };
+};
+const $f3ad94c9f84f4d57$export$ecad260a8a5fef4f = function(element, gsap, MM, timeline, update) {
+    timeline?.kill();
+    timeline = gsap.timeline({
+        scrollTrigger: {
+            trigger: element,
+            start: "top bottom",
+            end: "bottom top",
+            toggleActions: "resume pause resume pause",
+            onUpdate: (self)=>{
+                if (element.dataset.mcDirection === "ltr") timeline.timeScale(-1);
+                else if (element.dataset.mcDirection === "auto") timeline.timeScale(self.direction);
+            }
+        }
+    });
+    MM.add(element.dataset.mcBreakpoint, ()=>{
+        timeline.to(element.children, {
+            duration: element.dataset.mcDuration ?? 20,
+            x: "-100%",
+            repeat: -1,
+            ease: "none"
+        });
+        timeline.totalProgress(0.5);
+        return ()=>timeline?.kill();
+    });
+    update.timeline = timeline;
+    return timeline;
+};
+const $f3ad94c9f84f4d57$export$d07517a676ce386f = function(element) {
+    element.dataset.mcBreakpoint = element.dataset.mcMax ? `(max-width: ${element.dataset.mcMax - 0.02}px)` : element.dataset.mcMin ? `(min-width: ${element.dataset.mcMin}px)` : "";
+};
+const $f3ad94c9f84f4d57$export$6a732ac1b1fdc86b = function(timeline, element, gsap) {
+    timeline?.kill();
+    timeline = null;
+    gsap.set(element.children, {
+        clearProps: "all"
+    });
+};
+const $f3ad94c9f84f4d57$export$7c4d14cd3c92bf0b = function(element, gsap, MM) {
     const removingClones = ()=>{
-        while(this.childElementCount > 1)this.removeChild(this.lastChild);
+        while(element.childElementCount > 1)element.removeChild(element.lastChild);
     };
     removingClones();
-    this.MM.add(this.breakpoint, ()=>{
-        const requiredQuantity = Math.ceil(this.scrollWidth / this.firstElementChild.clientWidth + 2);
-        if (this.childElementCount < requiredQuantity) {
+    MM.add(element.dataset.mcBreakpoint, ()=>{
+        const requiredQuantity = Math.ceil(element.scrollWidth / element.firstElementChild.clientWidth + 2);
+        if (element.childElementCount < requiredQuantity) {
+            const fragment = document.createDocumentFragment();
             const clones = Array.from({
                 length: requiredQuantity - 1
-            }, ()=>this.firstElementChild.cloneNode(true));
-            this.append(...clones);
+            }, ()=>element.firstElementChild.cloneNode(true));
+            clones.forEach((clone)=>fragment.appendChild(clone));
+            element.appendChild(fragment);
         }
         return removingClones;
     });
-}
-var $2b68722c48061d80$export$2e2bcd8739ae039 = $2b68722c48061d80$var$cloning;
+};
+const $f3ad94c9f84f4d57$export$3484d11c6bb42ecc = function(element) {
+    if (!element.dataset.mcSkew) return;
+    const abs = Math.abs(parseInt(element.dataset.mcSkew, 10));
+    const { style: style } = element;
+    style.transformOrigin = "center center";
+    style.transform = `skew(0deg, ${element.dataset.mcSkew}deg)`;
+    style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`;
+};
 
 
-function $dfb0cb0db0a7e917$var$skewed() {
-    if (!this.dataset.mcSkew) return;
-    const abs = Math.abs(parseInt(this.dataset.mcSkew, 10));
-    const { style: style } = this;
-    this.MM.add(this.breakpoint, ()=>{
-        style.transformOrigin = "center center";
-        style.transform = `skew(0deg, ${this.dataset.mcSkew}deg)`;
-        style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`;
-        return ()=>{
-            style.cssText = "transform-origin: unset; transform: unset; min-height: unset;";
-        };
-    });
-}
-var $dfb0cb0db0a7e917$export$2e2bcd8739ae039 = $dfb0cb0db0a7e917$var$skewed;
-
-
-function $44f92944fa78205a$var$clearTimeline() {
-    if (this.timeline) {
-        this.timeline.kill();
-        this.timeline = null;
-    }
-    this.gsap.set(this.children, {
-        clearProps: true
-    });
-}
-var $44f92944fa78205a$export$2e2bcd8739ae039 = $44f92944fa78205a$var$clearTimeline;
-
-
-function $5138c3f25fef74d5$var$animation() {
-    if (this.timeline) (0, $44f92944fa78205a$export$2e2bcd8739ae039).call(this);
-    this.MM.add(this.breakpoint, ()=>{
-        this.timeline = this.gsap.to(this.children, {
-            duration: this.dataset.mcDuration || 20,
-            x: "-100%",
-            repeat: -1,
-            ease: "none",
-            scrollTrigger: {
-                trigger: this,
-                start: "top bottom",
-                end: "bottom top",
-                toggleActions: "resume pause resume pause",
-                onUpdate: (self)=>{
-                    if (this.dataset.mcDirection === "ltr") this.timeline.timeScale(-1);
-                    else if (this.dataset.mcDirection === "auto") this.timeline.timeScale(self.direction);
-                }
-            }
-        });
-        this.timeline.totalProgress(0.5);
-        return ()=>{
-            if (this.timeline) (0, $44f92944fa78205a$export$2e2bcd8739ae039).call(this);
-        };
-    });
-}
-var $5138c3f25fef74d5$export$2e2bcd8739ae039 = $5138c3f25fef74d5$var$animation;
-
-
-
-class $cf838c15c8b009ba$export$2e2bcd8739ae039 extends HTMLElement {
-    constructor(){
-        super();
-        this.gsap = $cf838c15c8b009ba$export$2e2bcd8739ae039.gsap || window.gsap;
-        this.MM = this.gsap.matchMedia();
-        this.timeline = null;
-        this.update = this.update.bind(this);
-        this.resizeObserver = new ResizeObserver(this.debounce(this.update.bind(this)));
-        this.resizeObserver.observe(this);
+class $cf838c15c8b009ba$export$2e2bcd8739ae039 {
+    #gsap;
+    #MM;
+    #timeline;
+    #element;
+    #resizeObserver;
+    #animationFrame;
+    constructor(el){
+        this.#gsap = $cf838c15c8b009ba$export$2e2bcd8739ae039.gsap ?? window.gsap;
+        this.#MM = this.#gsap.matchMedia();
+        this.#timeline = null;
+        this.#element = el instanceof HTMLElement ? el : document.querySelector(el ?? ".marquee");
+        if (!this.#element) throw new Error("Element not found");
+        this.#resizeObserver = new ResizeObserver((0, $f3ad94c9f84f4d57$export$61fc7d43ac8f84b0)(()=>this.#update()));
+        this.#resizeObserver.observe(this.#element);
     }
     static registerGSAP(gsap) {
         $cf838c15c8b009ba$export$2e2bcd8739ae039.gsap = gsap;
     }
-    debounce = ()=>{
-        let timer;
-        return ()=>{
-            cancelAnimationFrame(timer);
-            timer = requestAnimationFrame(this.update);
-        };
+    #commonInit = ()=>{
+        (0, $f3ad94c9f84f4d57$export$6a732ac1b1fdc86b)(this.#timeline, this.#element, this.#gsap);
+        (0, $f3ad94c9f84f4d57$export$7c4d14cd3c92bf0b)(this.#element, this.#gsap, this.#MM);
+        (0, $f3ad94c9f84f4d57$export$d07517a676ce386f)(this.#element);
+        (0, $f3ad94c9f84f4d57$export$3484d11c6bb42ecc)(this.#element);
+        this.#timeline = (0, $f3ad94c9f84f4d57$export$ecad260a8a5fef4f)(this.#element, this.#gsap, this.#MM, this.#timeline, this);
     };
-    update() {
-        cancelAnimationFrame(this.af);
-        if (this.firstElementChild) this.af = requestAnimationFrame(()=>{
-            (0, $2b68722c48061d80$export$2e2bcd8739ae039).call(this);
-            (0, $5138c3f25fef74d5$export$2e2bcd8739ae039).call(this);
+    #update = ()=>{
+        cancelAnimationFrame(this.#animationFrame);
+        this.#animationFrame = requestAnimationFrame(()=>{
+            this.#commonInit();
+            ScrollTrigger.refresh();
         });
-    }
-    init() {
-        (0, $0247ba718e967cec$export$2e2bcd8739ae039).call(this);
-        (0, $dfb0cb0db0a7e917$export$2e2bcd8739ae039).call(this);
-        (0, $2b68722c48061d80$export$2e2bcd8739ae039).call(this);
-        (0, $5138c3f25fef74d5$export$2e2bcd8739ae039).call(this);
-    }
-    destroy() {
-        cancelAnimationFrame(this.af);
-        (0, $44f92944fa78205a$export$2e2bcd8739ae039).call(this);
-        if (this.resizeObserver) this.resizeObserver.disconnect();
-    }
-    connectedCallback() {
-        this.init();
-    }
-    disconnectedCallback() {
-        this.destroy();
-    }
+    };
+    init = ()=>{
+        this.#commonInit();
+    };
+    destroy = ()=>{
+        cancelAnimationFrame(this.#animationFrame);
+        (0, $f3ad94c9f84f4d57$export$6a732ac1b1fdc86b)(this.#timeline, this.#element, this.#gsap);
+        this.#resizeObserver?.disconnect();
+    };
 }
-if (!customElements.get("marquee-content")) customElements.define("marquee-content", $cf838c15c8b009ba$export$2e2bcd8739ae039);
 
 
 export {$cf838c15c8b009ba$export$2e2bcd8739ae039 as default};

@@ -1,46 +1,44 @@
 <br>
-<p align="center"><strong>marquee-content</strong></p>
-
 <div align="center">
+
+# marquee-content
+A simple, lightweight library for creating the effect of running horizontal blocks of content, also known as a marquee or ticker. Uses GSAP and Resize Observer for better performance.
 
 [![npm](https://img.shields.io/npm/v/marquee-content.svg?colorB=brightgreen)](https://www.npmjs.com/package/marquee-content)
 [![GitHub package version](https://img.shields.io/github/package-json/v/ux-ui-pro/marquee-content.svg)](https://github.com/ux-ui-pro/marquee-content)
 [![NPM Downloads](https://img.shields.io/npm/dm/marquee-content.svg?style=flat)](https://www.npmjs.org/package/marquee-content)
 
+<sup>1kB gzipped</sup>
+
+### <a href="https://codepen.io/ux-ui/full/dygzqYm">Demo</a>
+
 </div>
 
-<p align="center">A simple, lightweight library for creating the effect of running horizontal blocks of content, also known as a marquee or ticker. Uses GSAP and Resize Observer for better performance.</p>
-<p align="center"><sup>1kB gzipped</sup></p>
-<p align="center"><a href="https://codepen.io/ux-ui/full/dygzqYm">Demo</a></p>
 <br>
 
 &#10148; **Install**
-
 ```
 yarn add gsap
 yarn add marquee-content
 ```
-
 <br>
 
 &#10148; **Import**
-
 ```javascript
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MarqueeContent from 'marquee-content';
-
-gsap.registerPlugin(ScrollTrigger);
-MarqueeContent.registerGSAP(gsap);
 ```
 <br>
 
 &#10148; **Usage**
+```javascript
+gsap.registerPlugin(ScrollTrigger);
+MarqueeContent.registerGSAP(gsap);
 
-```HTML
-<marquee-content data-mc-duration="30" role="marquee">
-	content
-</marquee-content>
+const marqueeContent = new MarqueeContent();
+
+marqueeContent.init();
 ```
 <br>
 
@@ -53,7 +51,6 @@ MarqueeContent.registerGSAP(gsap);
 | `data-mc-skew`      | `null`  | Transforms the component by tilting it along the Y axis (a positive or negative value is acceptable).                                                                                                             |
 | `data-mc-min`       | `null`  | Sets the **minimum** width at which the animation will play (when the breakpoint intersects, the cloned elements are removed and the component styles are cleared).                                               |
 | `data-mc-max`       | `null`  | Sets the **maximum** width.                                                                                                                                                                                       |
-
 <br>
 
 &#10148; **License**

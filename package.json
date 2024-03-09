@@ -1,6 +1,6 @@
 {
   "name": "marquee-content",
-  "version": "3.1.2",
+  "version": "4.0.0",
   "description": "Class for creating the running content effect, also known as a marquee or ticker.",
   "author": "ux-ui.pro",
   "license": "MIT",
@@ -30,11 +30,11 @@
     "lintfix": "yarn lint:js --fix"
   },
   "devDependencies": {
-    "eslint": "^7.32.0 || ^8.54.0",
+    "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.29.0",
-    "parcel": "^2.10.3",
-    "postcss-html": "^1.5.0"
+    "eslint-plugin-import": "^2.29.1",
+    "parcel": "^2.12.0",
+    "postcss-html": "^1.6.0"
   },
   "keywords": [
     "marquee",

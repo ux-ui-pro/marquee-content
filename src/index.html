@@ -31,7 +31,7 @@
           overflow-x: clip;
       }
 
-      marquee-content {
+      .marquee {
           overflow: hidden;
           position: relative;
           width: 100vw;
@@ -41,7 +41,7 @@
           pointer-events: none;
       }
 
-      marquee-content > * {
+      .marquee > * {
           will-change: transform;
       }
 
@@ -49,102 +49,85 @@
     </style>
   </head>
   <body>
-    <section class="example-1">
-      <marquee-content data-mc-duration="60" role="marquee">
-        <ul class="font alkatra">
-          <li>Monarch</li>
-          <li>Benassi</li>
-          <li>Air Max</li>
-          <li>Cortez</li>
-          <li>Jordan</li>
-          <li>Presto</li>
-          <li>Vomero</li>
-          <li>Pegasus</li>
-        </ul>
-      </marquee-content>
-    </section>
+  <div class="marquee" data-mc-duration="30" role="marquee">
+    <ul class="font alkatra">
+      <li>Monarch</li>
+      <li>Benassi</li>
+      <li>Air Max</li>
+      <li>Cortez</li>
+      <li>Jordan</li>
+      <li>Presto</li>
+      <li>Vomero</li>
+      <li>Pegasus</li>
+    </ul>
+  </div>
 
-    <section class="example-7">
-      <marquee-content data-mc-duration="20" role="marquee">
-        <ul>
-          <li><img src="//fastly.picsum.photos/id/634/180/100.jpg?hmac=qB-PFAiiEVuXFwVxRbYUzImrQ4RZ2np6oWeK-XHPnXk" alt=""/></li>
-          <li><img src="//fastly.picsum.photos/id/719/180/100.jpg?hmac=_Toti9aQVjjnNHabofyq_la4a0kIFSDp3o65zxnvtRY" alt=""/></li>
-          <li><img src="//fastly.picsum.photos/id/235/180/100.jpg?hmac=5KlYbDb93R7me0GThn6FFoK_OZ8ziPn-fb98FHIMb5c" alt=""/></li>
-          <li><img src="//fastly.picsum.photos/id/1050/180/100.jpg?hmac=f9i0nGYKBetkohJors44GETXmUhSbLcXMUlSvMCluJY" alt=""/></li>
-        </ul>
-      </marquee-content>
-    </section>
+  <div class="marquee" data-mc-duration="20" role="marquee">
+    <ul>
+      <li><img src="//fastly.picsum.photos/id/634/180/100.jpg?hmac=qB-PFAiiEVuXFwVxRbYUzImrQ4RZ2np6oWeK-XHPnXk" alt=""/></li>
+      <li><img src="//fastly.picsum.photos/id/719/180/100.jpg?hmac=_Toti9aQVjjnNHabofyq_la4a0kIFSDp3o65zxnvtRY" alt=""/></li>
+      <li><img src="//fastly.picsum.photos/id/235/180/100.jpg?hmac=5KlYbDb93R7me0GThn6FFoK_OZ8ziPn-fb98FHIMb5c" alt=""/></li>
+      <li><img src="//fastly.picsum.photos/id/1050/180/100.jpg?hmac=f9i0nGYKBetkohJors44GETXmUhSbLcXMUlSvMCluJY" alt=""/></li>
+    </ul>
+  </div>
 
-    <section class="example-2">
-      <marquee-content data-mc-duration="60" data-mc-direction="ltr" role="marquee">
-        <ul>
-          <li><span class="font anton">Monarch</span></li>
-          <li><span class="font pt">Benassi</span></li>
-          <li><span class="font lobster">Air Max</span></li>
-          <li><span class="font prompt">Cortez</span></li>
-          <li><span class="font anton">Jordan</span></li>
-          <li><span class="font pt">Presto</span></li>
-          <li><span class="font prompt">Tempo</span></li>
-          <li><span class="font anton">Vomero</span></li>
-          <li><span class="font pt">Pegasus</span></li>
-        </ul>
-      </marquee-content>
-    </section>
+  <div class="marquee" data-mc-duration="60" data-mc-direction="ltr" role="marquee">
+    <ul>
+      <li><span class="font anton">Monarch</span></li>
+      <li><span class="font pt">Benassi</span></li>
+      <li><span class="font lobster">Air Max</span></li>
+      <li><span class="font prompt">Cortez</span></li>
+      <li><span class="font anton">Jordan</span></li>
+      <li><span class="font pt">Presto</span></li>
+      <li><span class="font prompt">Tempo</span></li>
+      <li><span class="font anton">Vomero</span></li>
+      <li><span class="font pt">Pegasus</span></li>
+    </ul>
+  </div>
 
-    <section class="example-3">
-      <marquee-content data-mc-duration="60" data-mc-direction="auto" role="marquee">
-        <ul class="font lobster">
-          <li>Monarch</li>
-          <li>Benassi</li>
-          <li>Air Max</li>
-          <li>Cortez</li>
-          <li>Jordan</li>
-          <li>Presto</li>
-          <li>Tempo</li>
-          <li>Vomero</li>
-          <li>Pegasus</li>
-        </ul>
-      </marquee-content>
-    </section>
+  <div class="marquee" data-mc-duration="60" data-mc-direction="auto" role="marquee">
+    <ul class="font lobster">
+      <li>Monarch</li>
+      <li>Benassi</li>
+      <li>Air Max</li>
+      <li>Cortez</li>
+      <li>Jordan</li>
+      <li>Presto</li>
+      <li>Tempo</li>
+      <li>Vomero</li>
+      <li>Pegasus</li>
+    </ul>
+  </div>
 
-    <section class="example-4">
-      <marquee-content data-mc-duration="60" data-mc-skew="-3" role="marquee">
-        <ul class="font pt">
-          <li>Monarch</li>
-          <li>Benassi</li>
-          <li>Air Max</li>
-          <li>Cortez</li>
-          <li>Jordan</li>
-          <li>Presto</li>
-          <li>Tempo</li>
-          <li>Vomero</li>
-          <li>Pegasus</li>
-        </ul>
-      </marquee-content>
-    </section>
+  <div class="marquee" data-mc-duration="60" data-mc-skew="-3" role="marquee">
+    <ul class="font pt">
+      <li>Monarch</li>
+      <li>Benassi</li>
+      <li>Air Max</li>
+      <li>Cortez</li>
+      <li>Jordan</li>
+      <li>Presto</li>
+      <li>Tempo</li>
+      <li>Vomero</li>
+      <li>Pegasus</li>
+    </ul>
+  </div>
 
-    <section class="example-6">
-      <marquee-content data-mc-duration="5" data-mc-max="992" role="marquee">
-        <ul class="font pt">
-          <li>Jordan</li>
-        </ul>
-      </marquee-content>
-    </section>
+  <div class="marquee" data-mc-duration="5" data-mc-max="992" role="marquee">
+    <ul class="font pt">
+      <li>Jordan</li>
+    </ul>
+  </div>
 
-    <section class="example-5">
-      <marquee-content data-mc-duration="5" data-mc-min="992" role="marquee">
-        <ul class="font pt">
-          <li>Cortez</li>
-        </ul>
-      </marquee-content>
-    </section>
+  <div class="marquee" data-mc-duration="5" data-mc-min="992" role="marquee">
+    <ul class="font pt">
+      <li>Cortez</li>
+    </ul>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script type="module" src="index.js"></script>
-    <script>
-      gsap.registerPlugin(ScrollTrigger);
-      MarqueeContent.registerGSAP(gsap);
-    </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script type="module" src="demo.js"></script>
   </body>
 </html>
