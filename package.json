@@ -1,6 +1,6 @@
 {
   "name": "marquee-content",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Class for creating the running content effect, also known as a marquee or ticker.",
   "author": "ux-ui.pro",
   "license": "MIT",
@@ -12,7 +12,6 @@
     "url": "https://github.com/ux-ui-pro/marquee-content/issues"
   },
   "main": "dist/index.js",
-  "source": "dist/index.html",
   "module": "dist/index.module.js",
   "targets": {
     "main": {
