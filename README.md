@@ -28,18 +28,37 @@ yarn add marquee-content
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import MarqueeContent from 'marquee-content';
+
+gsap.registerPlugin(ScrollTrigger);
+MarqueeContent.registerGSAP(gsap);
 ```
 <br>
 
 &#10148; **Usage**
 ```javascript
-gsap.registerPlugin(ScrollTrigger);
-MarqueeContent.registerGSAP(gsap);
+const marquee = new MarqueeContent({
+  element: '.marquee',
+});
 
-const marqueeContent = new MarqueeContent();
-
-marqueeContent.init();
+marquee.init();
 ```
+or
+```javascript
+document.querySelectorAll('.marquee').forEach((element) => {
+  const marquee = new MarqueeContent({
+    element,
+  });
+
+  marquee.init();
+});
+```
+<br>
+
+&#10148; **Options**
+
+| Option    |             Type              |   Default   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|:----------|:-----------------------------:|:-----------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `element` | `string` &vert; `HTMLElement` | `.marquee`  | The option `element` defines the DOM element to which the animation will be applied. This option offers two ways to specify the target element:<br>**1.** As a string with a CSS selector. If `element` is given as a string, it is used to find the element in the DOM through the `document.querySelector` method. This allows for easy identification of elements by their id, class, or other selector.<br>**2.** As an HTMLElement object. If `element` is already an HTMLElement object, it is used directly, without the need for additional searching in the DOM. |
 <br>
 
 &#10148; **Settings**
