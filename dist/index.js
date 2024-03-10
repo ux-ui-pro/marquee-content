@@ -82,31 +82,31 @@ const $4559ecf940edc78d$export$3484d11c6bb42ecc = function(element) {
 };
 
 
-class $4fa36e821943b400$export$2e2bcd8739ae039 {
+class $4fa36e821943b400$var$MarqueeContent {
     #gsap;
     #MM;
     #timeline;
     #element;
     #resizeObserver;
     #animationFrame;
-    constructor(el){
-        this.#gsap = $4fa36e821943b400$export$2e2bcd8739ae039.gsap ?? window.gsap;
+    constructor({ element: element = ".marquee" } = {}){
+        this.#gsap = $4fa36e821943b400$var$MarqueeContent.gsap ?? window.gsap;
         this.#MM = this.#gsap.matchMedia();
         this.#timeline = null;
-        this.#element = el instanceof HTMLElement ? el : document.querySelector(el ?? ".marquee");
-        if (!this.#element) throw new Error("Element not found");
-        this.#resizeObserver = new ResizeObserver((0, $4559ecf940edc78d$export$61fc7d43ac8f84b0)(()=>this.#update()));
+        this.#element = element instanceof HTMLElement ? element : document.querySelector(element);
+        if (!this.#element) return;
+        this.#resizeObserver = new ResizeObserver($4559ecf940edc78d$export$61fc7d43ac8f84b0(()=>this.#update()));
         this.#resizeObserver.observe(this.#element);
     }
     static registerGSAP(gsap) {
-        $4fa36e821943b400$export$2e2bcd8739ae039.gsap = gsap;
+        $4fa36e821943b400$var$MarqueeContent.gsap = gsap;
     }
     #commonInit = ()=>{
-        (0, $4559ecf940edc78d$export$6a732ac1b1fdc86b)(this.#timeline, this.#element, this.#gsap);
-        (0, $4559ecf940edc78d$export$7c4d14cd3c92bf0b)(this.#element, this.#gsap, this.#MM);
-        (0, $4559ecf940edc78d$export$d07517a676ce386f)(this.#element);
-        (0, $4559ecf940edc78d$export$3484d11c6bb42ecc)(this.#element);
-        this.#timeline = (0, $4559ecf940edc78d$export$ecad260a8a5fef4f)(this.#element, this.#gsap, this.#MM, this.#timeline, this);
+        $4559ecf940edc78d$export$6a732ac1b1fdc86b(this.#timeline, this.#element, this.#gsap);
+        $4559ecf940edc78d$export$7c4d14cd3c92bf0b(this.#element, this.#gsap, this.#MM);
+        $4559ecf940edc78d$export$d07517a676ce386f(this.#element);
+        $4559ecf940edc78d$export$3484d11c6bb42ecc(this.#element);
+        this.#timeline = $4559ecf940edc78d$export$ecad260a8a5fef4f(this.#element, this.#gsap, this.#MM, this.#timeline, this);
     };
     #update = ()=>{
         cancelAnimationFrame(this.#animationFrame);
@@ -120,10 +120,11 @@ class $4fa36e821943b400$export$2e2bcd8739ae039 {
     };
     destroy = ()=>{
         cancelAnimationFrame(this.#animationFrame);
-        (0, $4559ecf940edc78d$export$6a732ac1b1fdc86b)(this.#timeline, this.#element, this.#gsap);
+        $4559ecf940edc78d$export$6a732ac1b1fdc86b(this.#timeline, this.#element, this.#gsap);
         this.#resizeObserver?.disconnect();
     };
 }
+var $4fa36e821943b400$export$2e2bcd8739ae039 = $4fa36e821943b400$var$MarqueeContent;
 
 
 //# sourceMappingURL=index.js.map

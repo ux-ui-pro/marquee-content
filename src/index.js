@@ -1,13 +1,6 @@
-import {
-  debounce,
-  breakpoints,
-  cloning,
-  skewed,
-  animation,
-  clearTimeline,
-} from './utils.js';
+import * as Utils from './utils.js';
 
-export default class MarqueeContent {
+class MarqueeContent {
   #gsap;
 
   #MM;
@@ -20,14 +13,15 @@ export default class MarqueeContent {
 
   #animationFrame;
 
-  constructor(el) {
+  constructor({element = '.marquee'} = {}) {
     this.#gsap = MarqueeContent.gsap ?? window.gsap;
     this.#MM = this.#gsap.matchMedia();
     this.#timeline = null;
-    this.#element = el instanceof HTMLElement ? el : document.querySelector(el ?? '.marquee');
-    if (!this.#element) throw new Error('Element not found');
+    this.#element = element instanceof HTMLElement ? element : document.querySelector(element);
 
-    this.#resizeObserver = new ResizeObserver(debounce(() => this.#update()));
+    if (!this.#element) return;
+
+    this.#resizeObserver = new ResizeObserver(Utils.debounce(() => this.#update()));
     this.#resizeObserver.observe(this.#element);
   }
 
@@ -36,17 +30,19 @@ export default class MarqueeContent {
   }
 
   #commonInit = () => {
-    clearTimeline(this.#timeline, this.#element, this.#gsap);
-    cloning(this.#element, this.#gsap, this.#MM);
-    breakpoints(this.#element);
-    skewed(this.#element);
-    this.#timeline = animation(this.#element, this.#gsap, this.#MM, this.#timeline, this);
+    Utils.clearTimeline(this.#timeline, this.#element, this.#gsap);
+    Utils.cloning(this.#element, this.#gsap, this.#MM);
+    Utils.breakpoints(this.#element);
+    Utils.skewed(this.#element);
+
+    this.#timeline = Utils.animation(this.#element, this.#gsap, this.#MM, this.#timeline, this);
   };
 
   #update = () => {
     cancelAnimationFrame(this.#animationFrame);
     this.#animationFrame = requestAnimationFrame(() => {
       this.#commonInit();
+
       ScrollTrigger.refresh();
     });
   };
@@ -57,7 +53,11 @@ export default class MarqueeContent {
 
   destroy = () => {
     cancelAnimationFrame(this.#animationFrame);
-    clearTimeline(this.#timeline, this.#element, this.#gsap);
+
+    Utils.clearTimeline(this.#timeline, this.#element, this.#gsap);
+
     this.#resizeObserver?.disconnect();
   }
 }
+
+export default MarqueeContent;
