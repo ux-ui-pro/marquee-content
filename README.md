@@ -25,12 +25,12 @@ yarn add marquee-content
 
 &#10148; **Import**
 ```javascript
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
 import MarqueeContent from 'marquee-content';
 
 gsap.registerPlugin(ScrollTrigger);
-MarqueeContent.registerGSAP(gsap);
+MarqueeContent.registerGSAP(gsap, ScrollTrigger);
 ```
 <br>
 
