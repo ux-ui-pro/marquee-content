@@ -77,6 +77,8 @@ class $cf838c15c8b009ba$var$MarqueeContent {
     #element;
     #resizeObserver;
     #animationFrame;
+    static gsap;
+    static ScrollTrigger;
     constructor({ element: element = ".marquee" } = {}){
         this.#gsap = $cf838c15c8b009ba$var$MarqueeContent.gsap ?? window.gsap;
         this.#MM = this.#gsap.matchMedia();
@@ -86,8 +88,9 @@ class $cf838c15c8b009ba$var$MarqueeContent {
         this.#resizeObserver = new ResizeObserver($f3ad94c9f84f4d57$export$61fc7d43ac8f84b0(()=>this.#update()));
         this.#resizeObserver.observe(this.#element);
     }
-    static registerGSAP(gsap) {
+    static registerGSAP(gsap, ScrollTrigger) {
         $cf838c15c8b009ba$var$MarqueeContent.gsap = gsap;
+        $cf838c15c8b009ba$var$MarqueeContent.ScrollTrigger = ScrollTrigger;
     }
     #commonInit = ()=>{
         $f3ad94c9f84f4d57$export$6a732ac1b1fdc86b(this.#timeline, this.#element, this.#gsap);
@@ -100,7 +103,7 @@ class $cf838c15c8b009ba$var$MarqueeContent {
         cancelAnimationFrame(this.#animationFrame);
         this.#animationFrame = requestAnimationFrame(()=>{
             this.#commonInit();
-            ScrollTrigger.refresh();
+            $cf838c15c8b009ba$var$MarqueeContent.ScrollTrigger.refresh();
         });
     };
     init = ()=>{

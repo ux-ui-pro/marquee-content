@@ -13,6 +13,10 @@ class MarqueeContent {
 
   #animationFrame;
 
+  static gsap;
+
+  static ScrollTrigger;
+
   constructor({element = '.marquee'} = {}) {
     this.#gsap = MarqueeContent.gsap ?? window.gsap;
     this.#MM = this.#gsap.matchMedia();
@@ -25,8 +29,9 @@ class MarqueeContent {
     this.#resizeObserver.observe(this.#element);
   }
 
-  static registerGSAP(gsap) {
+  static registerGSAP(gsap, ScrollTrigger) {
     MarqueeContent.gsap = gsap;
+    MarqueeContent.ScrollTrigger = ScrollTrigger;
   }
 
   #commonInit = () => {
@@ -43,7 +48,7 @@ class MarqueeContent {
     this.#animationFrame = requestAnimationFrame(() => {
       this.#commonInit();
 
-      ScrollTrigger.refresh();
+      MarqueeContent.ScrollTrigger.refresh();
     });
   };
 
