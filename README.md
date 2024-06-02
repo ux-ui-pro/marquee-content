@@ -1,8 +1,9 @@
-<br>
 <div align="center">
+<br>
 
-# marquee-content
-A simple, lightweight library for creating the effect of running horizontal blocks of content, also known as a marquee or ticker. Uses GSAP and Resize Observer for better performance.
+<h1>marquee-content</h1>
+
+<p><sup>MarqueeContent provides a set of tools for creating dynamic and adaptive ticker animations on web pages using GSAP and ScrollTrigger. It offers seamless integration with media queries, automatic element cloning for continuous scrolling effects, and efficient handling of resize events. Additionally, it supports customizable animation directions and skew effects, ensuring smooth and visually appealing ticker animations across different screen sizes and orientations.</sup></p>
 
 [![npm](https://img.shields.io/npm/v/marquee-content.svg?colorB=brightgreen)](https://www.npmjs.com/package/marquee-content)
 [![GitHub package version](https://img.shields.io/github/package-json/v/ux-ui-pro/marquee-content.svg)](https://github.com/ux-ui-pro/marquee-content)
@@ -10,14 +11,13 @@ A simple, lightweight library for creating the effect of running horizontal bloc
 
 <sup>1kB gzipped</sup>
 
-### <a href="https://codepen.io/ux-ui/full/dygzqYm">Demo</a>
+<a href="https://codepen.io/ux-ui/full/dygzqYm">Demo</a>
 
 </div>
-
 <br>
 
 &#10148; **Install**
-```
+```console
 yarn add gsap
 yarn add marquee-content
 ```
@@ -42,7 +42,7 @@ const marquee = new MarqueeContent({
 
 marquee.init();
 ```
-or
+<sub>or</sub>
 ```javascript
 document.querySelectorAll('.marquee').forEach((element) => {
   const marquee = new MarqueeContent({
@@ -56,20 +56,20 @@ document.querySelectorAll('.marquee').forEach((element) => {
 
 &#10148; **Options**
 
-| Option    |             Type              |   Default   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
-|:----------|:-----------------------------:|:-----------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `element` | `string` &vert; `HTMLElement` | `.marquee`  | The option `element` defines the DOM element to which the animation will be applied. This option offers two ways to specify the target element:<br>**1.** As a string with a CSS selector. If `element` is given as a string, it is used to find the element in the DOM through the `document.querySelector` method. This allows for easy identification of elements by their id, class, or other selector.<br>**2.** As an HTMLElement object. If `element` is already an HTMLElement object, it is used directly, without the need for additional searching in the DOM. |
+| Option    |          Type           |   Default   | Description                                                                                 |
+|:----------|:-----------------------:|:-----------:|:--------------------------------------------------------------------------------------------|
+| `element` | `string \| HTMLElement` | `.marquee`  | The DOM element for the animation. Can be a CSS selector (string) or an HTMLElement object. |
 <br>
 
 &#10148; **Settings**
 
-| Option              | Default | Description                                                                                                                                                                                                       |
-|:--------------------|:-------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `data-mc-duration`  |  `20`   | Sets the duration of content scrolling in seconds. It is acceptable to use decimals.                                                                                                                              |
-| `data-mc-direction` |  `rtl`  | `rtl` &mdash; default value, no need to specify.<br>`ltr` &mdash; changes the scroll direction from left to right.<br>`auto` &mdash; auto changes the direction of the animation as the page is scrolled.         |
-| `data-mc-skew`      | `null`  | Transforms the component by tilting it along the Y axis (a positive or negative value is acceptable).                                                                                                             |
-| `data-mc-min`       | `null`  | Sets the **minimum** width at which the animation will play (when the breakpoint intersects, the cloned elements are removed and the component styles are cleared).                                               |
-| `data-mc-max`       | `null`  | Sets the **maximum** width.                                                                                                                                                                                       |
+| data-*              | Default | Description                                                                                                       |
+|:--------------------|:-------:|:------------------------------------------------------------------------------------------------------------------|
+| `data-mc-duration`  |  `20`   | Duration of the scrolling animation in seconds. Accepts decimal values.                                           |
+| `data-mc-direction` |  `rtl`  | Scroll direction. Options: `rtl` (default), `ltr` (left to right), `auto` (changes direction based on scrolling). |
+| `data-mc-skew`      | `null`  | Tilts the component along the Y axis. Accepts positive or negative values.                                        |
+| `data-mc-min`       | `null`  | Minimum width for the animation to play.                                                                          |
+| `data-mc-max`       | `null`  | Maximum width for the animation to play.                                                                          |
 <br>
 
 &#10148; **License**

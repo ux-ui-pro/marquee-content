@@ -1,7 +1,7 @@
 {
   "name": "marquee-content",
-  "version": "4.2.0",
-  "description": "Class for creating the running content effect, also known as a marquee or ticker.",
+  "version": "4.3.0",
+  "description": "MarqueeContent provides a set of tools for creating dynamic and adaptive ticker animations on web pages using GSAP and ScrollTrigger.",
   "author": "ux-ui.pro",
   "license": "MIT",
   "repository": {
@@ -11,29 +11,29 @@
   "bugs": {
     "url": "https://github.com/ux-ui-pro/marquee-content/issues"
   },
-  "main": "dist/index.js",
-  "module": "dist/index.module.js",
-  "targets": {
-    "main": {
-      "source": "src/index.js"
-    },
-    "module": {
-      "source": "src/index.js"
-    }
-  },
+  "homepage": "https://github.com/ux-ui-pro/marquee-content",
+  "sideEffects": false,
   "scripts": {
     "clean": "rm -rf dist .parcel-cache",
-    "serve": "parcel src/index.html --dist-dir dist --cache-dir .parcel --no-source-maps --open",
     "build": "yarn clean && parcel build",
-    "lint:js": "eslint --ext .js",
+    "lint:js": "eslint **/*.{ts,js}",
     "lintfix": "yarn lint:js --fix"
   },
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "types": "dist/index.d.ts",
   "devDependencies": {
-    "eslint": "^8.57.0",
+    "@parcel/packager-ts": "2.12.0",
+    "@parcel/transformer-typescript-types": "2.12.0",
+    "@typescript-eslint/eslint-plugin": "^7.11.0",
+    "@typescript-eslint/parser": "^7.11.0",
+    "eslint": "^7.32.0 || ^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",
     "parcel": "^2.12.0",
-    "postcss-html": "^1.6.0"
+    "typescript": "^5.4.5"
   },
   "keywords": [
     "marquee",
@@ -49,6 +49,22 @@
     "filler",
     "css",
     "effects",
-    "gsap"
+    "gsap",
+    "ResizeObserver",
+    "timeline",
+    "scrollTrigger",
+    "breakpoints",
+    "debounce",
+    "typescript",
+    "clone",
+    "skew",
+    "responsive",
+    "media queries",
+    "javascript",
+    "frontend",
+    "UX",
+    "performance",
+    "HTML",
+    "CSS"
   ]
 }
