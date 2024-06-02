@@ -78,9 +78,10 @@ class $a196c1ed25598f0e$var$MarqueeContent {
             }
         });
         this.MM.add(this.element?.dataset.mcBreakpoint, ()=>{
-            const duration = this.element?.dataset.mcDuration ? parseFloat(this.element?.dataset.mcDuration) : 20;
-            timeline.to(this.element?.children, {
-                duration: duration,
+            const mcSpeed = parseFloat(this.element?.dataset.mcSpeed || "20");
+            const speed = mcSpeed;
+            timeline.to(this.element.children, {
+                duration: speed,
                 x: "-100%",
                 repeat: -1,
                 ease: "none"
@@ -122,11 +123,9 @@ class $a196c1ed25598f0e$var$MarqueeContent {
     }
     applySkew() {
         if (!this.element?.dataset.mcSkew) return;
-        const abs = Math.abs(parseInt(this.element.dataset.mcSkew, 10));
         const { style: style } = this.element;
         style.transformOrigin = "center center";
         style.transform = `skew(0deg, ${this.element.dataset.mcSkew}deg)`;
-        style.minHeight = `calc(${abs * 1.25}vh + ${abs * 1.25}vw)`;
     }
 }
 var $a196c1ed25598f0e$export$2e2bcd8739ae039 = $a196c1ed25598f0e$var$MarqueeContent;

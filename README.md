@@ -63,13 +63,13 @@ document.querySelectorAll('.marquee').forEach((element) => {
 
 &#10148; **Settings**
 
-| data-*              | Default | Description                                                                                                       |
-|:--------------------|:-------:|:------------------------------------------------------------------------------------------------------------------|
-| `data-mc-duration`  |  `20`   | Duration of the scrolling animation in seconds. Accepts decimal values.                                           |
-| `data-mc-direction` |  `rtl`  | Scroll direction. Options: `rtl` (default), `ltr` (left to right), `auto` (changes direction based on scrolling). |
-| `data-mc-skew`      | `null`  | Tilts the component along the Y axis. Accepts positive or negative values.                                        |
-| `data-mc-min`       | `null`  | Minimum width for the animation to play.                                                                          |
-| `data-mc-max`       | `null`  | Maximum width for the animation to play.                                                                          |
+| data-*              | Default | Description                                                                                                           |
+|:--------------------|:-------:|:----------------------------------------------------------------------------------------------------------------------|
+| `data-mc-speed`     |  `20`   | Sets the speed of the marquee animation. Lower values make the animation faster, while higher values make it slower.  |
+| `data-mc-direction` |  `rtl`  | Scroll direction. Options: `rtl` (default), `ltr` (left to right), `auto` (changes direction based on scrolling).     |
+| `data-mc-skew`      | `null`  | Tilts the component along the Y axis. Accepts positive or negative values.                                            |
+| `data-mc-min`       | `null`  | Minimum width for the animation to play.                                                                              |
+| `data-mc-max`       | `null`  | Maximum width for the animation to play.                                                                              |
 <br>
 
 &#10148; **License**
