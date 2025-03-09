@@ -3,13 +3,13 @@
 
 <h1>marquee-content</h1>
 
-<p><sup>MarqueeContent provides a set of tools for creating dynamic and adaptive ticker animations on web pages using GSAP and ScrollTrigger. It offers seamless integration with media queries, automatic element cloning for continuous scrolling effects, and efficient handling of resize events. Additionally, it supports customizable animation directions and skew effects, ensuring smooth and visually appealing ticker animations across different screen sizes and orientations.</sup></p>
+<p><sup>MarqueeContent provides a set of tools for creating dynamic and adaptive ticker animations on web pages using GSAP and ScrollTrigger. It offers seamless integration with media queries, automatic element cloning for continuous scrolling effects, and efficient handling of resize events. Additionally, it supports customizable animation directions and skew effects, ensuring smooth and visually appealing ticker animations across different screen sizes.</sup></p>
 
 [![npm](https://img.shields.io/npm/v/marquee-content.svg?colorB=brightgreen)](https://www.npmjs.com/package/marquee-content)
 [![GitHub package version](https://img.shields.io/github/package-json/v/ux-ui-pro/marquee-content.svg)](https://github.com/ux-ui-pro/marquee-content)
 [![NPM Downloads](https://img.shields.io/npm/dm/marquee-content.svg?style=flat)](https://www.npmjs.org/package/marquee-content)
 
-<sup>1kB gzipped</sup>
+<sup>1.5kB gzipped</sup>
 
 <a href="https://codepen.io/ux-ui/full/dygzqYm">Demo</a>
 
@@ -41,16 +41,6 @@ const marquee = new MarqueeContent({
 });
 
 marquee.init();
-```
-<sub>or</sub>
-```javascript
-document.querySelectorAll('.marquee').forEach((element) => {
-  const marquee = new MarqueeContent({
-    element,
-  });
-
-  marquee.init();
-});
 ```
 <br>
 
