@@ -30,7 +30,6 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import MarqueeContent from 'marquee-content';
 
 gsap.registerPlugin(ScrollTrigger);
-MarqueeContent.registerGSAP(gsap, ScrollTrigger);
 ```
 <br>
 

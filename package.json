@@ -1,6 +1,6 @@
 {
   "name": "marquee-content",
-  "version": "4.6.0",
+  "version": "4.6.1",
   "description": "MarqueeContent provides a set of tools for creating dynamic and adaptive ticker animations on web pages using GSAP and ScrollTrigger.",
   "author": "ux-ui.pro",
   "license": "MIT",
