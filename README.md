@@ -25,18 +25,20 @@ Simple Web Component for marquee/ticker rows with smooth, continuous motion.
 npm install marquee-content
 ```
 
+Optional stylesheet (sidecar):
+
 ```ts
-import 'marquee-content/marquee-content.css'
+import 'marquee-content/marquee-content.css';
 ```
 
 ---
 
 ## Quick Start
 
-Just import the package once - it registers the custom element automatically:
+Import the package once — it registers the custom element and applies bundled Shadow DOM styles automatically:
 
 ```ts
-import 'marquee-content'
+import 'marquee-content';
 ```
 
 ```html
@@ -112,16 +114,12 @@ marquee?.refresh()
 
 ## Styling
 
-Optional stylesheet import:
-
-```ts
-import 'marquee-content/marquee-content.css'
-```
+Base styles ship with the JS bundle and are adopted into each component's Shadow DOM. You do not need a separate CSS import for the marquee to work.
 
 Runtime style overrides:
 
 ```ts
-import { MarqueeContent } from 'marquee-content'
+import { MarqueeContent } from 'marquee-content';
 
 MarqueeContent.configureStyles({
   styleOverrides: `
@@ -164,7 +162,7 @@ export default defineConfig({
 Then import the package once during app startup:
 
 ```ts
-import 'marquee-content'
+import 'marquee-content';
 ```
 
 ---
