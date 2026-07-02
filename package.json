@@ -1,7 +1,8 @@
 {
   "name": "marquee-content",
   "version": "4.6.1",
-  "description": "MarqueeContent provides a set of tools for creating dynamic and adaptive ticker animations on web pages using GSAP and ScrollTrigger.",
+  "description": "A lightweight marquee Web Component with Shadow DOM style overrides support",
+  "packageManager": "npm@11.16.0",
   "author": "ux-ui.pro",
   "license": "MIT",
   "repository": {
@@ -12,78 +13,76 @@
     "url": "https://github.com/ux-ui-pro/marquee-content/issues"
   },
   "homepage": "https://github.com/ux-ui-pro/marquee-content",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
+  "type": "module",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "clean": "rimraf dist",
-    "build": "vite build",
-    "lint:js": "eslint src/**/*.{ts,js}",
-    "lint:fix:js": "eslint src/**/*.{ts,js} --fix",
-    "format:js": "prettier --write src/**/*.{ts,js}",
-    "lint:fix": "yarn lint:fix:js && yarn format:js"
+    "build": "tsdown && node scripts/build-css.mjs",
+    "dev": "vite",
+    "verify": "npm run lint && npm run typecheck && npm run build && npm run test:smoke && npm run pack:check",
+    "lint": "biome check src tests tsdown.config.ts",
+    "lint:fix": "biome check --write src tests tsdown.config.ts",
+    "format": "biome format --write src tests tsdown.config.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:smoke": "node --test tests/smoke.test.js",
+    "pack:check": "npm pack --dry-run && publint && attw --pack . --profile node16 --exclude-entrypoints marquee-content.css",
+    "prepublishOnly": "npm run clean && npm run verify"
   },
   "source": "src/index.ts",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.es.js",
-  "browser": "./dist/index.umd.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "style": "./dist/marquee-content.css",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs.js",
-      "import": "./dist/index.es.js",
-      "default": "./dist/index.umd.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
+    "./marquee-content.css": "./dist/marquee-content.css",
     "./dist/*": "./dist/*"
   },
   "files": [
-    "dist/"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
-  "devDependencies": {
-    "@eslint/js": "9.22.0",
-    "@rollup/plugin-terser": "0.4.4",
-    "@types/node": "22.13.10",
-    "@typescript-eslint/eslint-plugin": "8.26.0",
-    "@typescript-eslint/parser": "8.26.0",
-    "eslint": "9.22.0",
-    "eslint-config-prettier": "10.1.1",
-    "eslint-import-resolver-typescript": "3.8.3",
-    "eslint-plugin-import": "2.31.0",
-    "globals": "16.0.0",
-    "prettier": "3.5.3",
-    "rimraf": "6.0.1",
-    "typescript": "5.8.2",
-    "vite": "6.2.1",
-    "vite-plugin-dts": "4.5.3",
-    "gsap": "3.12.7"
+  "publishConfig": {
+    "access": "public"
   },
   "keywords": [
+    "typescript",
+    "web component",
+    "web-component",
+    "custom elements",
+    "custom-elements",
     "marquee",
-    "scroller",
-    "animation",
     "ticker",
-    "reel",
-    "running text",
-    "scrolling text",
+    "shadow dom",
+    "shadow-dom",
     "ui",
-    "custom",
-    "clones",
-    "filler",
-    "css",
-    "effects",
-    "gsap",
-    "ResizeObserver",
-    "timeline",
-    "scrollTrigger",
-    "breakpoints",
-    "debounce",
-    "clone",
-    "skew",
-    "responsive",
-    "media queries",
-    "javascript",
-    "frontend",
-    "UX",
-    "performance",
-    "HTML",
-    "CSS"
-  ]
+    "component"
+  ],
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.4",
+    "@biomejs/biome": "2.4.14",
+    "@tsdown/css": "^0.22.3",
+    "@types/node": "25.6.0",
+    "publint": "^0.3.21",
+    "rimraf": "6.1.3",
+    "sass-embedded": "^1.100.0",
+    "tsdown": "^0.22.3",
+    "typescript": "6.0.3",
+    "vite": "8.0.10"
+  }
 }

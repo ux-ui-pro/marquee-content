@@ -1,22 +1,15 @@
 {
   "compilerOptions": {
-    "isolatedModules": true,
-    "target": "ESNext",
+    "target": "ES2022",
     "module": "ESNext",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "noImplicitAny": true
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"]
   },
-  "files": [
-    "node_modules/gsap/types/index.d.ts"
-  ],
-  "include": [
-    "src",
-    "vite-env.d.ts",
-    "vite.config.ts",
-    "src/global.d.ts"
-  ]
+  "include": ["src", "tests", "tsdown.config.ts"]
 }

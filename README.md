@@ -1,66 +1,188 @@
-<div align="center">
-<br>
+# marquee-content
 
-<h1>marquee-content</h1>
-
-<p><sup>MarqueeContent provides a set of tools for creating dynamic and adaptive ticker animations on web pages using GSAP and ScrollTrigger. It offers seamless integration with media queries, automatic element cloning for continuous scrolling effects, and efficient handling of resize events. Additionally, it supports customizable animation directions and skew effects, ensuring smooth and visually appealing ticker animations across different screen sizes.</sup></p>
+Simple Web Component for marquee/ticker rows with smooth, continuous motion.
 
 [![npm](https://img.shields.io/npm/v/marquee-content.svg?colorB=brightgreen)](https://www.npmjs.com/package/marquee-content)
-[![GitHub package version](https://img.shields.io/github/package-json/v/ux-ui-pro/marquee-content.svg)](https://github.com/ux-ui-pro/marquee-content)
-[![NPM Downloads](https://img.shields.io/npm/dm/marquee-content.svg?style=flat)](https://www.npmjs.org/package/marquee-content)
+[![NPM Downloads](https://img.shields.io/npm/dm/marquee-content.svg?style=flat)](https://www.npmjs.com/package/marquee-content)
 
-<sup>1.5kB gzipped</sup>
+[Demo](https://codepen.io/ux-ui/pen/dygzqYm)
 
-<a href="https://codepen.io/ux-ui/full/dygzqYm">Demo</a>
+---
 
-</div>
-<br>
+## Features
 
-&#10148; **Install**
-```console
-yarn add gsap
-yarn add marquee-content
+- Drop-in Custom Element (`<marquee-content>`) that works in plain HTML.
+- Two movement modes: `auto` (pure CSS) and `scroll` (reacts to page scroll + inertia).
+- `rtl`/`ltr` direction support in both modes.
+- Smart pausing on hover, focus, out-of-viewport, and reduced-motion settings.
+- Easy style control via CSS variables or runtime `styleOverrides`.
+
+---
+
+## Installation
+
+```bash
+npm install marquee-content
 ```
-<br>
 
-&#10148; **Import**
-```javascript
-import gsap from 'gsap';
-import ScrollTrigger from 'gsap/ScrollTrigger';
-import MarqueeContent from 'marquee-content';
-
-gsap.registerPlugin(ScrollTrigger);
+```ts
+import 'marquee-content/marquee-content.css'
 ```
-<br>
 
-&#10148; **Usage**
-```javascript
-const marquee = new MarqueeContent({
-  element: '.marquee',
-});
+---
 
-marquee.init();
+## Quick Start
+
+Just import the package once - it registers the custom element automatically:
+
+```ts
+import 'marquee-content'
 ```
-<br>
 
-&#10148; **Options**
+```html
+<marquee-content speed="120" mode="auto" direction="rtl">
+  <span>News</span>
+  <span>Promotions</span>
+  <span>24/7 Delivery</span>
+</marquee-content>
+```
 
-| Option    |          Type           |   Default   | Description                                                                                 |
-|:----------|:-----------------------:|:-----------:|:--------------------------------------------------------------------------------------------|
-| `element` | `string \| HTMLElement` | `.marquee`  | The DOM element for the animation. Can be a CSS selector (string) or an HTMLElement object. |
-<br>
+If you want movement tied to page scroll:
 
-&#10148; **Settings**
+```html
+<marquee-content speed="120" mode="scroll" direction="ltr">
+  <span>Discounts up to 40%</span>
+  <span>Free returns</span>
+</marquee-content>
+```
 
-| data-*              | Default | Description                                                                                                           |
-|:--------------------|:-------:|:----------------------------------------------------------------------------------------------------------------------|
-| `data-mc-speed`     |  `20`   | Sets the speed of the marquee animation. Lower values make the animation faster, while higher values make it slower.  |
-| `data-mc-direction` |  `rtl`  | Scroll direction. Options: `rtl` (default), `ltr` (left to right), `auto` (changes direction based on scrolling).     |
-| `data-mc-skew`      | `null`  | Tilts the component along the Y axis. Accepts positive or negative values.                                            |
-| `data-mc-min`       | `null`  | Minimum width for the animation to play.                                                                              |
-| `data-mc-max`       | `null`  | Maximum width for the animation to play.                                                                              |
-<br>
+---
 
-&#10148; **License**
+## API
 
-marquee-content is released under MIT license.
+- `defineMarqueeContent(tagName?, options?)` — manually registers the element (useful for custom tag names or custom styles at setup time).
+- `initMarqueeContents(options?)` — convenience wrapper around `defineMarqueeContent`.
+- `MarqueeContent.configureStyles({ stylesheet, styleOverrides })` — updates global component styles for every current and future instance.
+- `MARQUEE_CONTENT_TAG` — default tag name (`'marquee-content'`).
+
+---
+
+## Options
+
+Attributes on `<marquee-content>`:
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `speed` | `number` | `90` | Base speed in px/s (internally clamped to a safe range). |
+| `mode` | `'auto' \| 'scroll'` | `'auto'` | `auto`: always moves at a constant speed, `scroll`: responds to page scroll velocity. |
+| `direction` | `'rtl' \| 'ltr'` | `'rtl'` | Base movement direction in both `auto` and `scroll` modes. |
+| `pause-on-hover` | `boolean` | `false` | Pauses on hover and enables pointer interactions inside the component. |
+
+Init options (`initMarqueeContents` / `defineMarqueeContent`):
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `tagName` | `string` | `'marquee-content'` | Custom element tag name (only for `initMarqueeContents`). |
+| `stylesheet` | `string \| CSSStyleSheet` | bundled CSS | Replaces the default base stylesheet. |
+| `styleOverrides` | `string \| CSSStyleSheet` | none | Extra styles applied after the base stylesheet. |
+
+---
+
+## Methods
+
+```ts
+import type { MarqueeContent } from 'marquee-content'
+
+const marquee = document.querySelector<MarqueeContent>('marquee-content')
+
+marquee?.update({
+  mode: 'scroll',
+  direction: 'ltr',
+  speed: 120,
+  pauseOnHover: true,
+})
+
+marquee?.refresh()
+```
+
+- `update(options)` — applies options as attributes and rebuilds the track.
+- `refresh()` — forces a fresh layout rebuild without changing options.
+
+---
+
+## Styling
+
+Optional stylesheet import:
+
+```ts
+import 'marquee-content/marquee-content.css'
+```
+
+Runtime style overrides:
+
+```ts
+import { MarqueeContent } from 'marquee-content'
+
+MarqueeContent.configureStyles({
+  styleOverrides: `
+    :host {
+      --marquee-content-gap: 1.25rem;
+    }
+  `,
+})
+```
+
+Useful CSS variables:
+
+- `--marquee-content-gap`
+- `--marquee-content-distance` (runtime)
+- `--marquee-content-duration` (runtime)
+
+---
+
+## Vue 3 + Vite
+
+Tell the Vue compiler that `marquee-content` is a custom element:
+
+```ts
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: (tag) => tag === 'marquee-content',
+        },
+      },
+    }),
+  ],
+})
+```
+
+Then import the package once during app startup:
+
+```ts
+import 'marquee-content'
+```
+
+---
+
+## Accessibility
+
+- Slotted source content stays in the DOM (visually hidden, still available to assistive tech).
+- Cloned decorative content is marked with `aria-hidden`, so screen readers do not announce duplicates.
+- Animation pauses on focus and respects `prefers-reduced-motion: reduce`.
+
+---
+
+## Browser Support
+
+Designed for modern browsers with Shadow DOM and constructable/adopted stylesheets support.
+
+---
+
+## License
+
+MIT
