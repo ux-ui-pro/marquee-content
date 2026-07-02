@@ -1,17 +1,25 @@
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import { dirname, resolve } from 'node:path';
 import test from 'node:test';
-import { fileURLToPath } from 'node:url';
 
 if (!globalThis.HTMLElement) {
   globalThis.HTMLElement = class {};
 }
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-const projectRoot = resolve(__dirname, '..');
+const expectedArtifacts = [
+  'dist/index.js',
+  'dist/index.cjs',
+  'dist/index.d.ts',
+  'dist/index.d.cts',
+  'dist/marquee-content.css',
+];
+
+test('dist artifacts exist', () => {
+  for (const artifact of expectedArtifacts) {
+    assert.equal(existsSync(artifact), true, `${artifact} should exist`);
+  }
+});
 
 const esmApi = await import('../dist/index.js').catch(() => null);
 
@@ -24,6 +32,8 @@ if (esmApi) {
     assert.equal(typeof esmApi.defineMarqueeContent, 'function');
     assert.equal(typeof esmApi.initMarqueeContents, 'function');
     assert.equal(typeof esmApi.MarqueeContent, 'function');
+    assert.equal(typeof esmApi.marqueeContentCssText, 'string');
+    assert.ok(esmApi.marqueeContentCssText.length > 0);
   });
 }
 
@@ -45,20 +55,11 @@ if (cjsApi) {
     const defined = cjsApi.defineMarqueeContent ?? cjsApi.default?.defineMarqueeContent;
     const initialized = cjsApi.initMarqueeContents ?? cjsApi.default?.initMarqueeContents;
     const component = cjsApi.MarqueeContent ?? cjsApi.default?.MarqueeContent;
+    const cssText = cjsApi.marqueeContentCssText ?? cjsApi.default?.marqueeContentCssText;
     assert.equal(typeof defined, 'function');
     assert.equal(typeof initialized, 'function');
     assert.equal(typeof component, 'function');
+    assert.equal(typeof cssText, 'string');
+    assert.ok(cssText.length > 0);
   });
 }
-
-test('css sidecar file exists', () => {
-  const cssPath = resolve(projectRoot, 'dist/marquee-content.css');
-  assert.equal(existsSync(cssPath), true);
-});
-
-test('types files exist', () => {
-  const typesPath = resolve(projectRoot, 'dist/index.d.ts');
-  const cjsTypesPath = resolve(projectRoot, 'dist/index.d.cts');
-  assert.equal(existsSync(typesPath), true);
-  assert.equal(existsSync(cjsTypesPath), true);
-});

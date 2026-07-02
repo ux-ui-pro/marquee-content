@@ -2,7 +2,7 @@
   "name": "marquee-content",
   "version": "4.6.1",
   "description": "A lightweight marquee Web Component with Shadow DOM style overrides support",
-  "packageManager": "npm@11.16.0",
+  "type": "module",
   "author": "ux-ui.pro",
   "license": "MIT",
   "repository": {
@@ -16,20 +16,16 @@
   "sideEffects": [
     "*.css"
   ],
-  "type": "module",
-  "engines": {
-    "node": ">=20.19.0"
-  },
+  "packageManager": "npm@10.9.3",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "tsdown && node scripts/build-css.mjs",
-    "dev": "vite",
+    "build": "tsdown",
     "verify": "npm run lint && npm run typecheck && npm run build && npm run test:smoke && npm run pack:check",
     "lint": "biome check src tests tsdown.config.ts",
     "lint:fix": "biome check --write src tests tsdown.config.ts",
     "format": "biome format --write src tests tsdown.config.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test:smoke": "node --test tests/smoke.test.js",
+    "test:smoke": "node --test \"tests/**/*.js\"",
     "pack:check": "npm pack --dry-run && publint && attw --pack . --profile node16 --exclude-entrypoints marquee-content.css",
     "prepublishOnly": "npm run clean && npm run verify"
   },
@@ -49,14 +45,18 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./marquee-content.css": "./dist/marquee-content.css",
-    "./dist/*": "./dist/*"
+    "./marquee-content.css": {
+      "default": "./dist/marquee-content.css"
+    }
   },
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -74,15 +74,17 @@
     "component"
   ],
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.18.4",
-    "@biomejs/biome": "2.4.14",
+    "@arethetypeswrong/cli": "^0.18.3",
+    "@biomejs/biome": "2.4.16",
     "@tsdown/css": "^0.22.3",
-    "@types/node": "25.6.0",
+    "@types/node": "25.9.2",
+    "@ux-ui/biome-config": "^0.1.0",
+    "@ux-ui/tsconfig-base": "^0.1.0",
+    "@ux-ui/tsdown-config": "^0.1.0",
     "publint": "^0.3.21",
     "rimraf": "6.1.3",
     "sass-embedded": "^1.100.0",
-    "tsdown": "^0.22.3",
-    "typescript": "6.0.3",
-    "vite": "8.0.10"
+    "tsdown": "0.22.3",
+    "typescript": "6.0.3"
   }
 }

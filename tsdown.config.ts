@@ -1,11 +1,7 @@
-import { defineConfig } from 'tsdown';
+import { defineCssLibrary } from '@ux-ui/tsdown-config';
 
-export default defineConfig({
-  entry: 'src/index.ts',
-  format: ['esm', 'cjs'],
-  dts: { tsconfig: './tsconfig.build.json' },
-  css: { fileName: 'marquee-content.css' },
-  fixedExtension: false,
-  sourcemap: true,
-  minify: false,
+export default defineCssLibrary({
+  cssFileName: 'marquee-content.css',
+  platform: 'browser',
+  entry: { index: 'src/index.ts' },
 });

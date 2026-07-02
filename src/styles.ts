@@ -1,4 +1,5 @@
-import { marqueeContentDefaultCssText } from './marquee-content-css-text';
+import './marquee-content.css';
+import DEFAULT_CSS_TEXT from './marquee-content.css?inline';
 
 export type MarqueeContentStyleInput = CSSStyleSheet | string | null | undefined;
 
@@ -7,7 +8,7 @@ export interface MarqueeContentStyleEntry {
   cssText: string;
 }
 
-export const marqueeContentCssText = marqueeContentDefaultCssText;
+export const marqueeContentCssText = DEFAULT_CSS_TEXT;
 
 export function createConstructableStyleSheet(cssText: string): CSSStyleSheet | null {
   if (
