@@ -84,6 +84,8 @@ const MARQUEE_CONTENT_CSS_PROPS = [
 
 const SCROLL_TIME_SCALE_SMOOTHING_SECONDS = 0.12;
 
+const SCROLL_ANIMATION_SEED_ITERATIONS = 500;
+
 const MARQUEE_CONTENT_RUNTIME_CSS = `
   @keyframes marquee-content-auto {
     to {
@@ -184,7 +186,11 @@ export class MarqueeContent extends HTMLElement {
   private isListeningToScroll = false;
 
   private distance = 0;
-  private offset = 0;
+
+  private scrollAnimation: Animation | null = null;
+  private scrollAnimationDuration = 0;
+  private scrollAnimationDistance = 0;
+  private scrollProgress = 0;
 
   private scrollDirectionFactor: 1 | -1 = 1;
   private currentTimeScale = 1;
@@ -378,6 +384,7 @@ export class MarqueeContent extends HTMLElement {
 
     this.stopAnimationLoop();
     this.stopCssAnimation();
+    this.cancelScrollAnimation();
     this.cancelScheduledRebuild();
     this.updateScrollListener(false);
 
@@ -404,7 +411,7 @@ export class MarqueeContent extends HTMLElement {
     });
 
     this.distance = 0;
-    this.offset = 0;
+    this.scrollProgress = 0;
     this.currentTimeScale = 1;
     this.lastFrameTime = null;
   }
@@ -451,7 +458,7 @@ export class MarqueeContent extends HTMLElement {
     if (this.reducedMotion) {
       this.track.style.transform = 'none';
     } else if (this.options.mode === 'scroll') {
-      this.applyTransform();
+      this.track.style.transform = '';
     }
 
     this.updateAnimationLoopState();
@@ -492,8 +499,23 @@ export class MarqueeContent extends HTMLElement {
       this.scrollBoostStartValue = 0;
     }
 
-    this.updateAnimationLoopState();
+    this.onScrollBoostChanged();
   };
+
+  private onScrollBoostChanged(): void {
+    if (!this.mounted || this.options.mode !== 'scroll' || this.reducedMotion) {
+      return;
+    }
+
+    this.ensureScrollAnimation();
+
+    if (!this.scrollAnimation || !this.canAnimate()) {
+      return;
+    }
+
+    this.scrollAnimation.play();
+    this.startAnimationLoop();
+  }
 
   private updateScrollListener(
     shouldListen = this.mounted && this.options.mode === 'scroll',
@@ -581,7 +603,6 @@ export class MarqueeContent extends HTMLElement {
     this.track.appendChild(clone);
 
     this.distance = group.scrollWidth;
-    this.offset = this.normalizeOffset(this.offset);
 
     if (this.distance <= 0) {
       this.track.replaceChildren();
@@ -597,8 +618,6 @@ export class MarqueeContent extends HTMLElement {
 
     if (this.reducedMotion) {
       this.track.style.transform = 'none';
-    } else if (this.options.mode === 'scroll') {
-      this.applyTransform();
     } else {
       this.track.style.transform = '';
     }
@@ -716,6 +735,7 @@ export class MarqueeContent extends HTMLElement {
     if (!this.mounted || this.distance <= 0 || this.reducedMotion) {
       this.stopAnimationLoop();
       this.stopCssAnimation();
+      this.cancelScrollAnimation();
 
       if (this.reducedMotion) {
         this.track.style.transform = 'none';
@@ -726,17 +746,24 @@ export class MarqueeContent extends HTMLElement {
 
     if (this.options.mode === 'scroll') {
       this.stopCssAnimation();
+      this.track.style.transform = '';
+      this.ensureScrollAnimation();
 
-      if (this.canAnimate()) {
-        this.startAnimationLoop();
-      } else {
+      if (!this.scrollAnimation || !this.canAnimate()) {
+        this.scrollAnimation?.pause();
         this.stopAnimationLoop();
+        return;
       }
+
+      this.scrollAnimation.play();
+      this.updateScrollPlaybackRate(performance.now(), true);
+      this.startAnimationLoop();
 
       return;
     }
 
     this.stopAnimationLoop();
+    this.cancelScrollAnimation();
     this.startCssAnimation();
     this.track.style.animationPlayState = this.canAnimate() ? 'running' : 'paused';
   }
@@ -763,7 +790,6 @@ export class MarqueeContent extends HTMLElement {
     }
 
     this.lastFrameTime = performance.now();
-    this.currentTimeScale = this.getCurrentTimeScale(this.lastFrameTime);
     this.animationFrameId = requestAnimationFrame(this.tick);
   }
 
@@ -812,42 +838,137 @@ export class MarqueeContent extends HTMLElement {
       this.options.mode !== 'scroll' ||
       this.distance <= 0 ||
       this.reducedMotion ||
-      !this.canAnimate()
+      !this.canAnimate() ||
+      !this.scrollAnimation
     ) {
-      this.stopAnimationLoop();
       return;
     }
 
-    const previousTime = this.lastFrameTime ?? now;
-    const deltaTime = Math.min((now - previousTime) / 1000, 0.064);
+    const settled = this.updateScrollPlaybackRate(now, false);
 
-    this.lastFrameTime = now;
-
-    const currentSpeed = this.getCurrentSpeed(this.clientWidth);
-    const targetTimeScale = this.getCurrentTimeScale(now);
-    const smoothingFactor = this.getScrollTimeScaleSmoothingFactor(deltaTime);
-
-    this.currentTimeScale += (targetTimeScale - this.currentTimeScale) * smoothingFactor;
-
-    if (Math.abs(targetTimeScale - this.currentTimeScale) < 0.001) {
-      this.currentTimeScale = targetTimeScale;
+    if (!settled) {
+      this.animationFrameId = requestAnimationFrame(this.tick);
     }
-
-    this.offset = this.normalizeOffset(
-      this.offset + currentSpeed * this.currentTimeScale * deltaTime,
-    );
-
-    this.applyTransform();
-
-    this.animationFrameId = requestAnimationFrame(this.tick);
   };
 
-  private getScrollTimeScaleSmoothingFactor(deltaTime: number): number {
-    if (this.options.mode !== 'scroll') {
-      return 1;
+  private ensureScrollAnimation(): void {
+    if (this.distance <= 0) {
+      this.cancelScrollAnimation();
+      return;
     }
 
-    return 1 - Math.exp(-deltaTime / SCROLL_TIME_SCALE_SMOOTHING_SECONDS);
+    const currentSpeed = this.getCurrentSpeed(this.clientWidth);
+    const durationMs = currentSpeed > 0 ? (this.distance / currentSpeed) * 1000 : 0;
+
+    if (durationMs <= 0) {
+      this.cancelScrollAnimation();
+      return;
+    }
+
+    if (
+      this.scrollAnimation &&
+      this.scrollAnimationDistance === this.distance &&
+      this.scrollAnimationDuration === durationMs
+    ) {
+      return;
+    }
+
+    const progress = this.getScrollAnimationProgress();
+    const hadAnimation = this.scrollAnimation !== null;
+
+    if (this.scrollAnimation) {
+      this.scrollAnimation.cancel();
+      this.scrollAnimation = null;
+    }
+
+    if (!hadAnimation) {
+      this.currentTimeScale = this.getDirectionFactor() * this.scrollDirectionFactor;
+    }
+
+    const animation = this.track.animate(
+      [
+        { transform: 'translate3d(0px, 0, 0)' },
+        { transform: `translate3d(${-this.distance}px, 0, 0)` },
+      ],
+      {
+        duration: durationMs,
+        iterations: Number.POSITIVE_INFINITY,
+        easing: 'linear',
+      },
+    );
+
+    animation.currentTime = durationMs * (SCROLL_ANIMATION_SEED_ITERATIONS + progress);
+    animation.playbackRate = this.currentTimeScale;
+
+    this.scrollAnimation = animation;
+    this.scrollAnimationDuration = durationMs;
+    this.scrollAnimationDistance = this.distance;
+    this.scrollProgress = progress;
+  }
+
+  private cancelScrollAnimation(): void {
+    if (!this.scrollAnimation) {
+      return;
+    }
+
+    this.scrollProgress = this.getScrollAnimationProgress();
+    this.scrollAnimation.cancel();
+    this.scrollAnimation = null;
+    this.scrollAnimationDuration = 0;
+    this.scrollAnimationDistance = 0;
+  }
+
+  private getScrollAnimationProgress(): number {
+    const animation = this.scrollAnimation;
+
+    if (!animation || this.scrollAnimationDuration <= 0) {
+      return this.scrollProgress;
+    }
+
+    const currentTime = animation.currentTime;
+
+    if (typeof currentTime !== 'number') {
+      return this.scrollProgress;
+    }
+
+    const fraction = (currentTime / this.scrollAnimationDuration) % 1;
+
+    return fraction < 0 ? fraction + 1 : fraction;
+  }
+
+  private updateScrollPlaybackRate(now: number, immediate: boolean): boolean {
+    if (!this.scrollAnimation) {
+      return true;
+    }
+
+    const target = this.getCurrentTimeScale(now);
+
+    if (immediate) {
+      this.currentTimeScale = target;
+      this.lastFrameTime = now;
+    } else {
+      const previousTime = this.lastFrameTime ?? now;
+      const deltaTime = Math.min((now - previousTime) / 1000, 0.064);
+
+      this.lastFrameTime = now;
+
+      const smoothingFactor = 1 - Math.exp(-deltaTime / SCROLL_TIME_SCALE_SMOOTHING_SECONDS);
+
+      this.currentTimeScale += (target - this.currentTimeScale) * smoothingFactor;
+    }
+
+    const settled =
+      this.scrollBoostStartValue === 0 && Math.abs(target - this.currentTimeScale) < 0.001;
+
+    if (settled) {
+      this.currentTimeScale = target;
+    }
+
+    if (this.scrollAnimation.playbackRate !== this.currentTimeScale) {
+      this.scrollAnimation.playbackRate = this.currentTimeScale;
+    }
+
+    return settled;
   }
 
   private getCurrentTimeScale(now: number): number {
@@ -893,20 +1014,6 @@ export class MarqueeContent extends HTMLElement {
     const easedProgress = this.easeOutCubic(progress);
 
     return this.scrollBoostStartValue * (1 - easedProgress);
-  }
-
-  private applyTransform(): void {
-    this.track.style.transform = `translate3d(${-this.offset}px, 0, 0)`;
-  }
-
-  private normalizeOffset(value: number): number {
-    if (this.distance <= 0) {
-      return 0;
-    }
-
-    const normalized = value % this.distance;
-
-    return normalized < 0 ? normalized + this.distance : normalized;
   }
 
   private getCurrentSpeed(containerWidth: number): number {
