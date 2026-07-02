@@ -1,6 +1,6 @@
 {
   "name": "marquee-content",
-  "version": "4.6.1",
+  "version": "5.0.0",
   "description": "A lightweight marquee Web Component with Shadow DOM style overrides support",
   "type": "module",
   "author": "ux-ui.pro",
