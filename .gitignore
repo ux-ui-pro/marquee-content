@@ -3,9 +3,6 @@
 .DS_Store
 Thumbs.db
 
-# Memo files
-memo.md
-
 # Build & Packages
 node_modules/
 pnpm-*

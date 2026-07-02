@@ -82,6 +82,8 @@ const MARQUEE_CONTENT_CSS_PROPS = [
   '--marquee-content-duration',
 ] as const;
 
+const SCROLL_TIME_SCALE_SMOOTHING_SECONDS = 0.12;
+
 const MARQUEE_CONTENT_RUNTIME_CSS = `
   @keyframes marquee-content-auto {
     to {
@@ -185,6 +187,7 @@ export class MarqueeContent extends HTMLElement {
   private offset = 0;
 
   private scrollDirectionFactor: 1 | -1 = 1;
+  private currentTimeScale = 1;
   private scrollBoostStartValue = 0;
   private scrollBoostStartedAt = 0;
   private lastScrollY = 0;
@@ -402,6 +405,7 @@ export class MarqueeContent extends HTMLElement {
 
     this.distance = 0;
     this.offset = 0;
+    this.currentTimeScale = 1;
     this.lastFrameTime = null;
   }
 
@@ -759,6 +763,7 @@ export class MarqueeContent extends HTMLElement {
     }
 
     this.lastFrameTime = performance.now();
+    this.currentTimeScale = this.getCurrentTimeScale(this.lastFrameTime);
     this.animationFrameId = requestAnimationFrame(this.tick);
   }
 
@@ -819,14 +824,31 @@ export class MarqueeContent extends HTMLElement {
     this.lastFrameTime = now;
 
     const currentSpeed = this.getCurrentSpeed(this.clientWidth);
-    const timeScale = this.getCurrentTimeScale(now);
+    const targetTimeScale = this.getCurrentTimeScale(now);
+    const smoothingFactor = this.getScrollTimeScaleSmoothingFactor(deltaTime);
 
-    this.offset = this.normalizeOffset(this.offset + currentSpeed * timeScale * deltaTime);
+    this.currentTimeScale += (targetTimeScale - this.currentTimeScale) * smoothingFactor;
+
+    if (Math.abs(targetTimeScale - this.currentTimeScale) < 0.001) {
+      this.currentTimeScale = targetTimeScale;
+    }
+
+    this.offset = this.normalizeOffset(
+      this.offset + currentSpeed * this.currentTimeScale * deltaTime,
+    );
 
     this.applyTransform();
 
     this.animationFrameId = requestAnimationFrame(this.tick);
   };
+
+  private getScrollTimeScaleSmoothingFactor(deltaTime: number): number {
+    if (this.options.mode !== 'scroll') {
+      return 1;
+    }
+
+    return 1 - Math.exp(-deltaTime / SCROLL_TIME_SCALE_SMOOTHING_SECONDS);
+  }
 
   private getCurrentTimeScale(now: number): number {
     const directionFactor = this.getDirectionFactor();
